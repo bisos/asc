@@ -1,0 +1,197 @@
+TODO.MAIL:   Needs to be done/completed/captured -- but not immediately  
+
+OBSOLETED BY: /libre/ByStar/InitialTemplates/activeDocs/bxServices/mailManage/roadmap/fullUsagePanel-en.org
+==========
+
+See Also
+
+NEXT:   To Be Done Immediately/Urgently
+----
+
+MODEL:  How the whole thing fits together, conventions, terminology, architecture
+------
+
+HOWTO:  Quick Howtos -- Not Documentation
+------
+
+http://backports.debian.org/Instructions/
+
+==== LOG ANALYSIS STRATEGY ====
+
+Dig into dlog
+
+-- give up isoqlog  in favor of dlog
+-- rrdtool
+-- munin
+
+==== MAIL USER ENVIRONMENTY ===
+
+- N810 -- authinfo generation
+
+- /libre/etc/bue/formFactor
+
+http://smarden.org/qconfirm/
+
+- Mailfront Hanging could be a memory limit problem
+
+==== QMAILANALOG ===
+
+Note: If using qmailanalog results in an error message such as 'sort: open failed: +2: No such file or directory', then you'll need to edit the three files zdeferrals, zfailures and zsuccesses in /usr/local/qmailanalog/bin, replacing 'sort +2' with 'sort -k 3', in zrhosts and zrecipients replace 'sort +4' with 'sort -k 5', and in zsuids replace 'sort -n +7' with 'sort -n -k 8'. See 'info sort' for more information about the sort problem (clue: the old sort used zero based numbering). To make these changes to the qmailanalog source before compiling, use the patch file at http://www.korsten.org/misc/qmailanalog-sort.patch .
+
+
+==== GNUS MAIL USER ENVIRONMENTY ===
+
+- lcnAlert.sh 
+
+- gnus-notify.el  -- http://www.emacswiki.org/cgi-bin/wiki/gnus-notify.el
+
+- http://stackoverflow.com/questions/1053245/new-mail-notifications-in-gnus-for-emacs
+
+- http://michigantelephone.wordpress.com/2010/07/18/how-to-receive-and-display-growl-network-notifications-using-ubuntu-linux/
+
+- http://www.mumbles-project.org/download/
+
+http://manishtech.wordpress.com/2009/03/29/working-with-libnotify/
+
+http://blog.frosty-geek.net/2009/05/your-daily-pop-ups-gnome-libnotify.html
+
+notify-send "Hello WorldSix lines"
+
+
+==== MAIN Missing Features ===
+
+- mailfront starttls patch
+
+- qmail-remote sending to smtpauth
+
+- domainkeys  (See killerqmail)
+
+- clamav with mailfront  (See killerqmail)
+
+- spama with mailfront (See killerqmail)
+
+- autoresponder
+
+- ezmlm
+
+- log processing tools
+
+- delivery report for texting
+    qreceipt(1)               User Commands               qreceipt(1)
+
+
+==== DOMAIN KEYSIGNING ======
+Signing Outbound Mail with DomainKey and DKIM
+
+This page assumes that you are using John Simpson's Combined qmail Patch and run scripts at http://qmail.jms1.net.
+
+First, stop qmail by doing:
+
+${qmailVarDir}/bin/qmailctl stop
+
+Then, integrate the script as qmail-remote by doing:
+
+cd ${qmailVarDir}/bin
+mv qmail-remote qmail-remote.orig
+wget http://www.memoryhole.net/qmail/qmail-remote.sh
+chown root:qmail qmail-remote.sh
+chmod 755 qmail-remote.sh
+ln -s qmail-remote.sh qmail-remote
+
+Now, install support stuff:
+
+yum install perl-Mail-DKIM
+cd /usr/local/src
+wget "http://downloads.sourceforge.net/project/domainkeys/libdomainkeys/0.69/libdomainkeys-0.69.tar.gz?use_mirror=superb-sea2"
+tar zxf libdomainkeys-0.69.tar.gz
+cd libdomainkeys-0.69
+echo -lresolv > dns.lib
+make
+./test
+install -m 644 libdomainkeys.a /usr/local/lib/
+install -m 644 domainkeys.h /usr/local/include/
+install -m 644 dktrace.h /usr/local/include/
+install -m 755 dknewkey /usr/local/bin/
+install -m 755 dktest /usr/local/bin/
+mkdir -p /etc/domainkeys
+chown -R root:qmail /etc/domainkeys
+chmod -R g=u-w,o= /etc/domainkeys
+cd /usr/local/bin
+wget http://www.memoryhole.net/qmail/dkimsign.pl
+chmod 755 dkimsign.pl
+
+Now, create your public and private key:
+
+cd /etc/domainkeys
+mkdir domain.tld
+cd domain.tld
+dknewkey default 1024 > default.pub
+
+Edit default.pub to the following:
+
+    *
+      _domainkey.domain.tld. IN TXT “t=y; o=~; r=postmaster@domain.tld”
+    *
+      default._domainkey.domain.tld. IN TXT “t=y; leave the rest of the key as is”
+
+chown -R root:qmail /etc/domainkeys
+chmod -R g=u-w,o= /etc/domainkeys
+
+Add the TXT records to your DNS:
+
+cat default.pub >> path_to_dns_zone_file_for_domain.tld
+
+Edit the zone file and increment the serial number. Then, reload the zone.
+
+Lastly, restart qmail by doing:
+
+${qmailVarDir}/bin/qmailctl start
+
+Then, send a test message through the server you're testing to an automated service listed at http://domainkeys.sourceforge.net/.
+
+Verifying Incoming Mail with DomainKey and DKIM.
+
+
+-----
+1) wget http://qmailtoaster.com/dkim.tgz
+
+2) tar –zxf dkim.tgz
+
+3) cd dkim
+
+4) yum install perl-XML-Simple perl-Mail-DKIM perl-XML-Parser
+
+5) mkdir ${qmailVarDir}/control/dkim
+
+6) cp signconf.xml ${qmailVarDir}/control/dkim/
+
+
+7) chown -R qmailr:qmail ${qmailVarDir}/control/dkim/
+
+8) dknewkey ${qmailVarDir}/control/dkim/global.key > ${qmailVarDir}/control/dkim/public.txt
+
+9) perl -pi -e 's/global.key/dkim1/' ${qmailVarDir}/control/dkim/public.txt
+
+10) qmailctl stop
+
+11) mv ${qmailVarDir}/bin/qmail-remote ${qmailVarDir}/bin/qmail-remote.orig
+
+12) mv qmail-remote ${qmailVarDir}/bin
+
+13) chmod 777 ${qmailVarDir}/bin/qmail-remote
+
+14) chown root:qmail ${qmailVarDir}/bin/qmail-remote
+
+15) qmailctl start
+
+16) cat ${qmailVarDir}/control/dkim/public.txt
+
+17) Create a TXT record on DNS server for the domain you want to set DKIM as shown in the output of step 16.
+
+18) Your DKIM setup is done.
+
+19) Just send test mail on any yahoo email id and check headers. If show error in headers then just wait to reflect DNS.
+
+Retrieved from "http://wiki.qmailtoaster.com/index.php/How_to_Setup_DKIM_with_Qmail_Toaster"
+
+This page has been accessed 224 times. This page was last modified 08:16, 9 July 2010. Content is available under GNU Free Documentation License 1.2.

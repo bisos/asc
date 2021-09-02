@@ -1,0 +1,34 @@
+#!/bin/osmtKsh 
+
+typeset RcsId="$Id: lcaMailfrontBinsPrep.deb6,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
+
+if [ "${loadFiles}X" == "X" ] ; then
+     seedSubjectBinsPrepDist.sh  -l $0 "$@"
+     exit $?
+fi
+
+function vis_help {
+  cat  << _EOF_
+
+Pkg Info based on the Dist/Generation
+
+_EOF_
+}
+
+itemOrderedList=( "mailfront" )
+
+item_mailfront () {
+  distFamilyGenerationHookRun binsPrep_mailfront
+}
+
+binsPrep_mailfront_DEFAULT_DEFAULT () {
+    mmaThisPkgName="mailfront"
+    mmaPkgDebianName="${mmaThisPkgName}"
+    mmaPkgDebianMethod="apt"
+  binsPrep_installPostHook="mailfront_installPost"
+}
+
+mailfront_installPost () {
+  opDo dpkg --purge runit
+}
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/opt/public/osmt/bin/lcaMozillaProc.sh -p url="$@" -i SendLink

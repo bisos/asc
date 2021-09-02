@@ -1,0 +1,20 @@
+#
+# NOTYET, pattern this after read_header on page 299 of
+# KSH book
+#
+
+
+#msgHdr_envFrom
+#msgHdr_from
+#msgHdr_to
+#msgHdr_cc
+#msgHdr_replyTo
+#msgHdr_subject
+
+function msgHeaderAnalyze {
+  # Given a MsgIn $1, analyze its header
+  # 
+
+  EH_assert [[ -d ${leapSwBaseDir} ]]
+}
+

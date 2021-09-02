@@ -1,0 +1,465 @@
+#!/bin/osmtKsh
+#!/bin/osmtKsh
+
+typeset RcsId="$Id: bystarDnsDomain.libSh,v 1.1.1.1 2016-06-08 23:49:52 lsipusr Exp $"
+
+vis_bystarDomHelp () {
+  cat  << _EOF_
+
+Masters are contentServers that are exposed.
+
+ZoneMasters are in
+   /libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent/a
+
+# OBSOLETED ?
+Domains Point to ZoneMasters
+   /libre/ByStar/InfoBase/Domain/net/librecenter/dnsServers/${DomainForm}
+         DomainForm is one of = tldForm, sldForm, bynumberForm, numberedForm, numberedSldForm
+
+ DomainForm(s) + ByStarUid = BystarDomBase(s)  
+
+ exportFileName = /etc/tinydns/exportContent/${BystarDomBase}
+
+ ServiceName + BystarDomBase(s)      =  BystarDomName(s)
+   webmail   +  domain2.domain1      =  webmail.domain2.domain1
+
+
+ DomainForm(s)    + BystarUid        =   BystarDomBase(s)
+
+ tldForm          + (ea-bysmb)       =   doamin2.domain1
+ tld2Form         + (ea-bysmb)       =   "" # N.A.
+ sldForm          + (ea-bysmb)       =   doamin2.bysmb.domain1
+ bynumberForm     + (ea-bysmb)       =   number.bynumber.domain1
+ numberedForm     + (ea-bysmb)       =   number.domain2.domain1
+ numberedSldForm  + (ea-bysmb)       =   number.domain2.bysmb.domain1
+
+ tldForm          + (sa-byname)      =   first.last.1.byname.net
+ tld2Form         + (sa-byname)      =   first.1.last.byname.net
+ sldForm          + (sa-byname)      =   "" # N.A.
+ bynumberForm     + (sa-byname)      =   number.bynumber.net
+ numberedForm     + (sa-byname)      =   number.byname.net
+ numberedSldForm  + (sa-byname)      =   "" # N.A.
+
+                       -bymemory
+                       -byalias
+
+_EOF_
+}
+
+# /libre/ByStar/InfoBase/acct/current/
+infoBaseAcctCurrent="/libre/ByStar/InfoBase/acct/current"
+
+
+DomainFormTypes="FormTld FormTld2 FormSld FormBynumber FormNumbered FormNumberedSld"
+
+
+function bystarDomainFormsPrep {
+  EH_assert [[ $# -eq 0 ]]
+  EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+
+
+  for DomainForm in ${DomainFormTypes} ; do
+      ANT_raw "${DomainForm}"
+      bystarDomParamSpecific
+  done
+}
+
+
+function bystarDomainBaseGet {
+  EH_assert [[ $# -eq 0 ]]
+  EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+  EH_assert [[ "${DomainForm}_" != "MANDATORY_" ]]
+
+
+  infoBaseAcctBase="${infoBaseAcctCurrent}/${bystarUid}"
+
+  EH_assert [[ -d ${infoBaseAcctBase} ]]
+
+  opDo fileParamsLoadVarsFromBaseDir  ${infoBaseAcctBase}
+
+  varName="cp_dom${DomainForm}"
+
+  # Indirection, dereferencing
+  eval domainBase=\$${varName}
+
+  echo "${domainBase}"
+
+}
+
+
+
+function bystarDomainNameGetNotused {
+  EH_assert [[ $# -eq 0 ]]
+  EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+  EH_assert [[ "${DomainForm}_" != "MANDATORY_" ]]
+  EH_assert [[ "${ServiceName}_" != "MANDATORY_" ]]
+
+  bystarDomainBase=$( bystarDomainBaseGet )
+
+  echo ${ServiceName}.${bystarDomainBase}
+}
+
+function bystarDomainNameAllAddNotused {
+  EH_assert [[ $# -eq 0 ]]
+  EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+  EH_assert [[ "${ServiceName}_" != "MANDATORY_" ]]
+
+  DomainForm="tldForm"
+  bystarDomTldForm=$( vis_bystarDomainNameGet 2> /dev/null )
+  if [ "${bystarDomTldForm}_" != "_" ] ; then
+      doNothing
+      # Check for ServiceName decide on MX or alias or ...
+  fi
+}
+
+
+
+
+# ./server -- Not CVSed
+#bystarDomServerRoot=/libre/ByStar/server
+
+
+
+bystarDomParamSpecific_BYNAME_COMMITTED () {
+  EH_assert [[ $# -eq 0 ]]
+  EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+  EH_assert [[ "${DomainForm}_" != "MANDATORY_" ]]
+
+  opDoRet bystarAcctAnalyze ${bystarUid}
+
+  case ${DomainForm} in
+    "FormTld")
+        bystarDomFormTld="${cp_acctMainBaseDomain}"
+        bystarDomFormTldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent"
+        # Services
+        bystarDomFormTld_plone="${bystarDomFormTld}"            
+        bystarDomFormTld_django="django.${bystarDomFormTld}"            
+        bystarDomFormTld_web="web.${bystarDomFormTld}"          
+        bystarDomFormTld_webmail="webmail.${bystarDomFormTld}"          
+        bystarDomFormTld_ftp="ftp.${bystarDomFormTld}"          
+        bystarDomFormTld_gallery="gallery.${bystarDomFormTld}"          
+        bystarDomFormTld_genealogy="genealogy.${bystarDomFormTld}"              
+        bystarDomFormTld_imap="imap.${bystarDomFormTld}"                
+        bystarDomFormTld_pop="pop.${bystarDomFormTld}"          
+        bystarDomFormTld_smtp="smtp.${bystarDomFormTld}"                
+        bystarDomFormTld_sendmsg="sendmsg.${bystarDomFormTld}"          
+        bystarDomFormTld_emsp="emsp.${bystarDomFormTld}"                
+        bystarDomFormTld_emdp="emdp.${bystarDomFormTld}"                
+        bystarDomFormTld_voice="voice.${bystarDomFormTld}"              
+        bystarDomFormTld_audio="audio.${bystarDomFormTld}"              
+        bystarDomFormTld_video="video.${bystarDomFormTld}"              
+        bystarDomFormTld_store="store.${bystarDomFormTld}"              
+       ;;
+    "FormTld2")
+        bystarDomFormTld2="${cp_FirstName}.${cp_LastName}.${cp_nameSelector}.${cp_factoryBaseDomain}"
+        bystarDomFormTld2ZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent"
+        # Services
+        bystarDomFormTld2_plone="${bystarDomFormTld2}"          
+        bystarDomFormTld2_web="web.${bystarDomFormTld2}"                
+        bystarDomFormTld2_django="django.${bystarDomFormTld2}"          
+        bystarDomFormTld2_webmail="webmail.${bystarDomFormTld2}"                
+        bystarDomFormTld2_ftp="ftp.${bystarDomFormTld2}"                
+        bystarDomFormTld2_gallery="gallery.${bystarDomFormTld2}"                
+        bystarDomFormTld2_genealogy="genealogy.${bystarDomFormTld2}"            
+        bystarDomFormTld2_imap="imap.${bystarDomFormTld2}"              
+        bystarDomFormTld2_pop="pop.${bystarDomFormTld2}"                
+        bystarDomFormTld2_smtp="smtp.${bystarDomFormTld2}"              
+        bystarDomFormTld2_sendmsg="sendmsg.${bystarDomFormTld2}"                
+        bystarDomFormTld2_emsp="emsp.${bystarDomFormTld2}"              
+        bystarDomFormTld2_emdp="emdp.${bystarDomFormTld2}"              
+        bystarDomFormTld2_voice="voice.${bystarDomFormTld2}"            
+        bystarDomFormTld2_audio="audio.${bystarDomFormTld2}"            
+        bystarDomFormTld2_video="video.${bystarDomFormTld2}"            
+        bystarDomFormTld_store="store.${bystarDomFormTld2}"             
+       ;;
+     "FormSld")
+        bystarDomFormSld="${cp_acctMainBaseDomain}"
+        bystarDomFormSldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent"
+        # Services
+        bystarDomFormSld_plone="${bystarDomFormSld}"            
+        bystarDomFormSld_django="django.${bystarDomFormSld}"            
+        bystarDomFormSld_web="web.${bystarDomFormSld}"          
+        bystarDomFormSld_webmail="webmail.${bystarDomFormSld}"          
+        bystarDomFormSld_ftp="ftp.${bystarDomFormSld}"          
+        bystarDomFormSld_gallery="gallery.${bystarDomFormSld}"          
+        bystarDomFormSld_genealogy="genealogy.${bystarDomFormSld}"              
+        bystarDomFormSld_imap="imap.${bystarDomFormSld}"                
+        bystarDomFormSld_pop="pop.${bystarDomFormSld}"          
+        bystarDomFormSld_smtp="smtp.${bystarDomFormSld}"                
+        bystarDomFormSld_sendmsg="sendmsg.${bystarDomFormSld}"          
+        bystarDomFormSld_emsp="emsp.${bystarDomFormSld}"                
+        bystarDomFormSld_emdp="emdp.${bystarDomFormSld}"                
+        bystarDomFormSld_voice="voice.${bystarDomFormSld}"              
+        bystarDomFormSld_audio="audio.${bystarDomFormSld}"              
+        bystarDomFormSld_video="video.${bystarDomFormSld}"              
+        bystarDomFormSld_store="store.${bystarDomFormSld}"              
+       ;;
+     "FormBynumber")
+        bystarDomFormBynumber="${cp_acctBynumberBaseDomain}"
+        bystarDomFormBynumberZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent"
+        # Services
+        bystarDomFormBynumber_plone="${bystarDomFormBynumber}"          
+        bystarDomFormBynumber_django="django.${bystarDomFormBynumber}"          
+        bystarDomFormBynumber_web="web.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_webmail="webmail.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_ftp="ftp.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_gallery="gallery.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_genealogy="genealogy.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_imap="imap.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_pop="pop.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_smtp="smtp.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_sendmsg="sendmsg.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_emsp="emsp.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_emdp="emdp.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_voice="voice.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_audio="audio.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_video="video.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_store="store.${bystarDomFormBynumber}"            
+        ;;
+     "FormNumbered")
+        bystarDomFormBynumber="${cp_acctBynumberBaseDomain}"
+        bystarDomFormNumberedZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent"
+        # Services
+        bystarDomFormNumbered_plone="${bystarDomFormNumbered}"          
+        bystarDomFormNumbered_django="django.${bystarDomFormNumbered}"          
+        bystarDomFormNumbered_web="web.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_webmail="webmail.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_ftp="ftp.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_gallery="gallery.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_genealogy="genealogy.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_imap="imap.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_pop="pop.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_smtp="smtp.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_sendmsg="sendmsg.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_emsp="emsp.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_emdp="emdp.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_voice="voice.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_audio="audio.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_video="video.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_store="store.${bystarDomFormNumbered}"            
+       ;;
+     "FormNumberedSld")
+        bystarDomFormBynumber="${cp_acctBynumberBaseDomain}"
+        bystarDomFormNumberedSldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent"
+        # Services
+        bystarDomFormNumberedSld_plone="${bystarDomFormNumberedSld}"            
+        bystarDomFormNumberedSld_django="django.${bystarDomFormNumberedSld}"            
+        bystarDomFormNumberedSld_web="web.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_webmail="webmail.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_ftp="ftp.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_gallery="gallery.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_genealogy="genealogy.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_imap="imap.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_pop="pop.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_smtp="smtp.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_sendmsg="sendmsg.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_emsp="emsp.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_emdp="emdp.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_voice="voice.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_audio="audio.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_video="video.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_store="store.${bystarDomFormNumberedSld}"              
+       ;;
+     *)
+       EH_problem "Unexpected DomainForm=${DomainForm}"
+       return 1
+       ;;
+  esac
+}
+
+bystarDomParamSpecific_BYNAME_TRIAL () {
+bystarDomParamSpecific_BYNAME_COMMITTED
+}
+
+bystarDomParamSpecific_BYMEMORY_COMMITTED () {
+bystarDomParamSpecific_BYNAME_COMMITTED
+}
+
+bystarDomParamSpecific_BYMEMORY_TRIAL () {
+bystarDomParamSpecific_BYNAME_COMMITTED
+}
+
+
+bystarDomParamSpecific_BYALIAS_COMMITTED () {
+bystarDomParamSpecific_BYNAME_COMMITTED
+}
+
+bystarDomParamSpecific_BYALIAS_TRIAL () {
+bystarDomParamSpecific_BYNAME_COMMITTED
+}
+
+bystarDomParamSpecific_BYSMB_DEFAULT () {
+  EH_assert [[ $# -eq 0 ]]
+  EH_assert [[ "${bystarUid}_" != "MANDATORY_" ]]
+  EH_assert [[ "${DomainForm}_" != "MANDATORY_" ]]
+
+  opDoRet bystarAcctAnalyze ${bystarUid}
+
+  case ${DomainForm} in
+    "FormTld")
+        bystarDomFormTld="${cp_acctMainBaseDomain}"
+        # /libre/ByStar/InfoBase/ZoneSvc/net/_other/nedaPlus/_Zone/dnsContent/
+        bystarDomFormTldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/${cp_Domain1}/_other/nedaPlus/_Zone/dnsContent"
+        # Services
+        bystarDomFormTld_plone="www.${bystarDomFormTld}"                
+        bystarDomFormTld_web="web.${bystarDomFormTld}"          
+        bystarDomFormTld_django="django.${bystarDomFormTld}"            
+        bystarDomFormTld_webmail="webmail.${bystarDomFormTld}"          
+        bystarDomFormTld_ftp="ftp.${bystarDomFormTld}"          
+        bystarDomFormTld_gallery="gallery.${bystarDomFormTld}"          
+        bystarDomFormTld_genealogy="genealogy.${bystarDomFormTld}"              
+        bystarDomFormTld_imap="imap.${bystarDomFormTld}"                
+        bystarDomFormTld_pop="pop.${bystarDomFormTld}"          
+        bystarDomFormTld_smtp="smtp.${bystarDomFormTld}"                
+        bystarDomFormTld_sendmsg="sendmsg.${bystarDomFormTld}"          
+        bystarDomFormTld_emsp="emsp.${bystarDomFormTld}"                
+        bystarDomFormTld_emdp="emdp.${bystarDomFormTld}"                
+        bystarDomFormTld_voice="voice.${bystarDomFormTld}"              
+        bystarDomFormTld_audio="audio.${bystarDomFormTld}"              
+        bystarDomFormTld_video="video.${bystarDomFormTld}"              
+        bystarDomFormTld_store="store.${bystarDomFormTld}"              
+       ;;
+    "FormTld2")
+        bystarDomFormTld2=""
+        bystarDomFormTld2ZoneDefault=""
+        # Services
+        bystarDomFormTld2_plone="${bystarDomFormTld2}"          
+        bystarDomFormTld2_django="django.${bystarDomFormTld2}"          
+        bystarDomFormTld2_web="web.${bystarDomFormTld2}"                
+        bystarDomFormTld2_webmail="webmail.${bystarDomFormTld2}"                
+        bystarDomFormTld2_ftp="ftp.${bystarDomFormTld2}"                
+        bystarDomFormTld2_gallery="gallery.${bystarDomFormTld2}"                
+        bystarDomFormTld2_genealogy="genealogy.${bystarDomFormTld2}"            
+        bystarDomFormTld2_imap="imap.${bystarDomFormTld2}"              
+        bystarDomFormTld2_pop="pop.${bystarDomFormTld2}"                
+        bystarDomFormTld2_smtp="smtp.${bystarDomFormTld2}"              
+        bystarDomFormTld2_sendmsg="sendmsg.${bystarDomFormTld2}"                
+        bystarDomFormTld2_emsp="emsp.${bystarDomFormTld2}"              
+        bystarDomFormTld2_emdp="emdp.${bystarDomFormTld2}"              
+        bystarDomFormTld2_voice="voice.${bystarDomFormTld2}"            
+        bystarDomFormTld2_audio="audio.${bystarDomFormTld2}"            
+        bystarDomFormTld2_video="video.${bystarDomFormTld2}"            
+        bystarDomFormTld_store="store.${bystarDomFormTld2}"             
+       ;;
+     "FormSld")
+        if [ "${cp_Domain1}" == "org" ] ; then
+                bystarDomFormSld="${cp_Domain2}.libresite.${cp_Domain1}"
+                bystarDomFormSldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/${cp_Domain1}/libresite/_Zone/dnsContent"
+        else    
+                bystarDomFormSld="${cp_Domain2}.bysmb.${cp_Domain1}"
+                bystarDomFormSldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/${cp_Domain1}/bysmb/_Zone/dnsContent"
+        fi
+        # Services
+        bystarDomFormSld_plone="${bystarDomFormSld}"            
+        bystarDomFormSld_django="django.${bystarDomFormSld}"            
+        bystarDomFormSld_web="web.${bystarDomFormSld}"          
+        bystarDomFormSld_webmail="webmail.${bystarDomFormSld}"          
+        bystarDomFormSld_ftp="ftp.${bystarDomFormSld}"          
+        bystarDomFormSld_gallery="gallery.${bystarDomFormSld}"          
+        bystarDomFormSld_genealogy="genealogy.${bystarDomFormSld}"              
+        bystarDomFormSld_imap="imap.${bystarDomFormSld}"                
+        bystarDomFormSld_pop="pop.${bystarDomFormSld}"          
+        bystarDomFormSld_smtp="smtp.${bystarDomFormSld}"                
+        bystarDomFormSld_sendmsg="sendmsg.${bystarDomFormSld}"          
+        bystarDomFormSld_emsp="emsp.${bystarDomFormSld}"                
+        bystarDomFormSld_emdp="emdp.${bystarDomFormSld}"                
+        bystarDomFormSld_voice="voice.${bystarDomFormSld}"              
+        bystarDomFormSld_audio="audio.${bystarDomFormSld}"              
+        bystarDomFormSld_video="video.${bystarDomFormSld}"              
+        bystarDomFormSld_store="store.${bystarDomFormSld}"              
+       ;;
+     "FormBynumber")
+        bystarDomFormBynumber="${cp_acctBynumberBaseDomain}"
+        # /libre/ByStar/InfoBase/ZoneSvc/net/bynumber/_Zone/dnsContent/
+        bystarDomFormBynumberZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/${cp_Domain1}/bynumber/_Zone/dnsContent"
+        # Services
+        bystarDomFormBynumber_plone="${bystarDomFormBynumber}"          
+        bystarDomFormBynumber_web="web.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_django="django.${bystarDomFormBynumber}"          
+        bystarDomFormBynumber_webmail="webmail.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_ftp="ftp.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_gallery="gallery.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_genealogy="genealogy.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_imap="imap.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_pop="pop.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_smtp="smtp.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_sendmsg="sendmsg.${bystarDomFormBynumber}"                
+        bystarDomFormBynumber_emsp="emsp.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_emdp="emdp.${bystarDomFormBynumber}"              
+        bystarDomFormBynumber_voice="voice.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_audio="audio.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_video="video.${bystarDomFormBynumber}"            
+        bystarDomFormBynumber_store="store.${bystarDomFormBynumber}"            
+        ;;
+     "FormNumbered")
+        bystarDomFormNumbered="${cp_acctNu}.${cp_Domain2}.${cp_Domain1}"
+        # /libre/ByStar/InfoBase/ZoneSvc/net/bysmb/_Zone/dnsContent
+        bystarDomFormNumberedZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/${cp_Domain1}/_other/nedaPlus/_Zone/dnsContent"
+        # Services
+        bystarDomFormNumbered_plone="${bystarDomFormNumbered}"  
+        bystarDomFormNumbered_django="django.${bystarDomFormNumbered}"                  
+        bystarDomFormNumbered_web="web.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_webmail="webmail.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_ftp="ftp.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_gallery="gallery.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_genealogy="genealogy.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_imap="imap.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_pop="pop.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_smtp="smtp.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_sendmsg="sendmsg.${bystarDomFormNumbered}"                
+        bystarDomFormNumbered_emsp="emsp.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_emdp="emdp.${bystarDomFormNumbered}"              
+        bystarDomFormNumbered_voice="voice.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_audio="audio.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_video="video.${bystarDomFormNumbered}"            
+        bystarDomFormNumbered_store="store.${bystarDomFormNumbered}"            
+       ;;
+     "FormNumberedSld")
+        if [ "${cp_Domain1}" == "org" ] ; then
+                bystarDomFormNumberedSld="${cp_acctNu}.${cp_Domain2}.libresite.${cp_Domain1}"
+                bystarDomFormNumberedSldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/${cp_Domain1}/libresite/_Zone/dnsContent"
+        else    
+                bystarDomFormNumberedSld="${cp_acctNu}.${cp_Domain2}.bysmb.${cp_Domain1}"
+                bystarDomFormNumberedSldZoneDefault="/libre/ByStar/InfoBase/ZoneSvc/${cp_Domain1}/bysmb/_Zone/dnsContent"
+        fi
+        # Services
+        bystarDomFormNumberedSld_plone="${bystarDomFormNumberedSld}"            
+        bystarDomFormNumberedSld_django="django.${bystarDomFormNumberedSld}"            
+        bystarDomFormNumberedSld_web="web.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_webmail="webmail.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_ftp="ftp.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_gallery="gallery.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_genealogy="genealogy.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_imap="imap.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_pop="pop.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_smtp="smtp.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_sendmsg="sendmsg.${bystarDomFormNumberedSld}"          
+        bystarDomFormNumberedSld_emsp="emsp.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_emdp="emdp.${bystarDomFormNumberedSld}"                
+        bystarDomFormNumberedSld_voice="voice.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_audio="audio.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_video="video.${bystarDomFormNumberedSld}"              
+        bystarDomFormNumberedSld_store="store.${bystarDomFormNumberedSld}"              
+       ;;
+     *)
+       EH_problem "Unexpected DomainForm=${DomainForm}"
+       return 1
+       ;;
+  esac
+}
+
+bystarDomParamSpecific_BCA_DEFAULT () {
+    bystarDomParamSpecific_BYNAME_COMMITTED
+}
+
+bystarDomParamSpecific_DEFAULT_DEFAULT () {
+   ANT_raw "Missing ${bystarServiceType}_${bystarServiceSupportType}"
+   return 101
+}
+
+bystarDomParamSpecific () {
+                       #bystarAcctPrefixAnalyze   
+    bystarServiceSupportHookRun bystarDomParamSpecific $*
+}
+
+

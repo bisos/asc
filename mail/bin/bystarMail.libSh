@@ -1,0 +1,191 @@
+# ByStar Mail Related -- Policy Parameters and Facilities
+#
+
+vis_bystarMailConcepts () {
+  cat  << _EOF_
+
+  Mbox  -- Physical Folder For Messages
+
+  Addr  -- .qmail-xx (May forward, May be mailbot
+
+  FQMA  -- Fully Qualified Mail Addr desk@mohsen.1.banan.byname.net
+
+  FDMB  -- Final Delivery MailBox -- Tag infront of Addrs to clarify they are 
+           Typically not given out as an address
+
+_EOF_
+}
+
+
+bystarAcctMailDirBase="ByStarMailDir"
+
+
+# Base Dir Determines Main
+bystarMboxMain=""
+
+bystarMboxSpam="Spam"
+bystarMboxMobile="Mobile"
+bystarMboxRecord="Record"
+                                                
+                                                   # Main(main,office,libre,)
+bystarMboxActivism="activism"                          
+bystarMboxBookmark="bookmark" 
+bystarMboxCallerid="callerid"
+bystarMboxConfirmation="confirmation"
+bystarMboxDesk="desk"                              # Dentist, Doctor,
+bystarMboxEnvelopeCurrent="envelope.current"
+bystarMboxEnvelopeOld="envelope.old"
+bystarMboxEphemera="ephemera"
+bystarMboxException="exception"
+bystarMboxExpired="expired"
+bystarMboxFamily="family"
+bystarMboxFax="fax"
+bystarMboxForm="form"                              # Given to a vendor that you trust
+bystarMboxForsale="forsale"                        # Craig's List
+bystarMboxFriend="friend"
+bystarMboxFyi="fyi"                                # Unsolicited perhaps useful info
+bystarMboxIndirect="indirect"                      # facebook, linkedin, 
+bystarMboxJob="job"
+bystarMboxListsMisc="lists.misc"
+bystarMbox_Mobile="mobile"
+bystarMboxNull="null"
+bystarMboxPersonal="personal"
+bystarMboxPublic="public"                          # Publicly Advertized email addresses
+bystarMbox_Record="record"
+bystarMboxSchool="school"
+bystarMboxSpamDespam="spam.detected.despam"
+bystarMboxSpamOften="spam.detected.often"
+bystarMboxSpamRare="spam.detected.rare"
+bystarMboxSpamUsual="spam.detected.usual"
+bystarMboxSystem="system"                          # System/Service/Admin Reports
+bystarMboxTest="test"
+bystarMboxText="text"
+bystarMboxTrainingHam="training.ham"
+bystarMboxTrainingSpam="training.spam"
+bystarMboxUrgent="urgent"
+bystarMboxVendor="vendor"
+bystarMboxWeb="web"                               # contactForm
+bystarMboxWeblog="weblog" 
+
+
+
+bystarMbox1="ByStarIn1"
+bystarMbox2="ByStarIn2"
+bystarMbox3="ByStarIn3"
+bystarMbox4="ByStarIn4"
+bystarMbox5="ByStarIn5"
+bystarMbox6="ByStarIn6"
+bystarMbox7="ByStarIn7"
+bystarMbox8="ByStarIn8"
+bystarMbox9="ByStarIn9"
+
+
+# Web User Environment
+bystarMboxesListWue=" 
+  ${bystarMboxSpam} 
+  ${bystarMboxMobile} 
+  ${bystarMboxRecord}
+  ${bystarMbox1}
+  ${bystarMbox2}
+"
+
+# ByStar User Environment
+bystarMboxesListBue="
+  ${bystarMboxActivism}
+  ${bystarMboxBookmark}
+  ${bystarMboxCallerid}
+  ${bystarMboxConfirmation}
+  ${bystarMboxDesk}
+  ${bystarMboxEnvelopeCurrent}
+  ${bystarMboxEnvelopeOld}
+  ${bystarMboxEphemera}
+  ${bystarMboxException}
+  ${bystarMboxExpired}
+  ${bystarMboxFamily}
+  ${bystarMboxFax}
+  ${bystarMboxForm}
+  ${bystarMboxForsale}
+  ${bystarMboxFriend}
+  ${bystarMboxFyi}
+  ${bystarMboxIndirect}
+  ${bystarMboxJob}
+  ${bystarMboxListsMisc}
+  ${bystarMbox_Mobile}
+  ${bystarMboxNull}
+  ${bystarMboxPersonal}
+  ${bystarMboxPublic}
+  ${bystarMbox_Record}
+  ${bystarMboxSchool}
+  ${bystarMboxSpamDespam}
+  ${bystarMboxSpamOften}
+  ${bystarMboxSpamRare}
+  ${bystarMboxSpamUsual}
+  ${bystarMboxSystem}
+  ${bystarMboxTest}
+  ${bystarMboxText}
+  ${bystarMboxTrainingHam}
+  ${bystarMboxTrainingSpam}
+  ${bystarMboxUrgent}
+  ${bystarMboxVendor}
+  ${bystarMboxWeb}
+  ${bystarMboxWeblog}
+"
+
+
+
+function maildirIsValid {
+  EH_assert [[ $# -eq 1 ]]
+
+  dirPath=$1
+
+  if [ ! -d ${dirPath} ] ; then 
+    return 101
+  fi
+  if [ ! -d ${dirPath}/tmp ] ; then 
+    return 101
+  fi
+  if [ ! -d ${dirPath}/cur ] ; then 
+    return 101
+  fi
+  if [ ! -d ${dirPath}/new ] ; then 
+    return 101
+  fi
+  return 0
+}
+
+function vis_findMaildirs {
+  EH_assert [[ $# -eq 1 ]]
+
+  opDo maildirFind $1
+}
+
+
+function maildirFind {
+  EH_assert [[ $# -eq 1 ]]
+
+  dirPath=$1
+
+  dirsBelowPath=$( find ${dirPath} -type d -print )
+
+  for thisDir in ${dirsBelowPath} ; do
+      if opDo maildirIsValid ${thisDir} ; then
+          echo ${thisDir}
+      else
+          ANT_raw "${thisDir} Skipped"
+      fi
+  done
+}
+
+
+function vis_isMaildir {
+  EH_assert [[ $# -eq 1 ]]
+
+  if opDo maildirIsValid $1 ; then
+      ANT_raw "$1 IS a Maildir"
+  else
+      ANT_raw "$1 is NOT a Maildir"
+  fi
+}
+
+
+

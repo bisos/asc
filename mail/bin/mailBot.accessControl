@@ -1,0 +1,28 @@
+# SHOULD BE MACHINE GENERATED BE featuresFax.nsp
+#
+# MailBot Access Control
+
+function item_faxAccessControl {
+ac_serviceName="faxMailbot"
+
+ac_envelopAllowList="admin@mohsen.banan.1.byname.net"
+ac_envelopDenyList="all"
+
+ac_fromAllowList=""
+ac_fromDenyList=""
+
+ac_subjectAllowList=""
+ac_subjectDenyList=""
+
+ac_toAllowList=""
+ac_toDenyList=""
+
+ac_bodyPartsAllowList="text image audio application/pdf application/postscript" 
+ac_bodyPartsDenyList="all"
+
+ac_maxSize=1000000
+#ac_maxSize=100
+}
+
+item_faxAccessControl
+

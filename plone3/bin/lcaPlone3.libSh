@@ -1,0 +1,177 @@
+#!/bin/bash
+
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
+# {{{ DBLOCK-top-of-file
+typeset RcsId="$Id: lcaPlone3.libSh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
+#  This is part of ByStar Libre Services. http://www.by-star.net
+# Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
+# See PLPC-120001 for restrictions.
+# This is a Halaal Poly-Existential intended to remain perpetually Halaal. 
+# }}} DBLOCK-top-of-file
+####+END:
+
+# {{{ Describe
+
+function vis_describeLocal {
+    cat  << _EOF_
+Plone3 Object (po)Definitions 
+
+NOTYET, start using this in bystarPlone3Portlets.sh
+
+_EOF_
+}
+
+# }}}
+
+lcaPlone3BaseDir="/usr/local/Plone/zeocluster"
+lcaPlone3BuildoutCfgFile="/usr/local/Plone/zeocluster/buildout.cfg"
+lcaPlone3BuildoutVersionsFile="/usr/local/Plone/zeocluster/versions.cfg"
+
+lcaPlone3AdminPasswdFile="/usr/local/Plone/zeocluster/adminPassword.txt"
+
+lcaPlone3BuildoutProg="/usr/local/Plone/zeocluster/bin/buildout"
+
+
+# {{{ DPlone3 Object (po)Definitions 
+
+typeset    poObjectTypeFileName="objectType"
+typeset -A poObjectTypeEnum=(
+    [auxNode]=auxNode 
+    [auxLeaf]=auxLeaf
+    [folder]=folder 
+    [page]=page 
+    [pageLcnt]=pageLcnt
+    [files]=files
+    [rawFiles]=rawFiles
+    [redirector]=redirector 
+    [folderRedirector]=folderRedirector 
+    [custom]=custom
+)
+
+# This is the layer below webLayoutLeftPortletsEnum[all] ...
+
+typeset -A poLeftPortletPresenceEnum=(
+    [present]=present      
+    [absent]=absent       
+    [default]=present    
+)
+
+typeset -A poRightPortletPresenceEnum=(
+    [present]=present      
+    [absent]=absent       
+    [default]=present    
+)
+
+typeset    poPubStateFileName="pubState"
+typeset -A poPubStateEnum=(
+    [retract]=retract 
+    [publish]=publish 
+    [default]=publish
+)
+
+typeset    poExcludeFromNavFileName="excludeFromNav"
+typeset -A poExcludeFromNavEnum=(
+    [true]=true 
+    [false]=false 
+    [default]=false
+)
+
+# }}}
+
+
+function vis_inPloneBaseDirAccordinglyDo {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+Arg-1 =${baseDir} is a baseDirectory.
+Arg-2 and REST =${doCommand} are the command to do. 
+Go through the following order:
+  If baseDirectory exists, we go there and ${doCommand}.
+  Else-If baseDirectory.gened exists, we go there and ${doCommand}.
+  Else-If baseDirectory.common exists, we go there and ${doCommand}.
+  Else we report a problem.
+_EOF_
+    }
+    EH_assert [[ $# -ge 2 ]]
+
+    typeset baseDir=$1
+
+    shift
+
+    typeset doCommand=$@
+
+    if [ -d ${baseDir} ] ;  then
+	pushd ${baseDir} > /dev/null 
+	ANV_cooked "In $( pwd ) Running: ${doCommand}"
+	${doCommand}
+	popd > /dev/null
+    elif [ -d ${baseDir}.gened ] ;  then
+	pushd ${baseDir}.gened > /dev/null 
+	ANV_cooked "In $( pwd ) Running: ${doCommand}"
+	${doCommand}
+	popd > /dev/null 
+    elif [ -d ${baseDir}.common ] ;  then
+	pushd ${baseDir}.common > /dev/null 
+	ANV_cooked "In $( pwd ) Running: ${doCommand}"
+	${doCommand}
+	popd > /dev/null 
+    else
+	EH_problem "Missing ${baseDir} or .gened or .common -- Skipped ${doCommand}"
+	lpReturn 101
+    fi
+
+    lpReturn
+}
+
+
+function vis_genedToStartingBase {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 1 ]]
+
+    thisDir="$1"
+    typeset thisPrefix=$( FN_prefix "${thisDir}" )
+    typeset thisExtension=$( FN_extension "${thisDir}" )
+
+    case ${thisExtension} in 
+	"gened"|"common")   
+	    opDo doNothing
+	    ;;
+	*)
+	    EH_problem "Unknown Extension ${thisPrefix}.${thisExtension}"
+	    ;;
+    esac
+
+    if [ ! -d "${thisDir}" ] ; then
+	EH_problem "Missing ${thisDir} -- Skipped"
+	lpReturn 101
+    fi
+
+    if [ -d "${thisPrefix}" ] ; then
+	EH_problem "${thisPrefix} Already Exists -- Skipped"
+	lpReturn 101
+    fi
+
+    if [ -h "${thisDir}" ] ; then
+	opDo cp -H -r "${thisDir}" "${thisPrefix}"
+    else
+	opDo mv "${thisDir}" "${thisPrefix}"
+    fi
+
+    inBaseDirDo "${thisPrefix}" lcaCvsAdmin.sh -h -v -n showRun -i allRecurseDeCvs
+
+    lpReturn
+}
+
+
+
+####+BEGIN: bx:dblock:bash:end-of-file :type "basic"
+# {{{ DBLOCK-end-of-file
+#local variables:
+#major-mode: shellscript-mode
+#fill-column: 90
+# end:
+# }}} DBLOCK-end-of-file
+####+END:
+
