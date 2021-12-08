@@ -19,12 +19,15 @@ __author__="
 "
 
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedAdminDaemonSysV.sh"
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedAdminDaemonSysV.sh"
 SEED="
-* /[dblock]/--Seed/: /opt/public/osmt/bin/seedAdminDaemonSysV.sh
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedAdminDaemonSysV.sh]] |
+"
+FILE="
+*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/bin/lcaApache2Admin.sh
 "
 if [ "${loadFiles}" == "" ] ; then
-    /opt/public/osmt/bin/seedAdminDaemonSysV.sh -l $0 "$@" 
+    /bisos/core/bsip/bin/seedAdminDaemonSysV.sh -l $0 "$@"
     exit $?
 fi
 ####+END:
@@ -124,6 +127,10 @@ telnet localhost 80
 openssl s_client -connect localhost:443 -state -debug
 curl http://localhost/
 curl https://localhost/
+$( examplesSeperatorChapter "SystemD Commands" )
+sudo systemctl status apache2
+sudo systemctl restart apache2
+sudo journalctl -xe | grep apache
 _EOF_
 }
 

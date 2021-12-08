@@ -1,12 +1,17 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh 
+#!/bin/bash
 
-typeset RcsId="$Id: lcaPlone3UrlApi.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
-
-if [ "${loadFiles}X" == "X" ] ; then
-    $( dirname $0 )/seedActions.sh -l $0 "$@"
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] |
+"
+FILE="
+*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/plone3/bin/lcaPlone3UrlApi.sh
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@"
     exit $?
 fi
+####+END:
 
 
 vis_help () {
@@ -22,14 +27,15 @@ _EOF_
 }
 
 
-. ${opBinBase}/lpCurrents.libSh
+# . ${opBinBase}/lpCurrents.libSh
 
 # PRE parameters
 typeset -t acctTypePrefix=""
 typeset -t bystarUid="MANDATORY"
 
 function G_postParamHook {
-    lpCurrentsGet
+    #lpCurrentsGet
+    return
 }
 
 
@@ -76,9 +82,9 @@ function vis_fullAdd {
 function vis_loginAndDo {
 #set -x
 
-  typeset url="$3"
-  typeset username="$1"
-  typeset passwd="$2"
+  local url=${3:-}
+  typeset username="${1:-}"
+  typeset passwd="${2:-}"
   shift 3
   typeset action="$*"
   typeset logFile="/tmp/zmiAutoLogin.$$"
@@ -86,7 +92,7 @@ function vis_loginAndDo {
   # NOTYET, make verbosity run time
   #set -x
   echo curl --user ${username}:${passwd} -k -i -o ${logFile} ${url}/${action}
-  eval curl --user ${username}:${passwd} -k -i -o ${logFile} ${url}/${action} >/dev/null 2>&1
+  eval curl --user ${username}:${passwd} -k -i -o ${logFile} ${url}/${action} # >/dev/null 2>&1
 
   opDo ls -l  ${logFile}
   return $?

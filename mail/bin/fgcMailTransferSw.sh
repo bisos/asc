@@ -1,14 +1,18 @@
 #!/bin/bash
 
-IimBriefDescription="Functionally Grouped Components Software: Mail Transfer"
+IcmBriefDescription="Functionally Grouped Components Software: Mail Transfer"
 
 ORIGIN="
 * Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
 "
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-typeset RcsId="$Id: fgcMailTransferSw.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
 # *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
+#  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
 # This is a Halaal Poly-Existential intended to remain perpetually Halaal.
@@ -20,10 +24,13 @@ __author__="
 
 ####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
 SEED="
-* /[dblock]/--Seed/: /opt/public/osmt/bin/seedActions.bash
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] | 
+"
+FILE="
+*  /This File/ :: /bisos/bsip/bin/fgcMailTransferSw.sh 
 "
 if [ "${loadFiles}" == "" ] ; then
-    /opt/public/osmt/bin/seedActions.bash -l $0 "$@" 
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@" 
     exit $?
 fi
 ####+END:
