@@ -78,9 +78,10 @@ _CommentEnd_
 . ${opBinBase}/lpReRunAs.libSh
 
 #setBasicItemsFiles mmaQmailNewHostItems
-setBasicItemsFiles mmaQmailHostItems
+#setBasicItemsFiles mmaQmailHostItems
 
-opNetCfg_paramsGet ${opRunClusterName} ${opRunHostName}
+# NOTYET, can be obtained from sysChar report
+# opNetCfg_paramsGet ${opRunClusterName} ${opRunHostName}
 # ${opNetCfg_ipAddr} ${opNetCfg_netmask} ${opNetCfg_networkAddr} ${opNetCfg_defaultRoute}
 
 
@@ -147,7 +148,11 @@ ${G_myName} ${extraInfo} -i servicesDisable inNetSmtp
 ${G_myName} ${extraInfo} -i servicesDisable inNetVerify
 ${G_myName} ${extraInfo} -i servicesDisable outNetSmtp 
 --- SERVICES MANIPULATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesList
+${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesList   # opRunHostName
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesList   # opRunHostFamily
+${G_myName} ${extraInfo} -s BACS -a servicesList   # BACS
+${G_myName} ${extraInfo} -s BUE -a servicesList   # BUE
+${G_myName} ${extraInfo} -s BISP -a servicesList   # BISP
 ${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesShow all
 ${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop all
 ${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop outNetSmtp 
@@ -953,6 +958,8 @@ function do_servicesList {
 }
 
 function subjectIsRunHost {
+    # NOTYET 2022
+    return 0
   if [[ "${subject}_" != "${opRunHostName}_" ]] ; then
     EH_problem "Remote not supported subject=${subject} opRunHostName=${opRunHostName}"
     return 1
@@ -1525,6 +1532,297 @@ function do_netListenerVerify {
 
   opDoComplain opInetdLineVerify "smtp" "${mmaQmailSmtpdLine}"
 }
+
+#
+#   qmailSetup can be any combination of:
+#         localInjectAgent  submitServerSmtp inNetSmtp localDeliveryAgent outNetSmtp
+#
+
+# 
+# For now, inNetSmtp and submitServerSmtp should not be combined
+#
+
+nullClient="localInjectAgent outNetSmtp"
+submitServer="submitServerSmtp outNetSmtp"
+mailRouter="inNetSmtp outNetSmtp"
+fullServer="localInjectAgent outNetSmtp inNetSmtp submitServerSmtp localDeliveryAgent"
+ 
+
+#
+# submitServerSmtp  Access Control Information
+#
+
+function submitServerPub1Access {
+  iv_qmailSubmitServerAllowList=("127.0.0.1" "127.0.0.0" "192.168.0." "192.168.5." "198.62.92.")
+  iv_qmailSubmitServerdenyList=("")
+}
+
+function submitServerIntraAccess {
+  iv_qmailSubmitServerAllowList=("127.0.0.1" "127.0.0.0" "192.168.0." "192.168.5.")
+  iv_qmailSubmitServerdenyList=("")
+}
+
+
+
+function itemPre_qmailHost {
+  iv_qmailHostName=""
+
+  iv_qmailSetup=""   # submitServerSmtp fullServer
+  iv_qmailFeatures=""
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName=""
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag=""
+  iv_qmailMsgIdDomain=""
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=""
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes="_BLANK_"
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=""
+
+  #   ########  Non-Delivery Parameters #########
+  #iv_qmailNonDeliveryFromAddr=""	
+  #iv_qmailNonDeliveryDoubleBounceToAddr=""
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=""	
+
+  # Reference to domain objects 
+  iv_qmailHost_mainDomRef=""
+  iv_qmailHost_VirDomsRefList=("")
+  iv_qmailHost_distListsRefList=("")
+
+  iv_itemActions=("")
+}
+
+function itemPost_qmailHost {
+
+  if [ "${iv_qmailHostName}_" == "_" ] ; then
+    iv_qmailHostName=""	
+  fi
+
+  if [ "${iv_qmailSetup}_" == "_" ] ; then
+    iv_qmailSetup="submitClientSmtp"   # submitServerSmtp fullServer
+  fi
+
+  if [ "${iv_qmailFeatures}_" == "_" ] ; then
+    iv_qmailFeatures="submitClientSmtp"	
+  fi
+
+  if [ "${iv_qmailDefaultDeliveryFormat}_" == "_" ] ; then
+    # One of "./Mailbox" or "./Maildir/"
+    iv_qmailDefaultDeliveryFormat="./Maildir/"	
+  fi
+
+  #   ########  General Global Parameters #########
+  if [ "${iv_qmailMyMailDomainName}_" == "_" ] ; then
+    iv_qmailMyMailDomainName="unknown.fix"	
+  fi
+
+  #   ########  Message Origination Parameters #########
+  if [ "${iv_qmailMsgIdTag}_" == "_" ] ; then
+    iv_qmailMsgIdTag="submit1"	
+  fi
+  
+  if [ "${iv_qmailMsgIdDomain}_" == "_" ] ; then
+    iv_qmailMsgIdDomain="unknown.fix"	
+  fi
+  
+  if [ "${iv_qmailSenderLocalPart}_" == "_" ] ; then
+    iv_qmailSenderLocalPart=""  # username goes here	
+  fi
+  
+  if [ "${iv_qmailSenderDomainPart}_" == "_" ] ; then
+    iv_qmailSenderDomainPart="unknown.fix"	
+  fi
+  
+  #   ########  Mail Routing Parameters #########
+  if [ "${iv_qmailSmtpRoutes}_" == "_BLANK__" ] ; then
+    iv_qmailSmtpRoutes=":april"
+  fi
+  
+  #   ########  Message Acceptance Parameters #########
+  if [ "${iv_qmailAcceptDestinedTo}_" == "_" ] ; then
+    iv_qmailAcceptDestinedTo="unknown.fix"	
+  fi
+  
+  #   ########  Local Delivery Parameters #########
+  if [ "${iv_qmailLocalDelivery}_" == "_" ] ; then
+    iv_qmailLocalDelivery="unknown.fix"		
+  fi
+  
+  #   ########  Non-Delivery Parameters #########
+  #iv_qmailNonDeliveryFromAddr="mailer-daemon@unknown.fix"	
+  #iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@unknown.fix"		
+}
+
+
+#############################
+# HOST: FAMILY: BISP
+#############################
+
+function itemFamily_BISP {
+  itemPre_qmailHost
+  iv_qmailHost="${opRunHostName}"
+
+  #   ########  Configuration Mode #########
+  iv_qmailSetup="${fullServer}"
+  iv_qmailFeatures="fullServer"
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName="${opRunHostFamily}.${opRunDomainName}"
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag="${opRunHostFamilyTag}"
+  iv_qmailMsgIdDomain=${iv_qmailMyMailDomainName}
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=${iv_qmailMyMailDomainName}
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes=""
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=${iv_qmailMyMailDomainName}
+
+  submitServerPub1Access
+
+  #   ########  Non-Delivery Parameters #########
+  iv_qmailNonDeliveryFromAddr="mailer-daemon@${iv_qmailMyMailDomainName}"
+  iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@${iv_qmailMyMailDomainName}"
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=${iv_qmailMyMailDomainName}
+
+  iv_qmailHost_LocalDelivery=${iv_qmailMyMailDomainName}	
+
+  iv_qmailDefaultDeliveryFormat="./Maildir/"
+  
+  # Reference to Domain Objects"
+  # NOTYET, NOT APPLICABLE
+  iv_qmailHost_mainDomRef="qmailDomMain_bynameNet"	
+  iv_qmailHost_VirDomsRefList=("")
+
+  #   ########  Mailing Lists Served #########
+  #iv_qmailHost_distListsRefList=("")
+
+  itemPost_qmailHost
+}
+
+
+
+#############################
+# HOST: FAMILY: BUE
+#############################
+
+function itemFamily_BUE {
+  itemPre_qmailHost
+  iv_qmailHost="${opRunHostName}"
+
+  #   ########  Configuration Mode #########
+  iv_qmailSetup="${nullClient}"
+  iv_qmailFeatures="nullClient"
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName="${opRunHostFamily}.${opRunDomainName}"
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag="${opRunHostFamilyTag}"
+  iv_qmailMsgIdDomain=${iv_qmailMyMailDomainName}
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=${iv_qmailMyMailDomainName}
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes=""
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=${iv_qmailMyMailDomainName}
+
+  submitServerPub1Access
+
+  #   ########  Non-Delivery Parameters #########
+  iv_qmailNonDeliveryFromAddr="mailer-daemon@${iv_qmailMyMailDomainName}"
+  iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@${iv_qmailMyMailDomainName}"
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=${iv_qmailMyMailDomainName}
+
+  iv_qmailHost_LocalDelivery=${iv_qmailMyMailDomainName}	
+
+  iv_qmailDefaultDeliveryFormat="./Maildir/"
+  
+  # Reference to Domain Objects"
+  # NOTYET, NOT APPLICABLE
+  iv_qmailHost_mainDomRef="qmailDomMain_bynameNet"	
+  iv_qmailHost_VirDomsRefList=("")
+
+  #   ########  Mailing Lists Served #########
+  #iv_qmailHost_distListsRefList=("")
+
+  itemPost_qmailHost
+}
+
+
+#############################
+# HOST: FAMILY: BMUE
+#############################
+
+function itemFamily_BMUE {
+  itemPre_qmailHost
+  iv_qmailHost="${opRunHostName}"
+
+  #   ########  Configuration Mode #########
+  iv_qmailSetup="${fullServer}"
+  iv_qmailFeatures="fullServer"
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName="${opRunHostFamily}.${opRunDomainName}"
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag="${opRunHostFamilyTag}"
+  iv_qmailMsgIdDomain=${iv_qmailMyMailDomainName}
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=${iv_qmailMyMailDomainName}
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes=""
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=${iv_qmailMyMailDomainName}
+
+  submitServerPub1Access
+
+  #   ########  Non-Delivery Parameters #########
+  iv_qmailNonDeliveryFromAddr="mailer-daemon@${iv_qmailMyMailDomainName}"
+  iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@${iv_qmailMyMailDomainName}"
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=${iv_qmailMyMailDomainName}
+
+  iv_qmailHost_LocalDelivery=${iv_qmailMyMailDomainName}	
+
+  iv_qmailDefaultDeliveryFormat="./Maildir/"
+  
+  # Reference to Domain Objects"
+  # NOTYET, NOT APPLICABLE
+  iv_qmailHost_mainDomRef="qmailDomMain_bynameNet"	
+  iv_qmailHost_VirDomsRefList=("")
+
+  #   ########  Mailing Lists Served #########
+  #iv_qmailHost_distListsRefList=("")
+
+  itemPost_qmailHost
+}
+
+
 
 
 ####+BEGIN: bx:dblock:bash:end-of-file :type "basic"

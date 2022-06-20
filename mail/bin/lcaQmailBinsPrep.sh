@@ -233,6 +233,7 @@ binsPrep_qmail_DEBIAN_11 () {
     binsPrep_installPostHook=""
 
     function customInstallScript {
+	#lpDo sudo dpkg --purge --force-all qmail
         if [ ! -d ${debPkgsBase} ] ; then lpDo mkdir -p ${debPkgsBase}; fi;
         local debPkgFile=${debPkgsBase}/qmail.deb
 
