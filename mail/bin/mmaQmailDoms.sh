@@ -11,8 +11,8 @@ fi
 G_humanUser=TRUE
 
 . ${opBinBase}/mmaLib.sh
-. ${opBinBase}/mmaQmailLib.sh
-. ${opBinBase}/mmaDnsLib.sh
+. ${mailBinBase}/mmaQmailLib.sh
+. ${dnsBinBase}/mmaDnsLib.sh
 
 # ../siteControl/nedaPlus/mmaQmailDomItems.site 
 #ItemsFiles=${opSiteControlBase}/${opRunSiteName}/mmaQmailDomItems.site

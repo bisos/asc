@@ -668,12 +668,12 @@ function do_fullVerify {
     itemPost_qmailHost
   fi
 
-  #mmaQmailAdmin.sh -i fullReport
-  opDo mmaQmailAdmin.sh -i showProcs
+  #lcaQmailAdmin.sh -i fullReport
+  opDo lcaQmailAdmin.sh -i showProcs
 
-  opDo mmaQmailAdmin.sh -i injectFirst mohsen@neda.com
+  opDo lcaQmailAdmin.sh -i injectFirst mohsen@neda.com
 
-  opDo mmaQmailAdmin.sh -i showQueue
+  opDo lcaQmailAdmin.sh -i showQueue
 }
 
 function do_fullUpdate {
@@ -718,7 +718,7 @@ function do_configFullUpdate {
   #set -x
 
   # NOTYET, verify that the daemons have been stopped.
-  opDo mmaQmailAdmin.sh -i stop
+  opDo lcaQmailAdmin.sh -i stop
 
   FN_dirDefunctMake ${qmailControlBaseDir} ${qmailVarDir}/notused.control.${dateTag}
   FN_dirCreatePathIfNotThere ${qmailControlBaseDir}
@@ -1432,7 +1432,7 @@ function do_fullConvert {
 
   # NOTYET, Stop qmail Services
   mmaQmailNewHosts.sh -v -n showRun -s beverly -a servicesStop all
-  mmaQmailAdmin.sh -i killProcs
+  lcaQmailAdmin.sh -i killProcs
 
   vis_bootRcDeInstall
 
