@@ -1,7 +1,10 @@
 #
 #
 
-. ${opLibBase}/opDoAsLib.sh
+# NOTYET 2022 --- Needs to be revisited
+#. ${opLibBase}/opDoAsLib.sh
+
+
 # lpParams.libSh 
 . ${opBinBase}/lpParams.libSh
 
@@ -31,7 +34,7 @@ if [ -f /usr/bin/tinydns-data  ] ; then
 elif [ -f /usr/local/bin/tinydns-data ] ; then
   mmaDns_binsDir=/usr/local/bin
 else
-    doNothing
+    mmaDns_binsDir="missing tinydns binaries"
   #EH_problem "tinydns binaries missing"
 fi
 

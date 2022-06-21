@@ -1,5 +1,5 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh
+#!/bin/bash
+#!/bin/bash
 
 echo "OBSOLETED BY: /libre/ByStar/InitialTemplates/activeDocs/bxServices/mailManage/roadmap/fullUsagePanel-en.org"
 

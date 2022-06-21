@@ -1,4 +1,4 @@
-#!/bin/osmtKsh
+#!/bin/bash
 
 #
 # NOTE: Obsoleted by lcnMailFolderProc.sh -- 

@@ -1,5 +1,5 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh
+#!/bin/bash
+#!/bin/bash
 
 typeset RcsId="$Id: bueMailListManage.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
 
@@ -37,8 +37,8 @@ _EOF_
 . ${opBinBase}/mmaQmailLib.sh
 . ${opBinBase}/mmaDnsLib.sh
 
-# bystarLib.sh
-. ${opBinBase}/bystarLib.sh
+# bxo_lib.sh
+. ${opBinBase}/bxo_lib.sh
 
 # bystarHereAcct.libSh
 . ${opBinBase}/bystarHereAcct.libSh
@@ -53,10 +53,10 @@ _EOF_
 
 . ${opBinBase}/bystarHook.libSh
 
-# ./bystarLib.sh
-. ${opBinBase}/bystarLib.sh
+# ./bxo_lib.sh
+. ${opBinBase}/bxo_lib.sh
 
-. ${opBinBase}/lpCurrents.libSh
+. ${opBinBase}/bisosCurrents_lib.sh
 
 # PRE parameters
 typeset -t acctTypePrefix=""

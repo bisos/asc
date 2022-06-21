@@ -1,6 +1,6 @@
 #!/bin/bash
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
 # {{{ DBLOCK-top-of-file
 typeset RcsId="$Id: bxtStartDistMail.sh,v 1.1 2018-04-26 19:14:40 lsipusr Exp $"
 #  This is part of ByStar Libre Services. http://www.by-star.net
@@ -10,7 +10,7 @@ typeset RcsId="$Id: bxtStartDistMail.sh,v 1.1 2018-04-26 19:14:40 lsipusr Exp $"
 # }}} DBLOCK-top-of-file
 ####+END:
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedMailingProc.sh"
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedMailingProc.sh"
 # {{{ DBLOCK-seed-spec
 if [ "${loadFiles}X" == "X" ] ; then
     /opt/public/osmt/bin/seedNameDistProc.sh -l $0 "$@" 

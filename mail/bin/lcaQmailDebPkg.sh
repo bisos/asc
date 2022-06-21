@@ -1,5 +1,5 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh 
+#!/bin/bash
+#!/bin/bash 
 
 typeset RcsId="$Id: lcaQmailDebPkg.sh,v 1.3 2020-02-03 01:28:40 lsipusr Exp $"
 

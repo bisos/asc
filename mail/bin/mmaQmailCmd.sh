@@ -1,5 +1,5 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh
+#!/bin/bash
+#!/bin/bash
 
 # example of mhlist
 # /usr/bin/mh/mhlist -type application/postscript -type image/tif -noheaders -f ../samples/email/twoAttach.inMail

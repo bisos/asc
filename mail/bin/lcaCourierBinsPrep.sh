@@ -1,14 +1,18 @@
 #!/bin/bash
 
-IimBriefDescription="MODULE BinsPrep based on apt based seedSubjectBinsPrepDist.sh"
+IcmBriefDescription="MODULE BinsPrep based on apt based seedSubjectBinsPrepDist.sh"
 
 ORIGIN="
 * Revision And Libre-Halaal CopyLeft -- Part of [[http://www.by-star.net][ByStar]] -- Best Used With [[http://www.by-star.net/PLPC/180004][Blee]] or [[http://www.gnu.org/software/emacs/][Emacs]]
 "
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-typeset RcsId="$Id: lcaCourierBinsPrep.sh,v 1.2 2016-08-14 01:43:31 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
 # *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
+#  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
 # This is a Halaal Poly-Existential intended to remain perpetually Halaal.
@@ -21,13 +25,13 @@ __author__="
 
 ####+BEGIN: bx:bsip:bash:seed-spec :types "seedSubjectBinsPrepDist.sh"
 SEED="
-*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh]] |
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh]] | 
 "
 FILE="
-*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/mail/bin/lcaCourierBinsPrep.sh
+*  /This File/ :: /bisos/asc/mail/bin/lcaCourierBinsPrep.sh 
 "
 if [ "${loadFiles}" == "" ] ; then
-    /bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh -l $0 "$@"
+    /bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh -l $0 "$@" 
     exit $?
 fi
 ####+END:
@@ -35,10 +39,8 @@ fi
 
 _CommentBegin_
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/libre/ByStar/InitialTemplates/software/plusOrg/dblock/inserts/topControls.org"
-*      ================
-*  /Controls/:  [[elisp:(org-cycle)][Fold]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(bx:org:run-me)][RunMe]] | [[elisp:(delete-other-windows)][(1)]]  | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
-** /Version Control/:  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]] 
-
+*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
 ####+END:
 _CommentEnd_
 
@@ -100,7 +102,7 @@ _EOF_
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "courier-imap"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: courier-imap [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: courier-imap [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_courier_imap () { distFamilyGenerationHookRun binsPrep_courier_imap; }
 
@@ -111,7 +113,7 @@ binsPrep_courier_imap_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "courier-imap";
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "courier-imap-ssl"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: courier-imap-ssl [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: courier-imap-ssl [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_courier_imap_ssl () { distFamilyGenerationHookRun binsPrep_courier_imap_ssl; }
 
@@ -122,7 +124,7 @@ binsPrep_courier_imap_ssl_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "courier-im
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "fam"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: fam [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: fam [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_fam () { distFamilyGenerationHookRun binsPrep_fam; }
 
@@ -132,7 +134,7 @@ binsPrep_fam_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "fam"; }
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "gamin"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: gamin [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: gamin [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_gamin () { distFamilyGenerationHookRun binsPrep_gamin; }
 

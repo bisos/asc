@@ -1,10 +1,10 @@
-#!/bin/osmtKsh 
-#!/bin/osmtKsh
+#!/bin/bash 
+#!/bin/bash
 
 typeset RcsId="$Id: mmaQmailAddrs.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
 
 if [ "${loadFiles}X" == "X" ] ; then
-    seedSubjectAction.sh -l $0 "$@"
+    /bisos/core/bsip/bin/seedSubjectAction.sh -l $0 "$@"
     exit $?
 fi
 
@@ -13,8 +13,8 @@ G_humanUser=TRUE
 
 . ${opBinBase}/opAcctLib.sh
 . ${opBinBase}/mmaLib.sh
-# ./mmaQmailLib.sh 
-. ${opBinBase}/mmaQmailLib.sh
+# ./mmaQmailLib.sh
+. ${mailBinBase}/mmaQmailLib.sh
 
 # PRE parameters
 

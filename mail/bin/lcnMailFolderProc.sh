@@ -1,5 +1,5 @@
 #!/bin/bash
-#!/bin/osmtKsh
+#!/bin/bash
 
 
 typeset RcsId="$Id: lcnMailFolderProc.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"

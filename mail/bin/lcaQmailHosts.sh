@@ -1,14 +1,18 @@
 #!/bin/bash
 
-IimBriefDescription="NOTYET: Short Description Of The Module"
+IcmBriefDescription="NOTYET: Short Description Of The Module"
 
 ORIGIN="
 * Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
 "
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-typeset RcsId="$Id: lcaQmailHosts.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
 # *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
+#  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
 # This is a Halaal Poly-Existential intended to remain perpetually Halaal.
@@ -19,12 +23,15 @@ __author__="
 "
 
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedSubjectAction.sh"
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedSubjectAction.sh"
 SEED="
-* /[dblock]/--Seed/: /opt/public/osmt/bin/seedSubjectAction.sh
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectAction.sh]] | 
+"
+FILE="
+*  /This File/ :: /bisos/asc/mail/bin/lcaQmailHosts.sh 
 "
 if [ "${loadFiles}" == "" ] ; then
-    /opt/public/osmt/bin/seedSubjectAction.sh -l $0 "$@" 
+    /bisos/core/bsip/bin/seedSubjectAction.sh -l $0 "$@" 
     exit $?
 fi
 ####+END:
@@ -32,10 +39,8 @@ fi
 
 _CommentBegin_
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/libre/ByStar/InitialTemplates/software/plusOrg/dblock/inserts/topControls.org"
-*      ================
-*  /Controls/:  [[elisp:(org-cycle)][Fold]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(bx:org:run-me)][RunMe]] | [[elisp:(delete-other-windows)][(1)]]  | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
-** /Version Control/:  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]] 
-
+*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
 ####+END:
 _CommentEnd_
 
@@ -70,10 +75,10 @@ _CommentEnd_
 
 
 . ${opBinBase}/mmaLib.sh
-. ${opBinBase}/mmaDaemontoolsLib.sh
-. ${opBinBase}/mmaQmailLib.sh
-. ${opBinBase}/mmaDnsLib.sh
-. ${opBinBase}/mmaUcspiLib.sh
+. ${bedrockBinBase}/mmaDaemontoolsLib.sh
+. ${mailBinBase}/mmaQmailLib.sh
+. ${dnsBinBase}/mmaDnsLib.sh
+. ${mailBinBase}/mmaUcspiLib.sh
 
 . ${opBinBase}/lpReRunAs.libSh
 
@@ -122,25 +127,25 @@ function vis_examples {
 EXAMPLES:
 --- INFORMATION ---
 ${G_myName} ${extraInfo} -s all -a summary
-${G_myName} ${extraInfo} -s ${opRunHostName} -a describe
-${G_myName} ${extraInfo} -s ${opRunHostName} -a serverType
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a describe
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a serverType
 ${G_myName} ${extraInfo} -s all -a walkObjects
-${G_myName} ${extraInfo} -s ${opRunHostName} -a walkObjects
-${G_myName} ${extraInfo} -s ${opRunHostName} -a acctAddrsFqmaShow
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a walkObjects
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a acctAddrsFqmaShow
 --- Server Software Profile (update/verify/delete) ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a serviceSoftwareProfile verify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a serviceSoftwareProfile verify
 --- SERVER ACTIONS FULL ---
 === Details with -- -T 7 ===
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullVerify
-${G_myName} ${extraInfo} -s ${opRunHostName} -a configFullUpdate -e "services not included"
-${G_myName} ${extraInfo} -s ${opRunHostName} -a serviceFullUpdate -e "assumes configFullUpdate has been done"
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullUpdate -e "everything"
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullVerify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a configFullUpdate -e "services not included"
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a serviceFullUpdate -e "assumes configFullUpdate has been done"
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullUpdate -e "everything"
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullDelete
 --- SERVICES CONFIGURATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesConfig all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesConfig all
 -- SERVICES ACTIVATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesEnable
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesDisable
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesEnable
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesDisable
 ${G_myName} ${extraInfo} -i servicesEnable  inNetSmtp 
 ${G_myName} ${extraInfo} -i servicesEnable  inNetVerify
 ${G_myName} ${extraInfo} -i servicesEnable  outNetSmtp 
@@ -148,42 +153,42 @@ ${G_myName} ${extraInfo} -i servicesDisable inNetSmtp
 ${G_myName} ${extraInfo} -i servicesDisable inNetVerify
 ${G_myName} ${extraInfo} -i servicesDisable outNetSmtp 
 --- SERVICES MANIPULATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesList   # opRunHostName
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesList   # opRunHostFamily
 ${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesList   # opRunHostFamily
 ${G_myName} ${extraInfo} -s BACS -a servicesList   # BACS
 ${G_myName} ${extraInfo} -s BUE -a servicesList   # BUE
 ${G_myName} ${extraInfo} -s BISP -a servicesList   # BISP
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesShow all
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop all
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop outNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop inNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop inNetVerify
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart all
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart outNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart inNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart inNetVerify
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesRestart all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesShow all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop outNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop inNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop inNetVerify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart outNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart inNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart inNetVerify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesRestart all
 --- QMAIL CONFIGURATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a configure
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a configure
 --- SERVER ACTIONS SPECIFIC ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListDelete
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListCronsUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListCronsDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListCronsUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListCronsDelete
 --- ALL SEREVER ACCOUNTS AND ADDRESSES UPDATES: (Main And VirDoms)
-${G_myName} ${extraInfo} -s ${opRunHostName} -a acctUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a acctAddrsUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a acctUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a acctAddrsUpdate
 --- DNS MANIPULATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a dnsUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a dnsDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a dnsUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a dnsDelete
 --- SUBMIT/RELAY ACCESS CONTROL ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a submitServerAccessShow
-${G_myName} ${extraInfo} -s ${opRunHostName} -a submitServerAllowList
-${G_myName} ${extraInfo} -s ${opRunHostName} -a submitServerDenyList
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a submitServerAccessShow
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a submitServerAllowList
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a submitServerDenyList
 --- OLD TO NEW CONVERSION ---
 ${G_myName} ${extraInfo} -i bootRcDeInstall
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullConvert
-${G_myName} ${extraInfo} -s ${opRunHostName} -a configFilesRenew
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullConvert
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a configFilesRenew
 --- Qmail Raw Report ---
 ${G_myName} ${extraInfo} -i rawReport
 ${G_myName} ${extraInfo} -i rawUserReport
@@ -758,10 +763,10 @@ function do_configFullUpdate {
 
   do_itemActions
 
-  opDo mmaQmailAdmin.sh -i start
-  opDo mmaQmailAdmin.sh -i showProcs
-  opDo mmaQmailAdmin.sh -i injectFirst mohsen@neda.com
-  opDo mmaQmailAdmin.sh -i showQueue
+  opDo lcaQmailAdmin.sh -i start
+  opDo lcaQmailAdmin.sh -i showProcs
+  opDo lcaQmailAdmin.sh -i injectFirst mohsen@neda.com
+  opDo lcaQmailAdmin.sh -i showQueue
 }
 
 
@@ -1410,7 +1415,7 @@ function do_schemaVerify {
 
 # ./mmaBinsPrepLib.sh 
 . ${opBinBase}/mmaBinsPrepLib.sh
-. ${opBinBase}/opInetdLib.sh
+. ${mailBinBase}/opInetdLib.sh
 
 function vis_bootRcDeInstall {
     filesList=" /etc/init.d/mma-qmail /etc/rc2.d/S88mma-qmail "
@@ -1827,7 +1832,7 @@ function itemFamily_BMUE {
 
 ####+BEGIN: bx:dblock:bash:end-of-file :type "basic"
 _CommentBegin_
-*      ######[[elisp:(org-cycle)][Fold]]###### /[dblock] -- End-Of-File Controls/
+*  [[elisp:(org-cycle)][| ]]  Common        ::  /[dblock] -- End-Of-File Controls/ [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 #+STARTUP: showall
 #local variables:
