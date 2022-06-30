@@ -386,7 +386,7 @@ function gcf_qmailGlobals {
 
   # me
   #ivd_qmailGlobalFile_me=${iv_qmailSenderDomainPart}
-  ivd_qmailGlobalFile_me=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailGlobalFile_me=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   # _DONT_ means don't create that file
   if [ "${ivd_qmailGlobalFile_me}X" != "_DONT_X" ] ; then
@@ -405,7 +405,7 @@ function gcf_qmailInject {
 
   # defaulthost
   #ivd_qmailInjectFile_defaulthost=${iv_qmailSenderDomainPart}
-  ivd_qmailInjectFile_defaulthost=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_defaulthost=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_defaulthost}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_defaulthost=${ivd_qmailInjectFile_defaulthost}"
@@ -415,7 +415,7 @@ function gcf_qmailInject {
 
   # defaultdomain
   #ivd_qmailInjectFile_defaultdomain=${iv_qmailSenderDomainPart}
-  ivd_qmailInjectFile_defaultdomain=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_defaultdomain=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_defaultdomain}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_defaultdomain=${ivd_qmailInjectFile_defaultdomain}"
@@ -425,7 +425,7 @@ function gcf_qmailInject {
 
   # idhost
   #ivd_qmailInjectFile_idhost="${iv_qmailMsgIdTag}.${iv_qmailSenderDomainPart}"
-  ivd_qmailInjectFile_idhost=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_idhost=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_idhost}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_idhost=${ivd_qmailInjectFile_idhost}"
@@ -435,7 +435,7 @@ function gcf_qmailInject {
 
   # plusdomain
   #ivd_qmailInjectFile_plusdomain=${iv_qmailSenderDomainPart}
-  ivd_qmailInjectFile_plusdomain=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_plusdomain=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_plusdomain}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_plusdomain=${ivd_qmailInjectFile_plusdomain}"
@@ -452,7 +452,7 @@ function gcf_qmailSend {
 
   # locals
   #ivd_qmailSendFile_locals=${iv_qmailLocalDelivery}
-  ivd_qmailSendFile_locals=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailSendFile_locals=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   # locals
   if [ "${ivd_qmailSendFile_locals}X" != "_DONT_X" ] ; then
@@ -470,7 +470,7 @@ function gcf_qmailRemote {
 
   # helohost
   #ivd_qmailRemoteFile_helohost="${iv_qmailMsgIdTag}.${iv_qmailSenderDomainPart}"
-  ivd_qmailRemoteFile_helohost=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailRemoteFile_helohost=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailRemoteFile_helohost}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailRemoteFile_helohost=${ivd_qmailRemoteFile_helohost}"
@@ -498,7 +498,7 @@ function gcf_qmailSmtpd {
 
   # rcpthosts
   #ivd_qmailSmtpdFile_rcpthosts="${iv_qmailAcceptDestinedTo}"
-  ivd_qmailSmtpdFile_rcpthosts=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailSmtpdFile_rcpthosts=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailSmtpdFile_rcpthosts}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailSmtpdFile_rcpthosts=${ivd_qmailSmtpdFile_rcpthosts}"
@@ -1547,7 +1547,7 @@ function do_netListenerVerify {
 # For now, inNetSmtp and submitServerSmtp should not be combined
 #
 
-nullClient="localInjectAgent outNetSmtp"
+nullClient="localInjectAgent localDeliveryAgent outNetSmtp"
 submitServer="submitServerSmtp outNetSmtp"
 mailRouter="inNetSmtp outNetSmtp"
 fullServer="localInjectAgent outNetSmtp inNetSmtp submitServerSmtp localDeliveryAgent"
@@ -1681,7 +1681,7 @@ function itemFamily_BISP {
   iv_qmailFeatures="fullServer"
 
   #   ########  General Global Parameters #########
-  iv_qmailMyMailDomainName="${opRunHostFamily}.${opRunDomainName}"
+  iv_qmailMyMailDomainName="${opRunHostFamily}.$(hostname)"
 
   #   ########  Message Origination Parameters #########
   iv_qmailMsgIdTag="${opRunHostFamilyTag}"
@@ -1735,7 +1735,7 @@ function itemFamily_BUE {
   iv_qmailFeatures="nullClient"
 
   #   ########  General Global Parameters #########
-  iv_qmailMyMailDomainName="${opRunHostFamily}.${opRunDomainName}"
+  iv_qmailMyMailDomainName="${opRunHostFamily}.$(hostname)"
 
   #   ########  Message Origination Parameters #########
   iv_qmailMsgIdTag="${opRunHostFamilyTag}"
@@ -1788,7 +1788,7 @@ function itemFamily_BMUE {
   iv_qmailFeatures="fullServer"
 
   #   ########  General Global Parameters #########
-  iv_qmailMyMailDomainName="${opRunHostFamily}.${opRunDomainName}"
+  iv_qmailMyMailDomainName="${opRunHostFamily}.$(hostname)"
 
   #   ########  Message Origination Parameters #########
   iv_qmailMsgIdTag="${opRunHostFamilyTag}"

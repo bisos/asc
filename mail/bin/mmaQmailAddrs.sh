@@ -32,6 +32,8 @@ typeset -t maildir=""
 typeset -t forwards=""
 typeset -t progs=""
 
+iv_qmailAcctName=""
+
 setBasicItemsFiles mmaQmailAddrItems
 
 function G_postParamHook {
@@ -76,6 +78,7 @@ ${G_myName} ${extraInfo} -s qmailAcct_alias -a addrSpamUpdate
 --- ACCT/ADDR MANIPULATION ---
 ${G_myName} ${extraInfo} -s qmailAcctsList_mailIntra -a acctAddrsUpdate
 ${G_myName} ${extraInfo} -s qmailAcct_alias -a acctAddrsUpdate
+sudo ./mmaQmailAddrs.sh -T 9 -v -n showRun -p addrItemsFile=/opt/public/osmt/siteControl/nedaPlus/mmaQmailAddrItems.domBasics -s qmailAcctsList_domBasics -a acctAddrsUpdate
 --- ACCOUNT VIRTUAL DOMAIN MANIPULATION ---
 ${G_myName} ${extraInfo} -p domainPart=gnats.mail.intra -p acctName=qvd-0001 -i virDomVerify
 ${G_myName} ${extraInfo} -p domainPart=gnats.mail.intra -p acctName=qvd-0001 -i virDomUpdate
