@@ -1,14 +1,18 @@
 #!/bin/bash
 
-IimBriefDescription="NOTYET: Short Description Of The Module"
+IcmBriefDescription="NOTYET: Short Description Of The Module"
 
 ORIGIN="
 * Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
 "
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-typeset RcsId="$Id: lcaQmailHosts.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
 # *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
+#  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
 # This is a Halaal Poly-Existential intended to remain perpetually Halaal.
@@ -19,12 +23,15 @@ __author__="
 "
 
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedSubjectAction.sh"
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedSubjectAction.sh"
 SEED="
-* /[dblock]/--Seed/: /opt/public/osmt/bin/seedSubjectAction.sh
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectAction.sh]] | 
+"
+FILE="
+*  /This File/ :: /bisos/asc/mail/bin/lcaQmailHosts.sh 
 "
 if [ "${loadFiles}" == "" ] ; then
-    /opt/public/osmt/bin/seedSubjectAction.sh -l $0 "$@" 
+    /bisos/core/bsip/bin/seedSubjectAction.sh -l $0 "$@" 
     exit $?
 fi
 ####+END:
@@ -32,10 +39,8 @@ fi
 
 _CommentBegin_
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/libre/ByStar/InitialTemplates/software/plusOrg/dblock/inserts/topControls.org"
-*      ================
-*  /Controls/:  [[elisp:(org-cycle)][Fold]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(bx:org:run-me)][RunMe]] | [[elisp:(delete-other-windows)][(1)]]  | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
-** /Version Control/:  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]] 
-
+*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
 ####+END:
 _CommentEnd_
 
@@ -70,17 +75,18 @@ _CommentEnd_
 
 
 . ${opBinBase}/mmaLib.sh
-. ${opBinBase}/mmaDaemontoolsLib.sh
-. ${opBinBase}/mmaQmailLib.sh
-. ${opBinBase}/mmaDnsLib.sh
-. ${opBinBase}/mmaUcspiLib.sh
+. ${bedrockBinBase}/mmaDaemontoolsLib.sh
+. ${mailBinBase}/mmaQmailLib.sh
+. ${dnsBinBase}/mmaDnsLib.sh
+. ${mailBinBase}/mmaUcspiLib.sh
 
 . ${opBinBase}/lpReRunAs.libSh
 
 #setBasicItemsFiles mmaQmailNewHostItems
-setBasicItemsFiles mmaQmailHostItems
+#setBasicItemsFiles mmaQmailHostItems
 
-opNetCfg_paramsGet ${opRunClusterName} ${opRunHostName}
+# NOTYET, can be obtained from sysChar report
+# opNetCfg_paramsGet ${opRunClusterName} ${opRunHostName}
 # ${opNetCfg_ipAddr} ${opNetCfg_netmask} ${opNetCfg_networkAddr} ${opNetCfg_defaultRoute}
 
 
@@ -121,25 +127,25 @@ function vis_examples {
 EXAMPLES:
 --- INFORMATION ---
 ${G_myName} ${extraInfo} -s all -a summary
-${G_myName} ${extraInfo} -s ${opRunHostName} -a describe
-${G_myName} ${extraInfo} -s ${opRunHostName} -a serverType
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a describe
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a serverType
 ${G_myName} ${extraInfo} -s all -a walkObjects
-${G_myName} ${extraInfo} -s ${opRunHostName} -a walkObjects
-${G_myName} ${extraInfo} -s ${opRunHostName} -a acctAddrsFqmaShow
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a walkObjects
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a acctAddrsFqmaShow
 --- Server Software Profile (update/verify/delete) ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a serviceSoftwareProfile verify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a serviceSoftwareProfile verify
 --- SERVER ACTIONS FULL ---
 === Details with -- -T 7 ===
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullVerify
-${G_myName} ${extraInfo} -s ${opRunHostName} -a configFullUpdate -e "services not included"
-${G_myName} ${extraInfo} -s ${opRunHostName} -a serviceFullUpdate -e "assumes configFullUpdate has been done"
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullUpdate -e "everything"
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullVerify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a configFullUpdate -e "services not included"
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a serviceFullUpdate -e "assumes configFullUpdate has been done"
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullUpdate -e "everything"
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullDelete
 --- SERVICES CONFIGURATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesConfig all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesConfig all
 -- SERVICES ACTIVATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesEnable
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesDisable
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesEnable
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesDisable
 ${G_myName} ${extraInfo} -i servicesEnable  inNetSmtp 
 ${G_myName} ${extraInfo} -i servicesEnable  inNetVerify
 ${G_myName} ${extraInfo} -i servicesEnable  outNetSmtp 
@@ -147,38 +153,42 @@ ${G_myName} ${extraInfo} -i servicesDisable inNetSmtp
 ${G_myName} ${extraInfo} -i servicesDisable inNetVerify
 ${G_myName} ${extraInfo} -i servicesDisable outNetSmtp 
 --- SERVICES MANIPULATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesList
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesShow all
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop all
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop outNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop inNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStop inNetVerify
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart all
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart outNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart inNetSmtp 
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesStart inNetVerify
-${G_myName} ${extraInfo} -s ${opRunHostName} -a servicesRestart all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesList   # opRunHostFamily
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesList   # opRunHostFamily
+${G_myName} ${extraInfo} -s BACS -a servicesList   # BACS
+${G_myName} ${extraInfo} -s BUE -a servicesList   # BUE
+${G_myName} ${extraInfo} -s BISP -a servicesList   # BISP
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesShow all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop outNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop inNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStop inNetVerify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart all
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart outNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart inNetSmtp 
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesStart inNetVerify
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a servicesRestart all
 --- QMAIL CONFIGURATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a configure
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a configure
 --- SERVER ACTIONS SPECIFIC ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListDelete
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListCronsUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a distListCronsDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListCronsUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a distListCronsDelete
 --- ALL SEREVER ACCOUNTS AND ADDRESSES UPDATES: (Main And VirDoms)
-${G_myName} ${extraInfo} -s ${opRunHostName} -a acctUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a acctAddrsUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a acctUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a acctAddrsUpdate
 --- DNS MANIPULATION ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a dnsUpdate
-${G_myName} ${extraInfo} -s ${opRunHostName} -a dnsDelete
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a dnsUpdate
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a dnsDelete
 --- SUBMIT/RELAY ACCESS CONTROL ---
-${G_myName} ${extraInfo} -s ${opRunHostName} -a submitServerAccessShow
-${G_myName} ${extraInfo} -s ${opRunHostName} -a submitServerAllowList
-${G_myName} ${extraInfo} -s ${opRunHostName} -a submitServerDenyList
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a submitServerAccessShow
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a submitServerAllowList
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a submitServerDenyList
 --- OLD TO NEW CONVERSION ---
 ${G_myName} ${extraInfo} -i bootRcDeInstall
-${G_myName} ${extraInfo} -s ${opRunHostName} -a fullConvert
-${G_myName} ${extraInfo} -s ${opRunHostName} -a configFilesRenew
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a fullConvert
+${G_myName} ${extraInfo} -s ${opRunHostFamily} -a configFilesRenew
 --- Qmail Raw Report ---
 ${G_myName} ${extraInfo} -i rawReport
 ${G_myName} ${extraInfo} -i rawUserReport
@@ -376,7 +386,7 @@ function gcf_qmailGlobals {
 
   # me
   #ivd_qmailGlobalFile_me=${iv_qmailSenderDomainPart}
-  ivd_qmailGlobalFile_me=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailGlobalFile_me=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   # _DONT_ means don't create that file
   if [ "${ivd_qmailGlobalFile_me}X" != "_DONT_X" ] ; then
@@ -395,7 +405,7 @@ function gcf_qmailInject {
 
   # defaulthost
   #ivd_qmailInjectFile_defaulthost=${iv_qmailSenderDomainPart}
-  ivd_qmailInjectFile_defaulthost=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_defaulthost=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_defaulthost}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_defaulthost=${ivd_qmailInjectFile_defaulthost}"
@@ -405,7 +415,7 @@ function gcf_qmailInject {
 
   # defaultdomain
   #ivd_qmailInjectFile_defaultdomain=${iv_qmailSenderDomainPart}
-  ivd_qmailInjectFile_defaultdomain=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_defaultdomain=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_defaultdomain}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_defaultdomain=${ivd_qmailInjectFile_defaultdomain}"
@@ -415,7 +425,7 @@ function gcf_qmailInject {
 
   # idhost
   #ivd_qmailInjectFile_idhost="${iv_qmailMsgIdTag}.${iv_qmailSenderDomainPart}"
-  ivd_qmailInjectFile_idhost=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_idhost=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_idhost}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_idhost=${ivd_qmailInjectFile_idhost}"
@@ -425,7 +435,7 @@ function gcf_qmailInject {
 
   # plusdomain
   #ivd_qmailInjectFile_plusdomain=${iv_qmailSenderDomainPart}
-  ivd_qmailInjectFile_plusdomain=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailInjectFile_plusdomain=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailInjectFile_plusdomain}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailInjectFile_plusdomain=${ivd_qmailInjectFile_plusdomain}"
@@ -442,7 +452,7 @@ function gcf_qmailSend {
 
   # locals
   #ivd_qmailSendFile_locals=${iv_qmailLocalDelivery}
-  ivd_qmailSendFile_locals=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailSendFile_locals=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   # locals
   if [ "${ivd_qmailSendFile_locals}X" != "_DONT_X" ] ; then
@@ -460,7 +470,7 @@ function gcf_qmailRemote {
 
   # helohost
   #ivd_qmailRemoteFile_helohost="${iv_qmailMsgIdTag}.${iv_qmailSenderDomainPart}"
-  ivd_qmailRemoteFile_helohost=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailRemoteFile_helohost=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailRemoteFile_helohost}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailRemoteFile_helohost=${ivd_qmailRemoteFile_helohost}"
@@ -488,7 +498,7 @@ function gcf_qmailSmtpd {
 
   # rcpthosts
   #ivd_qmailSmtpdFile_rcpthosts="${iv_qmailAcceptDestinedTo}"
-  ivd_qmailSmtpdFile_rcpthosts=$( echo ${opRunHostFamilyTag}.$( STR_toLower ${iv_qmailSenderDomainPart} ))
+  ivd_qmailSmtpdFile_rcpthosts=$( echo $( STR_toLower ${iv_qmailSenderDomainPart} ))
 
   if [ "${ivd_qmailSmtpdFile_rcpthosts}X" != "_DONT_X" ] ; then
     TM_trace 7 "ivd_qmailSmtpdFile_rcpthosts=${ivd_qmailSmtpdFile_rcpthosts}"
@@ -658,12 +668,12 @@ function do_fullVerify {
     itemPost_qmailHost
   fi
 
-  #mmaQmailAdmin.sh -i fullReport
-  opDo mmaQmailAdmin.sh -i showProcs
+  #lcaQmailAdmin.sh -i fullReport
+  opDo lcaQmailAdmin.sh -i showProcs
 
-  opDo mmaQmailAdmin.sh -i injectFirst mohsen@neda.com
+  opDo lcaQmailAdmin.sh -i injectFirst mohsen@neda.com
 
-  opDo mmaQmailAdmin.sh -i showQueue
+  opDo lcaQmailAdmin.sh -i showQueue
 }
 
 function do_fullUpdate {
@@ -708,7 +718,7 @@ function do_configFullUpdate {
   #set -x
 
   # NOTYET, verify that the daemons have been stopped.
-  opDo mmaQmailAdmin.sh -i stop
+  opDo lcaQmailAdmin.sh -i stop
 
   FN_dirDefunctMake ${qmailControlBaseDir} ${qmailVarDir}/notused.control.${dateTag}
   FN_dirCreatePathIfNotThere ${qmailControlBaseDir}
@@ -753,10 +763,10 @@ function do_configFullUpdate {
 
   do_itemActions
 
-  opDo mmaQmailAdmin.sh -i start
-  opDo mmaQmailAdmin.sh -i showProcs
-  opDo mmaQmailAdmin.sh -i injectFirst mohsen@neda.com
-  opDo mmaQmailAdmin.sh -i showQueue
+  opDo lcaQmailAdmin.sh -i start
+  opDo lcaQmailAdmin.sh -i showProcs
+  opDo lcaQmailAdmin.sh -i injectFirst mohsen@neda.com
+  opDo lcaQmailAdmin.sh -i showQueue
 }
 
 
@@ -953,6 +963,8 @@ function do_servicesList {
 }
 
 function subjectIsRunHost {
+    # NOTYET 2022
+    return 0
   if [[ "${subject}_" != "${opRunHostName}_" ]] ; then
     EH_problem "Remote not supported subject=${subject} opRunHostName=${opRunHostName}"
     return 1
@@ -1403,7 +1415,7 @@ function do_schemaVerify {
 
 # ./mmaBinsPrepLib.sh 
 . ${opBinBase}/mmaBinsPrepLib.sh
-. ${opBinBase}/opInetdLib.sh
+. ${mailBinBase}/opInetdLib.sh
 
 function vis_bootRcDeInstall {
     filesList=" /etc/init.d/mma-qmail /etc/rc2.d/S88mma-qmail "
@@ -1420,7 +1432,7 @@ function do_fullConvert {
 
   # NOTYET, Stop qmail Services
   mmaQmailNewHosts.sh -v -n showRun -s beverly -a servicesStop all
-  mmaQmailAdmin.sh -i killProcs
+  lcaQmailAdmin.sh -i killProcs
 
   vis_bootRcDeInstall
 
@@ -1526,10 +1538,301 @@ function do_netListenerVerify {
   opDoComplain opInetdLineVerify "smtp" "${mmaQmailSmtpdLine}"
 }
 
+#
+#   qmailSetup can be any combination of:
+#         localInjectAgent  submitServerSmtp inNetSmtp localDeliveryAgent outNetSmtp
+#
+
+# 
+# For now, inNetSmtp and submitServerSmtp should not be combined
+#
+
+nullClient="localInjectAgent localDeliveryAgent outNetSmtp"
+submitServer="submitServerSmtp outNetSmtp"
+mailRouter="inNetSmtp outNetSmtp"
+fullServer="localInjectAgent outNetSmtp inNetSmtp submitServerSmtp localDeliveryAgent"
+ 
+
+#
+# submitServerSmtp  Access Control Information
+#
+
+function submitServerPub1Access {
+  iv_qmailSubmitServerAllowList=("127.0.0.1" "127.0.0.0" "192.168.0." "192.168.5." "198.62.92.")
+  iv_qmailSubmitServerdenyList=("")
+}
+
+function submitServerIntraAccess {
+  iv_qmailSubmitServerAllowList=("127.0.0.1" "127.0.0.0" "192.168.0." "192.168.5.")
+  iv_qmailSubmitServerdenyList=("")
+}
+
+
+
+function itemPre_qmailHost {
+  iv_qmailHostName=""
+
+  iv_qmailSetup=""   # submitServerSmtp fullServer
+  iv_qmailFeatures=""
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName=""
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag=""
+  iv_qmailMsgIdDomain=""
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=""
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes="_BLANK_"
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=""
+
+  #   ########  Non-Delivery Parameters #########
+  #iv_qmailNonDeliveryFromAddr=""	
+  #iv_qmailNonDeliveryDoubleBounceToAddr=""
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=""	
+
+  # Reference to domain objects 
+  iv_qmailHost_mainDomRef=""
+  iv_qmailHost_VirDomsRefList=("")
+  iv_qmailHost_distListsRefList=("")
+
+  iv_itemActions=("")
+}
+
+function itemPost_qmailHost {
+
+  if [ "${iv_qmailHostName}_" == "_" ] ; then
+    iv_qmailHostName=""	
+  fi
+
+  if [ "${iv_qmailSetup}_" == "_" ] ; then
+    iv_qmailSetup="submitClientSmtp"   # submitServerSmtp fullServer
+  fi
+
+  if [ "${iv_qmailFeatures}_" == "_" ] ; then
+    iv_qmailFeatures="submitClientSmtp"	
+  fi
+
+  if [ "${iv_qmailDefaultDeliveryFormat}_" == "_" ] ; then
+    # One of "./Mailbox" or "./Maildir/"
+    iv_qmailDefaultDeliveryFormat="./Maildir/"	
+  fi
+
+  #   ########  General Global Parameters #########
+  if [ "${iv_qmailMyMailDomainName}_" == "_" ] ; then
+    iv_qmailMyMailDomainName="unknown.fix"	
+  fi
+
+  #   ########  Message Origination Parameters #########
+  if [ "${iv_qmailMsgIdTag}_" == "_" ] ; then
+    iv_qmailMsgIdTag="submit1"	
+  fi
+  
+  if [ "${iv_qmailMsgIdDomain}_" == "_" ] ; then
+    iv_qmailMsgIdDomain="unknown.fix"	
+  fi
+  
+  if [ "${iv_qmailSenderLocalPart}_" == "_" ] ; then
+    iv_qmailSenderLocalPart=""  # username goes here	
+  fi
+  
+  if [ "${iv_qmailSenderDomainPart}_" == "_" ] ; then
+    iv_qmailSenderDomainPart="unknown.fix"	
+  fi
+  
+  #   ########  Mail Routing Parameters #########
+  if [ "${iv_qmailSmtpRoutes}_" == "_BLANK__" ] ; then
+    iv_qmailSmtpRoutes=":april"
+  fi
+  
+  #   ########  Message Acceptance Parameters #########
+  if [ "${iv_qmailAcceptDestinedTo}_" == "_" ] ; then
+    iv_qmailAcceptDestinedTo="unknown.fix"	
+  fi
+  
+  #   ########  Local Delivery Parameters #########
+  if [ "${iv_qmailLocalDelivery}_" == "_" ] ; then
+    iv_qmailLocalDelivery="unknown.fix"		
+  fi
+  
+  #   ########  Non-Delivery Parameters #########
+  #iv_qmailNonDeliveryFromAddr="mailer-daemon@unknown.fix"	
+  #iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@unknown.fix"		
+}
+
+
+#############################
+# HOST: FAMILY: BISP
+#############################
+
+function itemFamily_BISP {
+  itemPre_qmailHost
+  iv_qmailHost="${opRunHostName}"
+
+  #   ########  Configuration Mode #########
+  iv_qmailSetup="${fullServer}"
+  iv_qmailFeatures="fullServer"
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName="${opRunHostFamily}.$(hostname)"
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag="${opRunHostFamilyTag}"
+  iv_qmailMsgIdDomain=${iv_qmailMyMailDomainName}
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=${iv_qmailMyMailDomainName}
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes=""
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=${iv_qmailMyMailDomainName}
+
+  submitServerPub1Access
+
+  #   ########  Non-Delivery Parameters #########
+  iv_qmailNonDeliveryFromAddr="mailer-daemon@${iv_qmailMyMailDomainName}"
+  iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@${iv_qmailMyMailDomainName}"
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=${iv_qmailMyMailDomainName}
+
+  iv_qmailHost_LocalDelivery=${iv_qmailMyMailDomainName}	
+
+  iv_qmailDefaultDeliveryFormat="./Maildir/"
+  
+  # Reference to Domain Objects"
+  # NOTYET, NOT APPLICABLE
+  iv_qmailHost_mainDomRef="qmailDomMain_bynameNet"	
+  iv_qmailHost_VirDomsRefList=("")
+
+  #   ########  Mailing Lists Served #########
+  #iv_qmailHost_distListsRefList=("")
+
+  itemPost_qmailHost
+}
+
+
+
+#############################
+# HOST: FAMILY: BUE
+#############################
+
+function itemFamily_BUE {
+  itemPre_qmailHost
+  iv_qmailHost="${opRunHostName}"
+
+  #   ########  Configuration Mode #########
+  iv_qmailSetup="${nullClient}"
+  iv_qmailFeatures="nullClient"
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName="${opRunHostFamily}.$(hostname)"
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag="${opRunHostFamilyTag}"
+  iv_qmailMsgIdDomain=${iv_qmailMyMailDomainName}
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=${iv_qmailMyMailDomainName}
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes=""
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=${iv_qmailMyMailDomainName}
+
+  submitServerPub1Access
+
+  #   ########  Non-Delivery Parameters #########
+  iv_qmailNonDeliveryFromAddr="mailer-daemon@${iv_qmailMyMailDomainName}"
+  iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@${iv_qmailMyMailDomainName}"
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=${iv_qmailMyMailDomainName}
+
+  iv_qmailHost_LocalDelivery=${iv_qmailMyMailDomainName}	
+
+  iv_qmailDefaultDeliveryFormat="./Maildir/"
+  
+  # Reference to Domain Objects"
+  # NOTYET, NOT APPLICABLE
+  iv_qmailHost_mainDomRef="qmailDomMain_bynameNet"	
+  iv_qmailHost_VirDomsRefList=("")
+
+  #   ########  Mailing Lists Served #########
+  #iv_qmailHost_distListsRefList=("")
+
+  itemPost_qmailHost
+}
+
+
+#############################
+# HOST: FAMILY: BMUE
+#############################
+
+function itemFamily_BMUE {
+  itemPre_qmailHost
+  iv_qmailHost="${opRunHostName}"
+
+  #   ########  Configuration Mode #########
+  iv_qmailSetup="${fullServer}"
+  iv_qmailFeatures="fullServer"
+
+  #   ########  General Global Parameters #########
+  iv_qmailMyMailDomainName="${opRunHostFamily}.$(hostname)"
+
+  #   ########  Message Origination Parameters #########
+  iv_qmailMsgIdTag="${opRunHostFamilyTag}"
+  iv_qmailMsgIdDomain=${iv_qmailMyMailDomainName}
+
+  iv_qmailSenderLocalPart=""  # username goes here
+  iv_qmailSenderDomainPart=${iv_qmailMyMailDomainName}
+
+  #   ########  Mail Routing Parameters #########
+  iv_qmailSmtpRoutes=""
+
+  #   ########  Message Acceptance Parameters #########
+  iv_qmailAcceptDestinedTo=${iv_qmailMyMailDomainName}
+
+  submitServerPub1Access
+
+  #   ########  Non-Delivery Parameters #########
+  iv_qmailNonDeliveryFromAddr="mailer-daemon@${iv_qmailMyMailDomainName}"
+  iv_qmailNonDeliveryDoubleBounceToAddr="bounce2@${iv_qmailMyMailDomainName}"
+
+  #   ########  Local Delivery Parameters #########
+  iv_qmailLocalDelivery=${iv_qmailMyMailDomainName}
+
+  iv_qmailHost_LocalDelivery=${iv_qmailMyMailDomainName}	
+
+  iv_qmailDefaultDeliveryFormat="./Maildir/"
+  
+  # Reference to Domain Objects"
+  # NOTYET, NOT APPLICABLE
+  iv_qmailHost_mainDomRef="qmailDomMain_bynameNet"	
+  iv_qmailHost_VirDomsRefList=("")
+
+  #   ########  Mailing Lists Served #########
+  #iv_qmailHost_distListsRefList=("")
+
+  itemPost_qmailHost
+}
+
+
+
 
 ####+BEGIN: bx:dblock:bash:end-of-file :type "basic"
 _CommentBegin_
-*      ######[[elisp:(org-cycle)][Fold]]###### /[dblock] -- End-Of-File Controls/
+*  [[elisp:(org-cycle)][| ]]  Common        ::  /[dblock] -- End-Of-File Controls/ [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 #+STARTUP: showall
 #local variables:

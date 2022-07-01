@@ -1,21 +1,28 @@
 #!/bin/bash
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-# {{{ DBLOCK-top-of-file
-typeset RcsId="$Id: lcaQmailDebBinsPrep.sh,v 1.3 2020-02-03 01:28:40 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
+# *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
+#  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
-# This is a Halaal Poly-Existential intended to remain perpetually Halaal. 
-# }}} DBLOCK-top-of-file
+# This is a Halaal Poly-Existential intended to remain perpetually Halaal.
 ####+END:
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedSubjectBinsPrepDist.sh"
-# {{{ DBLOCK-seed-spec
-if [ "${loadFiles}X" == "X" ] ; then
-    /opt/public/osmt/bin/seedSubjectBinsPrepDist.sh -l $0 "$@" 
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedSubjectBinsPrepDist.sh"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh]] | 
+"
+FILE="
+*  /This File/ :: /bisos/asc/mail/bin/lcaQmailDebBinsPrep.sh 
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh -l $0 "$@" 
     exit $?
 fi
-# }}} DBLOCK-seed-spec
 ####+END:
 
 # {{{ NOTES/Status:
@@ -328,10 +335,12 @@ vis_qmailFullInstall() {
 
 
 ####+BEGIN: bx:dblock:bash:end-of-file :type "basic"
-# {{{ DBLOCK-end-of-file
+_CommentBegin_
+*  [[elisp:(org-cycle)][| ]]  Common        ::  /[dblock] -- End-Of-File Controls/ [[elisp:(org-cycle)][| ]]
+_CommentEnd_
+#+STARTUP: showall
 #local variables:
 #major-mode: sh-mode
 #fill-column: 90
 # end:
-# }}} DBLOCK-end-of-file
 ####+END:

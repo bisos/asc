@@ -1,10 +1,10 @@
-#!/bin/osmtKsh 
-#!/bin/osmtKsh
+#!/bin/bash 
+#!/bin/bash
 
 typeset RcsId="$Id: mmaQmailAddrs.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
 
 if [ "${loadFiles}X" == "X" ] ; then
-    seedSubjectAction.sh -l $0 "$@"
+    /bisos/core/bsip/bin/seedSubjectAction.sh -l $0 "$@"
     exit $?
 fi
 
@@ -13,8 +13,8 @@ G_humanUser=TRUE
 
 . ${opBinBase}/opAcctLib.sh
 . ${opBinBase}/mmaLib.sh
-# ./mmaQmailLib.sh 
-. ${opBinBase}/mmaQmailLib.sh
+# ./mmaQmailLib.sh
+. ${mailBinBase}/mmaQmailLib.sh
 
 # PRE parameters
 
@@ -31,6 +31,8 @@ typeset -t mbox=""
 typeset -t maildir=""
 typeset -t forwards=""
 typeset -t progs=""
+
+iv_qmailAcctName=""
 
 setBasicItemsFiles mmaQmailAddrItems
 
@@ -76,6 +78,7 @@ ${G_myName} ${extraInfo} -s qmailAcct_alias -a addrSpamUpdate
 --- ACCT/ADDR MANIPULATION ---
 ${G_myName} ${extraInfo} -s qmailAcctsList_mailIntra -a acctAddrsUpdate
 ${G_myName} ${extraInfo} -s qmailAcct_alias -a acctAddrsUpdate
+sudo ./mmaQmailAddrs.sh -T 9 -v -n showRun -p addrItemsFile=/opt/public/osmt/siteControl/nedaPlus/mmaQmailAddrItems.domBasics -s qmailAcctsList_domBasics -a acctAddrsUpdate
 --- ACCOUNT VIRTUAL DOMAIN MANIPULATION ---
 ${G_myName} ${extraInfo} -p domainPart=gnats.mail.intra -p acctName=qvd-0001 -i virDomVerify
 ${G_myName} ${extraInfo} -p domainPart=gnats.mail.intra -p acctName=qvd-0001 -i virDomUpdate

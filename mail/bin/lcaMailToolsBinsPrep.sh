@@ -1,14 +1,18 @@
 #!/bin/bash
 
-IimBriefDescription="MODULE BinsPrep based on apt based seedSubjectBinsPrepDist.sh"
+IcmBriefDescription="MODULE BinsPrep based on apt based seedSubjectBinsPrepDist.sh"
 
 ORIGIN="
 * Revision And Libre-Halaal CopyLeft -- Part of [[http://www.by-star.net][ByStar]] -- Best Used With [[http://www.by-star.net/PLPC/180004][Blee]] or [[http://www.gnu.org/software/emacs/][Emacs]]
 "
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-typeset RcsId="$Id: lcaMailToolsBinsPrep.sh,v 1.3 2017-03-14 23:36:31 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
 # *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
+#  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
 # This is a Halaal Poly-Existential intended to remain perpetually Halaal.
@@ -19,15 +23,15 @@ __author__="
 "
 
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedSubjectBinsPrepDist.sh"
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedSubjectBinsPrepDist.sh"
 SEED="
-*  /[dblock]/ /Seed/ :: [[file:/opt/public/osmt/bin/seedSubjectBinsPrepDist.sh]] | 
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh]] | 
 "
 FILE="
-*  /This File/ :: /opt/public/osmt/bin/lcaMailToolsBinsPrep.sh 
+*  /This File/ :: /bisos/asc/mail/bin/lcaMailToolsBinsPrep.sh 
 "
 if [ "${loadFiles}" == "" ] ; then
-    /opt/public/osmt/bin/seedSubjectBinsPrepDist.sh -l $0 "$@" 
+    /bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh -l $0 "$@" 
     exit $?
 fi
 ####+END:
@@ -35,10 +39,8 @@ fi
 
 _CommentBegin_
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/libre/ByStar/InitialTemplates/software/plusOrg/dblock/inserts/topControls.org"
-*      ================
 *  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
-** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]] 
-
+** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
 ####+END:
 _CommentEnd_
 
@@ -114,7 +116,7 @@ binsPrep_swaks_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "swaks"; }
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "offlineimap"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: offlineimap [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: offlineimap [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_offlineimap () { distFamilyGenerationHookRun binsPrep_offlineimap; }
 
@@ -125,7 +127,7 @@ binsPrep_offlineimap_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "offlineimap"; }
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "notmuch"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: notmuch [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: notmuch [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_notmuch () { distFamilyGenerationHookRun binsPrep_notmuch; }
 
@@ -146,7 +148,7 @@ binsPrep_alot_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "alot"; }
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "balsa"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: balsa [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: balsa [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_balsa () { distFamilyGenerationHookRun binsPrep_balsa; }
 
@@ -156,7 +158,7 @@ binsPrep_balsa_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "balsa"; }
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "evolution"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: evolution [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: evolution [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_evolution () { distFamilyGenerationHookRun binsPrep_evolution; }
 
@@ -166,7 +168,7 @@ binsPrep_evolution_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "evolution"; }
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "claws-mail"
 _CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  Apt-Pkg       :: claws-mail [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: claws-mail [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 item_claws_mail () { distFamilyGenerationHookRun binsPrep_claws_mail; }
 

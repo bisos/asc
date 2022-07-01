@@ -1,6 +1,6 @@
 #!/bin/bash
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
 # {{{ DBLOCK-top-of-file
 typeset RcsId="$Id: bystarMailing.libSh,v 1.2 2018-03-06 06:26:15 lsipusr Exp $"
 #  This is part of ByStar Libre Services. http://www.by-star.net

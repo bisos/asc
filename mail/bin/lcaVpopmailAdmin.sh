@@ -1,5 +1,5 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh
+#!/bin/bash
+#!/bin/bash
 
 typeset RcsId="$Id: lcaVpopmailAdmin.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
 
@@ -9,7 +9,7 @@ if [ "${loadFiles}X" == "X" ] ; then
 fi
 
 . ${opBinBase}/opAcctLib.sh
-. ${opBinBase}/bystarLib.sh
+. ${opBinBase}/bxo_lib.sh
 . ${opBinBase}/opDoAtAsLib.sh
 . ${opBinBase}/lcnFileParams.libSh
 
@@ -17,8 +17,8 @@ fi
 
 . ${opBinBase}/bystarHook.libSh
 
-# ./bystarLib.sh
-. ${opBinBase}/bystarLib.sh
+# ./bxo_lib.sh
+. ${opBinBase}/bxo_lib.sh
 . ${opBinBase}/bynameLib.sh
 . ${opBinBase}/mmaLib.sh
 . ${opBinBase}/mmaQmailLib.sh

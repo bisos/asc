@@ -1,24 +1,28 @@
 #!/bin/bash
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
-# {{{ DBLOCK-top-of-file
-
-typeset RcsId="$Id: seedMailingProc.sh,v 1.2 2018-03-06 06:26:16 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
+# *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
 #  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
-# This is a Halaal Poly-Existential intended to remain perpetually Halaal. 
-
-# }}} DBLOCK-top-of-file
+# This is a Halaal Poly-Existential intended to remain perpetually Halaal.
 ####+END:
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedActions.bash"
-# {{{ DBLOCK-seed-spec
-if [ "${loadFiles}X" == "X" ] ; then
-    /opt/public/osmt/bin/seedActions.bash -l $0 "$@" 
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] | 
+"
+FILE="
+*  /This File/ :: /bisos/asc/mail/bin/seedMailingProc.sh 
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@" 
     exit $?
 fi
-# }}} DBLOCK-seed-spec
 ####+END:
 
 # {{{ Describe/Help/Info
@@ -52,7 +56,7 @@ _EOF_
 # {{{ Prefaces
 
 . ${opBinBase}/opAcctLib.sh
-. ${opBinBase}/bystarLib.sh
+. ${opBinBase}/bxo_lib.sh
 . ${opBinBase}/opDoAtAsLib.sh
 # ./lcnFileParams.libSh
 . ${opBinBase}/lcnFileParams.libSh
@@ -63,8 +67,8 @@ _EOF_
 
 . ${opBinBase}/bystarHook.libSh
 
-# ./bystarLib.sh
-. ${opBinBase}/bystarLib.sh
+# ./bxo_lib.sh
+. ${opBinBase}/bxo_lib.sh
 # ./bystarHereAcct.libSh
 . ${opBinBase}/bystarHereAcct.libSh
 
@@ -78,7 +82,7 @@ _EOF_
 # /opt/public/osmt/bin/bystarInfoBase.libSh 
 . ${opBinBase}/bystarInfoBase.libSh
 
-. ${opBinBase}/lpCurrents.libSh
+. ${opBinBase}/bisosCurrents_lib.sh
 
 # PRE parameters
 
@@ -1149,6 +1153,7 @@ _EOF_
 To: 
 From: Mohsen BANAN <desk@mohsen.1.banan.byname.net>
 ####+BEGIN: bx:dblock:global:file-insert-process :file "/dev/null" :load "./dblockProcess.el" :exec "bx:dblock:subject-process"
+
 ####+END:
 X-Envelope: envelop@mohsen.1.banan.byname.net
 X-MailingName: ${fv_mailingName}
@@ -4186,7 +4191,7 @@ _EOF_
 
 
 ####+BEGIN: bx:dblock:org:parameters  :types "agenda"
-#+STARTUP: showall
+#+STARTUP: lognotestate
 #+SEQ_TODO: TODO WAITING DELEGATED | DONE DEFERRED CANCELLED
 #+TAGS: @desk(d) @home(h) @work(w) @withInternet(i) @road(r) call(c) errand(e)
 ####+END:
@@ -4194,11 +4199,13 @@ _EOF_
 #+CATEGORY: WebSites
 
 ####+BEGIN: bx:dblock:bash:end-of-file :type "basic"
-# {{{ DBLOCK-end-of-file
+_CommentBegin_
+*  [[elisp:(org-cycle)][| ]]  Common        ::  /[dblock] -- End-Of-File Controls/ [[elisp:(org-cycle)][| ]]
+_CommentEnd_
+#+STARTUP: showall
 #local variables:
 #major-mode: sh-mode
 #fill-column: 90
 # end:
-# }}} DBLOCK-end-of-file
 ####+END:
 

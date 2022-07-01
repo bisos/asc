@@ -1,5 +1,5 @@
-#!/bin/osmtKsh 
-#!/bin/osmtKsh
+#!/bin/bash 
+#!/bin/bash
 
 typeset RcsId="$Id: bysmbNspMail.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
 

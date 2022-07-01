@@ -6,6 +6,8 @@ qmailCmdExitSuccessFinish=99
 qmailCmdExitFailHard=100
 qmailCmdExitFailSoft=111
 
+mmaQmailMsg_bccAddrList="_nil_"
+
 if [ -d "/var/qmail" ] ; then
     qmailVarDir=/var/qmail
 else
@@ -19,19 +21,17 @@ else
 fi
 
 
-qmailVirDomFile=${qmailVarDir}/control/virtualdomains
-#qmailVirDomFile=/etc/qmail/virtualdomains
+# qmailVirDomFile=${qmailVarDir}/control/virtualdomains
+qmailVirDomFile=/etc/qmail/virtualdomains  # MB-2022
 
-
-qmailUsersBaseDir=${qmailVarDir}/users
-#qmailUsersBaseDir=/etc/qmail/users
+# qmailUsersBaseDir=${qmailVarDir}/users
+qmailUsersBaseDir=/etc/qmail/users   # MB-2022
 
 if [ -d "${qmailVarDir}/bin" ] ; then
     qmailBinBaseDir=${qmailVarDir}/bin
 else
     qmailBinBaseDir="/usr/sbin"
 fi
-
 
 qmailInject=${qmailBinBaseDir}/qmail-inject   # Backwards compatibility
 qmailInjectProgram=${qmailBinBaseDir}/qmail-inject

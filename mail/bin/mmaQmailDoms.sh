@@ -1,5 +1,5 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh 
+#!/bin/bash
+#!/bin/bash 
 
 typeset RcsId="$Id: mmaQmailDoms.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
 
@@ -11,8 +11,8 @@ fi
 G_humanUser=TRUE
 
 . ${opBinBase}/mmaLib.sh
-. ${opBinBase}/mmaQmailLib.sh
-. ${opBinBase}/mmaDnsLib.sh
+. ${mailBinBase}/mmaQmailLib.sh
+. ${dnsBinBase}/mmaDnsLib.sh
 
 # ../siteControl/nedaPlus/mmaQmailDomItems.site 
 #ItemsFiles=${opSiteControlBase}/${opRunSiteName}/mmaQmailDomItems.site

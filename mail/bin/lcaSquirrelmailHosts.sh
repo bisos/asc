@@ -4,15 +4,19 @@ echo "Obsoleted By lcaSquirrelmailSvcUse.sh and lcaSquirrelmailManage.sh"
 
 exit
 
-IimBriefDescription="NOTYET: Short Description Of The Module"
+IcmBriefDescription="NOTYET: Short Description Of The Module"
 
 ORIGIN="
 * Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
 "
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-typeset RcsId="$Id: lcaSquirrelmailHosts.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
+####+BEGIN: bx:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
 # *CopyLeft*
+__copying__="
+* Libre-Halaal Software"
+#  This is part of ByStar Libre Services. http://www.by-star.net
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
 # This is a Halaal Poly-Existential intended to remain perpetually Halaal.
@@ -23,12 +27,15 @@ __author__="
 "
 
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedSubjectHosts.sh"
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedSubjectHosts.sh"
 SEED="
-* /[dblock]/--Seed/: /opt/public/osmt/bin/seedSubjectHosts.sh
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectHosts.sh]] | 
+"
+FILE="
+*  /This File/ :: /bisos/asc/mail/bin/lcaSquirrelmailHosts.sh 
 "
 if [ "${loadFiles}" == "" ] ; then
-    /opt/public/osmt/bin/seedSubjectHosts.sh -l $0 "$@" 
+    /bisos/core/bsip/bin/seedSubjectHosts.sh -l $0 "$@" 
     exit $?
 fi
 ####+END:
@@ -36,10 +43,8 @@ fi
 
 _CommentBegin_
 ####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/libre/ByStar/InitialTemplates/software/plusOrg/dblock/inserts/topControls.org"
-*      ================
-*  /Controls/:  [[elisp:(org-cycle)][Fold]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(bx:org:run-me)][RunMe]] | [[elisp:(delete-other-windows)][(1)]]  | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
-** /Version Control/:  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]] 
-
+*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
 ####+END:
 _CommentEnd_
 
@@ -75,7 +80,7 @@ _CommentEnd_
 # ./mmaLayer3Lib.sh 
 . ${opBinBase}/mmaLayer3Lib.sh
 
-. ${opBinBase}/lpCurrents.libSh
+. ${opBinBase}/bisosCurrents_lib.sh
 
 
 # PRE parameters
@@ -346,7 +351,7 @@ function itemFamily_BISP {
 
 ####+BEGIN: bx:dblock:bash:end-of-file :type "basic"
 _CommentBegin_
-*      ================ /[dblock] -- End-Of-File Controls/
+*  [[elisp:(org-cycle)][| ]]  Common        ::  /[dblock] -- End-Of-File Controls/ [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 #+STARTUP: showall
 #local variables:

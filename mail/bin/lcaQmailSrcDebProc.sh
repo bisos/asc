@@ -1,22 +1,27 @@
 #!/bin/bash
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" :partof "generic" :copyleft "none"
-# {{{ DBLOCK-top-of-file
-typeset RcsId="$Id: lcaQmailSrcDebProc.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
-# }}} DBLOCK-top-of-file
+####+BEGIN: bx:bash:top-of-file :vc "cvs" :partof "generic" :copyleft "none"
+### Args: :control "enabled|disabled|hide|release|fVar"  :vc "cvs|git|nil" :partof "bystar|nil" :copyleft "halaal+minimal|halaal+brief|nil"
+typeset RcsId="$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $"
+# *CopyLeft*
+
 ####+END:
 
 # {{{ Authors:
 # Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 # }}} 
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedActions.bash"
-# {{{ DBLOCK-seed-spec
-if [ "${loadFiles}X" == "X" ] ; then
-    /opt/public/osmt/bin/seedActions.bash -l $0 "$@" 
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] | 
+"
+FILE="
+*  /This File/ :: /bisos/asc/mail/bin/lcaQmailSrcDebProc.sh 
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@" 
     exit $?
 fi
-# }}} DBLOCK-seed-spec
 ####+END:
 
 # {{{ Help/Info
@@ -213,10 +218,12 @@ srcObtainAndInstall_commonDebian () {
 
 
 ####+BEGIN: bx:dblock:bash:end-of-file :type "basic"
-# {{{ DBLOCK-end-of-file
+_CommentBegin_
+*  [[elisp:(org-cycle)][| ]]  Common        ::  /[dblock] -- End-Of-File Controls/ [[elisp:(org-cycle)][| ]]
+_CommentEnd_
+#+STARTUP: showall
 #local variables:
 #major-mode: sh-mode
 #fill-column: 90
 # end:
-# }}} DBLOCK-end-of-file
 ####+END:
