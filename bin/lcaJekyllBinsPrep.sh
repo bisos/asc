@@ -24,7 +24,7 @@ SEED="
 *  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh]] |
 "
 FILE="
-*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/bin/lcaApache2BinsPrep.sh
+*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/bin/lcaJekyllBinsPrep.sh
 "
 if [ "${loadFiles}" == "" ] ; then
     /bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh -l $0 "$@"
@@ -76,7 +76,7 @@ _EOF_
 
     itemOrderedList=( 
 	ruby_dev
-
+    jekyllPkgsInstall
     )
 
     itemOptionalOrderedList=()
@@ -117,6 +117,7 @@ vis_jekyllPkgsInstall () {
     ANT_raw "NOTYET, None of this has been batch tested."
     lpDo sudo gem install bundler jekyll
     lpDo eval echo 512 \| sudo tee /proc/sys/fs/inotify/max_user_instances
+    lpReturn
     jekyll new my-awesome-site
     cd my-awesome-site/
     bundle exec jekyll serve
