@@ -28,7 +28,21 @@ SEED="
 *  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh]] | 
 "
 FILE="
-*  /This File/ :: /bisos/asc/mail/bin/lcaQmailBinsPrep.sh 
+*  /This File/ :: /bisos/core/mail/bin/lcaQmailBinsPrep.sh 
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh -l $0 "$@" 
+    exit $?
+fi
+####+END:
+
+
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedSubjectBinsPrepDist.sh"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh]] | 
+"
+FILE="
+*  /This File/ :: /bisos/core/mail/bin/lcaQmailBinsPrep.sh 
 "
 if [ "${loadFiles}" == "" ] ; then
     /bisos/core/bsip/bin/seedSubjectBinsPrepDist.sh -l $0 "$@" 
@@ -85,15 +99,10 @@ _EOF_
 
     #  [[elisp:(lsip-local-run-command "apt-cache search something | egrep '^something'")][apt-cache search something | egrep '^something']]
 
-    itemOrderedList=(
-        "qmailPrep"
-        "qmail_uids_gids"
-        "qmail"
-        "daemontools"
-        "daemontools_run"
-        #
-        # "qmail_run"    # We use daemontools-run in combination with lcaQmailHosts.sh
-        # "qmail_tools"  # Obsoleted and not used
+    itemOrderedList=( 
+	"qmail"
+	# "qmail_run"
+	# "qmail_tools"
     )
 
     itemOptionalOrderedList=()
@@ -129,12 +138,12 @@ _EOF_
     if vis_reRunAsRoot ${G_thisFunc} $@ ; then lpReturn ${globalReRunRetVal}; fi;
 
     if [[ "${G_forceMode}" != "force" ]] ; then
-        if  mmaCompDebian_isInstalled qmail ; then
-            ANT_raw "Qmail Is Already Installed -- Skipped -- use G_forceMode to force re-install"
-            lpReturn 101
-        else
-            ANT_raw "Qmail Was Not Installed -- Will Install It."
-        fi
+	if  mmaCompDebian_isInstalled qmail ; then
+	    ANT_raw "Qmail Is Already Installed -- Skipped -- use G_forceMode to force re-install"
+	    lpReturn 101
+	else
+	    ANT_raw "Qmail Was Not Installed -- Will Install It."
+	fi
     fi
 
     opDo lcaQmailHosts.sh -v -n showRun -s ${opRunHostName} -a servicesStop all
@@ -171,134 +180,15 @@ _EOF_
 }
 
 
+####+BEGIN: bx:dblock:lsip:binsprep:apt :module "qmail-run"
 _CommentBegin_
-*      ======[[elisp:(org-cycle)][Fold]]====== Custom-Pkg: qmailPrep
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: qmail-run [[elisp:(org-cycle)][| ]]
 _CommentEnd_
+item_qmail_run () { distFamilyGenerationHookRun binsPrep_qmail_run; }
 
-
-item_qmailPrep () {
-  distFamilyGenerationHookRun binsPrep_qmailPrep
-}
-
-binsPrep_qmailPrep_DEFAULT_DEFAULT () {
-    mmaThisPkgName="qmailPrep"
-    mmaPkgDebianName="${mmaThisPkgName}"
-    mmaPkgDebianMethod="custom"  #  or "apt" no need for customInstallScript but with binsPrep_installPostHook
-    binsPrep_installPostHook=""
-
-    function customInstallScript {
-        lpDo vis_prepareAndCleanUp
-        lpReturn
-    }
-}
-
-debPkgsBase="/bisos/var/debPkgs"
-
-####+BEGIN: bx:dblock:lsip:binsprep:apt :module "qmail-uids-gids"
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: qmail-uids-gids [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-item_qmail_uids_gids () { distFamilyGenerationHookRun binsPrep_qmail_uids_gids; }
-
-binsPrep_qmail_uids_gids_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "qmail-uids-gids"; }
+binsPrep_qmail_run_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "qmail-run"; }
 
 ####+END:
-
-binsPrep_qmail_uids_gids_DEBIAN_11 () {
-    mmaThisPkgName="qmail_uids_gids"
-    mmaPkgDebianName="${mmaThisPkgName}"
-    mmaPkgDebianMethod="custom"  #  or "apt" no need for customInstallScript but with binsPrep_installPostHook
-    binsPrep_installPostHook=""
-
-    function customInstallScript {
-        if [ ! -d ${debPkgsBase} ] ; then lpDo mkdir -p ${debPkgsBase}; fi;
-        local debPkgFile=${debPkgsBase}/qmail-uids-gids.deb
-
-        lpDo wget -O ${debPkgFile} http://ftp.us.debian.org/debian/pool/main/n/netqmail/qmail-uids-gids_1.06-6.2~deb10u1_all.deb
-
-        lpDo sudo apt-get install -y ${debPkgFile}
-    }
-}
-
-
-####+BEGIN: bx:dblock:lsip:binsprep:apt :module "qmail"
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: qmail [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-item_qmail () { distFamilyGenerationHookRun binsPrep_qmail; }
-
-binsPrep_qmail_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "qmail"; }
-
-####+END:
-
-binsPrep_qmail_DEBIAN_11 () {
-    mmaThisPkgName="qmail"
-    mmaPkgDebianName="${mmaThisPkgName}"
-    mmaPkgDebianMethod="custom"  #  or "apt" no need for customInstallScript but with binsPrep_installPostHook
-    binsPrep_installPostHook=""
-
-    function customInstallScript {
-	#lpDo sudo dpkg --purge --force-all qmail
-        if [ ! -d ${debPkgsBase} ] ; then lpDo mkdir -p ${debPkgsBase}; fi;
-        local debPkgFile=${debPkgsBase}/qmail.deb
-
-        lpDo wget -O ${debPkgFile} http://ftp.us.debian.org/debian/pool/main/n/netqmail/qmail_1.06-6.2~deb10u1_amd64.deb
-
-        lpDo sudo apt-get install -y ${debPkgFile}
-    }
-}
-
-####+BEGIN: bx:dblock:lsip:binsprep:apt :module "daemontools"
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: daemontools [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-item_daemontools () { distFamilyGenerationHookRun binsPrep_daemontools; }
-
-binsPrep_daemontools_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "daemontools"; }
-
-####+END:
-
-
-####+BEGIN: bx:dblock:lsip:binsprep:apt :module "daemontools-run"
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: daemontools-run [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-item_daemontools_run () { distFamilyGenerationHookRun binsPrep_daemontools_run; }
-
-binsPrep_daemontools_run_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "daemontools-run"; }
-
-####+END:
-
-
-
-
-####+BEGIN: bx:dblock:lsip:binsprep:apt :module "qmail-run_UNUSED"
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: qmail-run_UNUSED [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-item_qmail_run_UNUSED () { distFamilyGenerationHookRun binsPrep_qmail_run_UNUSED; }
-
-binsPrep_qmail_run_UNUSED_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "qmail-run_UNUSED"; }
-
-####+END:
-
-binsPrep_qmail_run_DEBIAN_11 () {
-    mmaThisPkgName="qmail_run"
-    mmaPkgDebianName="${mmaThisPkgName}"
-    mmaPkgDebianMethod="custom"  #  or "apt" no need for customInstallScript but with binsPrep_installPostHook
-    binsPrep_installPostHook=""
-
-    function customInstallScript {
-        if [ ! -d ${debPkgsBase} ] ; then lpDo mkdir -p ${debPkgsBase}; fi;
-        local debPkgFile=${debPkgsBase}/qmail-run.deb
-
-        lpDo wget -O ${debPkgFile} http://ftp.us.debian.org/debian/pool/main/q/qmail-run/qmail-run_2.0.2+nmu1_all.deb
-
-        lpDo sudo apt-get install -y ${debPkgFile}
-    }
-}
-
-
 
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "qmail-tools"
@@ -330,6 +220,22 @@ binsPrep_qmail_DEFAULT_DEFAULT () {
     binsPrep_installPostHook="qmail_installPost"
 }
 
+binsPrep_qmail_DEBIAN_11 () {
+    mmaThisPkgName="qmailDeb10"
+    mmaPkgDebianName="${mmaThisPkgName}"
+    mmaPkgDebianMethod="custom"  #  or "apt" no need for customInstallScript but with binsPrep_installPostHook
+
+    function customInstallScript {
+        #lpDo sudo dpkg --purge --force-all zoom
+        inBaseDirDo /tmp wget http://ftp.us.debian.org/debian/pool/main/n/netqmail/qmail_1.06-6.2~deb10u1_amd64.deb
+        
+        opDo sudo apt-get install -y /tmp/qmail_1.06-6.2~deb10u1_amd64.deb
+    }
+    binsPrep_installPreHook="qmail_installPre"
+    binsPrep_installPostHook="qmail_installPost"
+}
+
+
 function qmail_installPre {
     G_funcEntry
     function describeF {  G_funcEntryShow; cat  << _EOF_
@@ -346,9 +252,6 @@ _EOF_
     }
     opDo describeF
 }
-
-
-
 
 
 _CommentBegin_
