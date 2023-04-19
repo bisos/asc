@@ -112,27 +112,6 @@ binsPrep_spamassassin_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "spamassassin";
 ####+END:
 
 
-####+BEGIN: bx:dblock:lsip:binsprep:apt :module "maildrop"
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: maildrop [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-item_maildrop () { distFamilyGenerationHookRun binsPrep_maildrop; }
-
-binsPrep_maildrop_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "maildrop"; }
-
-####+END:
-
-
-####+BEGIN: bx:dblock:lsip:binsprep:apt :module "mb2md"
-_CommentBegin_
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: mb2md [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-item_mb2md () { distFamilyGenerationHookRun binsPrep_mb2md; }
-
-binsPrep_mb2md_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "mb2md"; }
-
-####+END:
-
 _CommentBegin_
 *      ================ /[dblock] -- End-Of-File Controls/
 _CommentEnd_

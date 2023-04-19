@@ -75,10 +75,12 @@ _EOF_
 
     #  [[elisp:(lsip-local-run-command "apt-cache search something | egrep '^something'")][apt-cache search something | egrep '^something']]
 
-    itemOrderedList=( 
+    itemOrderedList=(
+        "maildrop"
+	    "mb2md"
         "swaks"            # submit SMTP messages -- Obsoletes ssmtp
-        "offlineimap"      # imap synching -- Obsoletes fetchmail
-        "notmuch"          # email searches
+        # "offlineimap"      # imap synching -- Obsoletes fetchmail
+        # "notmuch"          # email searches
         "balsa"            # MUA
         "evolution"        # MUA
         "claws_mail"       # MUA
@@ -102,6 +104,27 @@ function examplesHookPost {
 ${G_myName} -i moduleDescription
 _EOF_
 }
+
+####+BEGIN: bx:dblock:lsip:binsprep:apt :module "maildrop"
+_CommentBegin_
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: maildrop [[elisp:(org-cycle)][| ]]
+_CommentEnd_
+item_maildrop () { distFamilyGenerationHookRun binsPrep_maildrop; }
+
+binsPrep_maildrop_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "maildrop"; }
+
+####+END:
+
+
+####+BEGIN: bx:dblock:lsip:binsprep:apt :module "mb2md"
+_CommentBegin_
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || Apt-Pkg       :: mb2md [[elisp:(org-cycle)][| ]]
+_CommentEnd_
+item_mb2md () { distFamilyGenerationHookRun binsPrep_mb2md; }
+
+binsPrep_mb2md_DEFAULT_DEFAULT () { binsPrepAptPkgNameSet "mb2md"; }
+
+####+END:
 
 ####+BEGIN: bx:dblock:lsip:binsprep:apt :module "swaks"
 _CommentBegin_
