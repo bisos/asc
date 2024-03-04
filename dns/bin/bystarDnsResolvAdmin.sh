@@ -1,26 +1,31 @@
 #!/bin/bash
 
-####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" :partof "bystar" :copyleft "halaal+brief"
-# {{{ DBLOCK-top-of-file
-typeset RcsId="$Id: bystarDnsResolvAdmin.sh,v 1.1.1.1 2016-06-08 23:49:52 lsipusr Exp $"
-#  This is part of ByStar Libre Services. http://www.by-star.net
-# Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
-# See PLPC-120001 for restrictions.
-# This is a Halaal Poly-Existential intended to remain perpetually Halaal. 
-# }}} DBLOCK-top-of-file
+IimBriefDescription="NOTYET: Short Description Of The Module"
+
+ORIGIN="
+* Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
+"
+
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+
 ####+END:
 
-# {{{ Authors:
-# Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
-# }}} 
+__author__="
+* Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
+"
 
-####+BEGIN: bx:dblock:lsip:bash:seed-spec :types "seedActions.bash"
-# {{{ DBLOCK-seed-spec
-if [ "${loadFiles}X" == "X" ] ; then
-    /opt/public/osmt/bin/seedActions.bash -l $0 "$@" 
+
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] | 
+"
+FILE="
+*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/dns/bin/bystarDnsAdmin.sh 
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@" 
     exit $?
 fi
-# }}} DBLOCK-seed-spec
 ####+END:
 
 # {{{ Help/Info
@@ -37,7 +42,6 @@ _EOF_
 # }}}
 
 # {{{ Prefaces
-
 
 . ${opBinBase}/bystarHook.libSh
 

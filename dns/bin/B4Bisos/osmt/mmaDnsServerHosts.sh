@@ -1,11 +1,44 @@
 #!/bin/bash
 
 
-if [ "${loadFiles}X" == "X" ] ; then
-     #`dirname $0`/seedSubjectAction.sh -l $0 "$@"
-     /opt/public/osmt/bin/seedSubjectAction.sh -l $0 "$@"
-     exit $?
+ORIGIN="
+* Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
+"
+
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+typeset RcsId="$Id: fgcDnsSw.sh,v 1.1 2016-06-29 23:54:20 lsipusr Exp $"
+# *CopyLeft*
+# Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
+# See PLPC-120001 for restrictions.
+# This is a Halaal Poly-Existential intended to remain perpetually Halaal.
+####+END:
+
+__author__="
+* Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
+"
+
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] |
+"
+FILE="
+*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/dns/bin/fgcDnsSw.sh
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@"
+    exit $?
 fi
+####+END:
+
+
+_CommentBegin_
+####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/libre/ByStar/InitialTemplates/software/plusOrg/dblock/inserts/topControls.org"
+*      ================
+*  /Controls/:  [[elisp:(org-cycle)][Fold]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(bx:org:run-me)][RunMe]] | [[elisp:(delete-other-windows)][(1)]]  | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
+** /Version Control/:  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]] 
+
+####+END:
+_CommentEnd_
 
 . ${opBinBase}/mmaLib.sh
 . ${opBinBase}/mmaDaemontoolsLib.sh

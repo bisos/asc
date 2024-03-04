@@ -1,12 +1,32 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh
+#!/bin/bash
 
-typeset RcsId="$Id: bystarDnsReport.sh,v 1.1.1.1 2016-06-08 23:49:52 lsipusr Exp $"
+IimBriefDescription="NOTYET: Short Description Of The Module"
 
-if [ "${loadFiles}X" == "X" ] ; then
-    `dirname $0`/seedSubjectAction.sh -l $0 "$@"
+ORIGIN="
+* Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
+"
+
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+
+####+END:
+
+__author__="
+* Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
+"
+
+
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] | 
+"
+FILE="
+*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/dns/bin/bystarDnsAdmin.sh 
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@" 
     exit $?
 fi
+####+END:
 
 
 function vis_help {

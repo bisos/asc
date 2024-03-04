@@ -1,14 +1,33 @@
-#!/bin/osmtKsh
-#!/bin/osmtKsh 
+#!/bin/bash
 
-typeset RcsId="$Id: mmaDnsImports.sh,v 1.1.1.1 2016-06-08 23:49:51 lsipusr Exp $"
+IimBriefDescription="NOTYET: Short Description Of The Module"
 
-# (replace-string "ivd_dnsFile_locals" "ivd_dnsSendFile_locals" nil)
+ORIGIN="
+* Revision And Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee
+"
 
-if [ "${loadFiles}X" == "X" ] ; then
-     seedSubjectAction.sh -l $0 $@
-     exit $?
+####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
+
+####+END:
+
+__author__="
+* Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
+"
+
+
+####+BEGIN: bx:bsip:bash:seed-spec :types "seedActions.bash"
+SEED="
+*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedActions.bash]] | 
+"
+FILE="
+*  /This File/ :: /bisos/git/auth/bxRepos/bisos/asc/dns/bin/bystarDnsAdmin.sh 
+"
+if [ "${loadFiles}" == "" ] ; then
+    /bisos/core/bsip/bin/seedActions.bash -l $0 "$@" 
+    exit $?
 fi
+####+END:
+
 
 . ${opBinBase}/mmaLib.sh
 . ${opBinBase}/mmaDnsLib.sh
