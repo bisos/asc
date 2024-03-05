@@ -71,7 +71,8 @@ daemonsServiceName=(
     "tinydns"
     # "isc_dhcp_server6"
 )
-daemonControlScript="/etc/sv/tinydns/env"
+daemonControlScript="/etc/sv/tinydns/conf"
+daemonControlBase="/etc/sv/tinydns/conf"
 
 daemonDefaultFile="NA-daemonDefaultFile"
 
@@ -107,7 +108,6 @@ function vis_examples_general {
         lpReturn 101
     fi
   
-
     visLibExamplesOutput ${G_myName} 
     cat  << _EOF_
 $( examplesSeperatorTopLabel "${G_myName}" )
@@ -115,7 +115,6 @@ _EOF_
 
     vis_examplesFullService
     vis_examplesDaemonControl
-
 
     cat  << _EOF_
 $( examplesSeperatorChapter "Server Config" )
@@ -128,16 +127,105 @@ _EOF_
     vis_examplesLogInfo
     vis_examplesLogSysd
 
+cat  << _EOF_
+$( examplesSeperatorChapter "Client Verification" )
+sudo lsof -i :53
+_EOF_
+
+    ANT_raw "/bisos/git/auth/bxRepos/blee-binders/bisos-svcs/dns/tinydns-diag/_nodeBase_/fullUsagePanel-en.org"
+    ANT_raw "/bisos/git/auth/bxRepos/blee-binders/connectivity/dnsResolution/_nodeBase_/fullUsagePanel-en.org"
+    
     cat  << _EOF_
-$( examplesSeperatorChapter "CLIENT VERIFICATIONS" )
+$( examplesSeperatorChapter "Niche Pointer" )
 _EOF_
   
-  
-    vis_examplesNicheRun
+    ANT_raw "_niche has not been automated yet"
+    # vis_examplesNicheRun
+    
 }
 
 noArgsHook() {
     vis_examples_general "general"
+}
+
+function vis_examplesDefaultConfig {
+ cat  << _EOF_
+$( examplesSeperatorSection "DEFAULT CONFIG FILES" )
+Not Applicable --- tinydns does not use /etc/default 
+_EOF_
+}
+
+function vis_examplesServerConfig {
+    local extraInfo="-h -v -n showRun"
+ cat  << _EOF_
+$( examplesSeperatorSection "SERVER CONFIG ACTIONS" )
+${G_myName} ${extraInfo} -i serverConfigUpdate                 # _niche: canonical, IpAddrSet, DataFileSet, DataFileProc
+${G_myName} ${extraInfo} -i tinydnsConfigIpAddrSet  a.b.c.d    # _niche: /etc/sv/tinydns/conf/IP
+${G_myName} ${extraInfo} -i tinydnsConfigIpAddrGet             # /etc/sv/tinydns/conf/IP
+${G_myName} ${extraInfo} -i tinydnsConfigDataFileSet filePath   # _niche: symLink in /etc/sv/tinydns/root/data
+${G_myName} ${extraInfo} -i tinydnsConfigDataFileShow           # /etc/sv/tinydns/root/data
+${G_myName} ${extraInfo} -i tinydnsConfigDataFileProc           # in /etc/sv/tinydns/root run make
+_EOF_
+}
+
+function vis_tinydnsConfigIpAddrGet { lpDo cat ${daemonControlBase}/IP; }
+
+function vis_tinydnsConfigIpAddrSet {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 1 ]]
+    EH_assert daemonPrep
+
+    lpDo eval echo $1 | sudo tee ${daemonControlBase}/IP
+}
+
+
+function vis_tinydnsConfigDataFileShow { lpDo ls -l  ${daemonConfigDir}/data; }
+
+function vis_tinydnsConfigDataFileSet {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 1 ]]
+    EH_assert daemonPrep
+
+    local dataFile="$1"
+    
+    if [ ! -r "${dataFile}" ] ; then
+        EH_problem "Bad Usage: Missing ${dataFile}"
+        lpReturn 101
+    fi
+
+    if vis_reRunAsRoot ${G_thisFunc} $@ ; then lpReturn ${globalReRunRetVal}; fi;
+    
+    lpDo FN_fileSymlinkUpdate ${dataFile} ${daemonConfigDir}/data
+}
+
+function vis_tinydnsConfigDataFileProc {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+    EH_assert daemonPrep
+
+    if vis_reRunAsRoot ${G_thisFunc} $@ ; then lpReturn ${globalReRunRetVal}; fi;
+    
+    inBaseDirDo ${daemonConfigDir} make
+}
+
+function vis_serverConfigUpdate {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+    EH_assert daemonPrep
+
+    ANT_raw "Expected to be done with _niche. No action taken here."
 }
 
 

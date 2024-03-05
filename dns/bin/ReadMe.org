@@ -1,0 +1,21 @@
+* Produced By: bystarDnsReport.sh  -i dnsSeeAlso
+--- DNS and Domains -- See Also ---
+/libre/ByStar/InitialTemplates/activeDocs/bxServices/dnsManage/fullUsagePanel-en.org
+bystarDnsAdmin.sh              # For each buid zone export prep etc.
+bystarDnsInfoAdmin.sh          # dnsZoneAssign
+bystarDnsReport.sh             # List Of All Domain -- DnsDiag through lcaDnsReport.sh
+bystarDnsResolvAdmin.sh        # adjust /etc/resolv.conf + dnsCache adjust per buid
+bystarDnsRoadmap.sh            # To be obsoleted by dnsManage/fullUsagePanel-en.org
+bystarDnsZoneMasters.sh        # Not buid specific -- zoneInfoAdd bynumber.net
+lcaDnsReport.sh                # Dns Diagnostics
+mmaDnsAdmin.sh                 # mmaDnsEntryAliasShow -- Overlap with mmaDnsServerHosts.sh
+mmaDnsImports.sh               # Obsoleted
+mmaDnsServerHosts.sh           # servicesStartStop -- Overlap with mmaDnsAdmin.sh  
+mmaDnsTopDomFix.sh             # Obsoleted -- root/data cleanser 
+mmaDnsZonesExport.sh           # Obsoelted 
+* TODO All the bystarDns files need to be absorbed in a bpo (bystarCollective)
+SCHEDULED: <2024-03-04 Mon>
+* TODO Move what is obsolete to B4Bisos
+SCHEDULED: <2024-03-04 Mon>
+* TODO convert all useful mmaDns to lcaDns
+SCHEDULED: <2024-03-04 Mon>
