@@ -112,7 +112,7 @@ _CommentEnd_
 
 
 itemsOrderedList=( 
-    lcaDaemontoolsBinsPrep.sh
+    lcaRunitBinsPrep.sh
 )
 
 

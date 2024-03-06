@@ -165,6 +165,7 @@ ${G_myName} ${extraInfo} -i tinydnsConfigIpAddrGet             # /etc/sv/tinydns
 ${G_myName} ${extraInfo} -i tinydnsConfigDataFileSet filePath   # _niche: symLink in /etc/sv/tinydns/root/data
 ${G_myName} ${extraInfo} -i tinydnsConfigDataFileShow           # /etc/sv/tinydns/root/data
 ${G_myName} ${extraInfo} -i tinydnsConfigDataFileProc           # in /etc/sv/tinydns/root run make
+${G_myName} ${extraInfo} -i cntnrCharIpAddrForTinydns
 _EOF_
 }
 
@@ -226,6 +227,45 @@ _EOF_
     EH_assert daemonPrep
 
     ANT_raw "Expected to be done with _niche. No action taken here."
+}
+
+
+function vis_cntnrCharIpAddrForTinydns {
+    G_funcEntry
+    function describeF {  G_funcEntryShow; cat  << _EOF_
+_EOF_
+    }
+    EH_assert [[ $# -eq 0 ]]
+
+    local thisCntnrBpoId=$( lpDo cat /bisos/var/bpoId/sysChar.fp/value )
+    EH_assert [ ! -z "${thisCntnrBpoId}" ]
+
+    local thisCntnrId=${thisCntnrBpoId##pmp_}
+    EH_assert [ ! -z "${thisCntnrId}" ]
+
+    local bpoHome=$( FN_absolutePathGet ~${thisCntnrBpoId} )
+
+    local cntnrChar_ipAddr
+    
+    local thisCntnrIpAddrsBase="${bpoHome}/${thisCntnrId}/steady/net/ipv4"
+    EH_assert [ -d "${thisCntnrIpAddrsBase}" ]
+
+    # NOTYET, based on model more verifications should be made
+
+    if [ -r "${thisCntnrIpAddrsBase}/pubB.fps/addr/value" ] ; then
+            cntnrChar_ipAddr=$( lpDo cat "${thisCntnrIpAddrsBase}/pubB.fps/addr/value" )
+    elif [ -r "${thisCntnrIpAddrsBase}/privA.fps/addr/value" ] ; then
+            cntnrChar_ipAddr=$( lpDo cat "${thisCntnrIpAddrsBase}/privA.fps/addr/value" )
+    else
+        # cntnrChar_ipAddr="127.0.0.1"
+        EH_problem "Missing ${thisCntnrIpAddrsBase}/pubB.fps/addr/value"
+        EH_problem "Missing ${thisCntnrIpAddrsBase}/privA.fps/addr/value"        
+        lpReturn
+    fi
+
+    echo ${cntnrChar_ipAddr}
+       
+    lpReturn
 }
 
 
