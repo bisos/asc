@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+from sys import stdlib_module_names
+from bisos.sbom import pkgsSeed  # pkgsSeed.plantWithWhich("seedSbom.cs")
+ap = pkgsSeed.aptPkg
+pp = pkgsSeed.pipPkg
+sbom = pkgsSeed.sbomSpec
+
+aptPkgsList = [
+    # ap("aptPkgName"),
+]
+
+pipPkgsList = [
+    # pp("django"),
+]
+
+pipxPkgsList = [
+    # pp("pipPkgName"),
+]
+
+pipPkgsList = [
+    # pp("django"),
+]
+
+sbomsList = [
+    sbom("nginx-sbom.pcs"),
+    sbom("gunicorn-sbom.pcs"),
+    sbom("postgresql-sbom.pcs"),
+    sbom("django-sbom.pcs"),
+]
+
+
+pkgsSeed.setup(
+    aptPkgsList=aptPkgsList,
+    pipPkgsList=pipPkgsList,
+    pipxPkgsList=pipxPkgsList,
+    sbomsList=sbomsList,
+)
