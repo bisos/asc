@@ -1,0 +1,145 @@
+digraph MultiAppArchitecture {
+	graph [bb="0,0,781,437",
+		fontname=Arial,
+		rankdir=LR,
+		size="12,8"
+	];
+	node [fontname=Arial,
+		fontsize=10,
+		label="\N",
+		shape=box,
+		style="filled,rounded"
+	];
+	subgraph cluster_legend {
+		graph [bb="8,8,119,243",
+			fontsize=12,
+			label=Legend,
+			lheight=0.18,
+			lp="63.5,232.5",
+			lwidth=0.57,
+			style=dotted
+		];
+		l1	[fillcolor="#ff9999",
+			height=0.5,
+			label="Systemd Daemon",
+			pos="63.5,196",
+			width=1.3194];
+		l2	[fillcolor="#ffcc00",
+			height=0.5,
+			label="Systemd Socket",
+			pos="63.5,142",
+			width=1.2361];
+		l3	[fillcolor="#c2f0c2",
+			height=0.5,
+			label="React (Static)",
+			pos="63.5,88",
+			width=1.0694];
+		l4	[fillcolor="#add8e6",
+			height=0.5,
+			label="Django (Logic)",
+			pos="63.5,34",
+			width=1.1111];
+	}
+	subgraph cluster_app1 {
+		graph [bb="424,300,773,429",
+			color=grey,
+			label="Application Stack 1",
+			lheight=0.21,
+			lp="598.5,417.5",
+			lwidth=1.60,
+			style=dashed
+		];
+		React1	[fillcolor="#c2f0c2",
+			height=0.5,
+			label="React UI 1
+(Static Files)",
+			pos="479.5,380",
+			width=1];
+		Socket1	[fillcolor="#ffcc00",
+			height=0.5,
+			label="systemd socket 1
+(/run/app1.sock)",
+			pos="479.5,326",
+			width=1.3194];
+		Gunicorn1	[fillcolor="#ff9999",
+			height=0.5,
+			label="Gunicorn 1
+(systemd daemon)",
+			pos="613,326",
+			width=1.3611];
+		Socket1 -> Gunicorn1	[pos="e,563.64,326 527.23,326 535.72,326 544.67,326 553.45,326"];
+		Django1	[fillcolor="#add8e6",
+			height=0.5,
+			label="Django 1
+(App Logic)",
+			pos="732,326",
+			width=0.91667];
+		Gunicorn1 -> Django1	[pos="e,698.87,326 662.26,326 671.04,326 680.12,326 688.71,326"];
+	}
+	subgraph cluster_app2 {
+		graph [bb="424,163,773,292",
+			color=grey,
+			label="Application Stack 2",
+			lheight=0.21,
+			lp="598.5,280.5",
+			lwidth=1.60,
+			style=dashed
+		];
+		React2	[fillcolor="#c2f0c2",
+			height=0.5,
+			label="React UI 2
+(Static Files)",
+			pos="479.5,243",
+			width=1];
+		Socket2	[fillcolor="#ffcc00",
+			height=0.5,
+			label="systemd socket 2
+(/run/app2.sock)",
+			pos="479.5,189",
+			width=1.3194];
+		Gunicorn2	[fillcolor="#ff9999",
+			height=0.5,
+			label="Gunicorn 2
+(systemd daemon)",
+			pos="613,189",
+			width=1.3611];
+		Socket2 -> Gunicorn2	[pos="e,563.64,189 527.23,189 535.72,189 544.67,189 553.45,189"];
+		Django2	[fillcolor="#add8e6",
+			height=0.5,
+			label="Django 2
+(App Logic)",
+			pos="732,189",
+			width=0.91667];
+		Gunicorn2 -> Django2	[pos="e,698.87,189 662.26,189 671.04,189 680.12,189 688.71,189"];
+	}
+	User	[fillcolor=white,
+		height=0.58926,
+		label="User
+(Browser)",
+		pos="63.5,272",
+		shape=ellipse,
+		width=1.1589];
+	Nginx	[fillcolor="#ff9999",
+		height=0.5,
+		label="Nginx
+(systemd daemon)",
+		pos="256,272",
+		width=1.3611];
+	User -> Nginx	[label=" HTTP/S",
+		lp="159,279.5",
+		pos="e,206.79,272 105.37,272 131.97,272 167.08,272 196.6,272"];
+	Nginx -> React1	[label=" direct serve",
+		lp="368.5,371.5",
+		pos="e,443.2,372.65 274.01,290.08 286.54,302.5 304.55,318.57 323,329 357.7,348.62 401.08,362.06 433.19,370.19",
+		style=dotted];
+	Nginx -> Socket1	[label=" proxy_pass",
+		lp="368.5,317.5",
+		pos="e,431.67,314.58 305.06,283.72 339.37,292.08 385.65,303.36 421.77,312.17"];
+	Nginx -> React2	[label=" direct serve",
+		lp="368.5,269.5",
+		pos="e,443.23,247.62 305.06,265.71 343.09,260.73 395.83,253.82 433.14,248.94",
+		style=dotted];
+	Nginx -> Socket2	[label=" proxy_pass",
+		lp="368.5,239.5",
+		pos="e,431.78,198.38 283.08,253.91 294.87,246.34 309.22,237.94 323,232 354.66,218.34 391.82,207.88 421.87,200.69"];
+}
