@@ -1,0 +1,47 @@
+#+title: RepoNameComesHere --- Work Plan
+#+DATE: <2026-06-10 Wed 13:54>
+#+AUTHOR: Mohsen BANAN
+#+OPTIONS: toc:4
+#+TAGS: me(m) ai(a)
+
+This Work Plan file drives the AI collaborative development.
+Interactions are broken down into "Stages". Each Stage has a set
+of TODOs that I work with Claude to accomplish.
+
+Companion docs: [[file:AI-AGENTS.org][AI-AGENTS.org]] (agent guidance / layering), [[file:README.org][README.org]] (overview).
+
+* Stage 1 TODOs
+** +
+** DONE [#A] <<venvBinPath>> Add explicit path to airflow entries that match the bin of specified virtenv
+CLOSED: [2026-06-26 Fri 11:50] SCHEDULED: <2026-06-26 Fri>
+Modify /bisos/asc/web/bin/airflow-sbom.pcs accordingly.
+----- AI Results: ------
+*** py3/bisos/sbom/pkgsSeed.py -- PkgsSeedInfo (in the sbom package)
+- Added a =binPath(execName)= helper: returns =f"{self.virtenv}/bin/{execName}"=
+  when =virtenv= is set, else the bare =execName= (taken from PATH).
+- Refactored =pipCmnd()= to delegate to =binPath("pip")=.
+*** /bisos/asc/web/bin/airflow-sbom.pcs -- examples_csu()
+- Resolved the venv-resident executables once via =binPath()=:
+  =airflow=, =pip=, =python3=.
+- Rewrote all menu literals invoking those executables to use the resolved
+  paths, e.g. =airflow version= -> =/bisos/venv/py3/asc/bin/airflow version=,
+  =pip show apache-airflow= -> =/bisos/venv/py3/asc/bin/pip show apache-airflow=,
+  =python3 -c "import airflow; ..."= -> =/bisos/venv/py3/asc/bin/python3 -c "..."=.
+- Left =which airflow= and the =export AIRFLOW_HOME= / =echo= lines bare (not
+  venv executables).
+*** Behavior
+- With =virtenv= set (currently ="/bisos/venv/py3/asc"=), all examples point at
+  that venv's bin. If =virtenv= is ever =None=, every entry falls back to the
+  bare command from PATH automatically.
+*** Verification
+- Ran =airflow-sbom.pcs= example menu (exit 0); confirmed every airflow/pip/python3
+  entry renders with the =/bisos/venv/py3/asc/bin/= prefix.
+** TODO [#A]
+** -
+
+A Stage is typically expressed as a set of TODO lists
+and well defines goals.
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# End:

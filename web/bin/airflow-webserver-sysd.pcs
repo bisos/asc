@@ -14,6 +14,8 @@
 #+end_org """
 
 from bisos.debian import systemd_seedInfo
+from bisos.debian import systemd_seed as systemd_seed  # noqa
+
 from bisos.basics import pathPlus
 
 def sysdUnitFileFunc() -> str | None:

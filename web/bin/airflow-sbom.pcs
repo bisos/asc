@@ -16,6 +16,8 @@ from bisos.sbom import pkgsSeed  # pkgsSeed.plantWithWhich("seedSbom.cs")
 ap = pkgsSeed.aptPkg
 pp = pkgsSeed.pipPkg
 
+pkgsSeed.pkgsSeedInfo.virtenv = "/bisos/venv/py3/asc"
+
 aptPkgsList = [
     ap("python3"),                  # Airflow requires Python 3.8+
     ap("python3-pip"),              # pip for airflow installation
@@ -91,6 +93,10 @@ def examples_csu() -> b.op.Outcome:
     cmnd = cs.examples.cmndEnter
     literal = cs.examples.execInsert
 
+    airflow = pkgsSeed.pkgsSeedInfo.binPath("airflow")
+    pip = pkgsSeed.pkgsSeedInfo.binPath("pip")
+    python3 = pkgsSeed.pkgsSeedInfo.binPath("python3")
+
     cmndOutcome = b.op.Outcome()
 
     cs.examples.menuChapter('*Airflow Command Examples*')
@@ -99,8 +105,8 @@ def examples_csu() -> b.op.Outcome:
         pass
 
     literal(f"which airflow # {resStr.strip()}")
-    literal("airflow version")
-    literal("airflow --help")
+    literal(f"{airflow} version")
+    literal(f"{airflow} --help")
 
     cmnd('readme', comment=" # An overview short description")
 
@@ -110,42 +116,42 @@ def examples_csu() -> b.op.Outcome:
     cs.examples.menuChapter('*Airflow Home and Environment*')
     literal("export AIRFLOW_HOME=~/airflow")
     literal("echo $AIRFLOW_HOME")
-    literal("airflow config list")
-    literal("airflow info")
+    literal(f"{airflow} config list")
+    literal(f"{airflow} info")
 
     cs.examples.menuChapter('*Database Initialisation*')
-    literal("airflow db migrate          # initialise / migrate the metadata DB")
-    literal("airflow db check            # verify DB connectivity")
+    literal(f"{airflow} db migrate          # initialise / migrate the metadata DB")
+    literal(f"{airflow} db check            # verify DB connectivity")
 
     cs.examples.menuChapter('*User Management*')
     literal("# standalone generates credentials at: ~/airflow/simple_auth_manager_passwords.json.generated")
     literal("cat ~/airflow/simple_auth_manager_passwords.json.generated  # username: admin, password: <generated>")
-    literal("airflow users list")
+    literal(f"{airflow} users list")
 
     cs.examples.menuChapter('*Running Airflow (standalone / local testing)*')
-    literal("airflow standalone           # all-in-one: webserver + scheduler + triggerer")
-    literal("airflow webserver --port 8080")
-    literal("airflow scheduler")
+    literal(f"{airflow} standalone           # all-in-one: webserver + scheduler + triggerer")
+    literal(f"{airflow} webserver --port 8080")
+    literal(f"{airflow} scheduler")
 
     cs.examples.menuChapter('*DAGs*')
-    literal("airflow dags list")
-    literal("airflow dags trigger <dag_id>")
-    literal("airflow dags pause <dag_id>")
-    literal("airflow dags unpause <dag_id>")
-    literal("airflow dags show <dag_id>")
+    literal(f"{airflow} dags list")
+    literal(f"{airflow} dags trigger <dag_id>")
+    literal(f"{airflow} dags pause <dag_id>")
+    literal(f"{airflow} dags unpause <dag_id>")
+    literal(f"{airflow} dags show <dag_id>")
 
     cs.examples.menuChapter('*Tasks*')
-    literal("airflow tasks list <dag_id>")
-    literal("airflow tasks test <dag_id> <task_id> <execution_date>")
+    literal(f"{airflow} tasks list <dag_id>")
+    literal(f"{airflow} tasks test <dag_id> <task_id> <execution_date>")
 
     cs.examples.menuChapter('*Connections and Variables*')
-    literal("airflow connections list")
-    literal("airflow variables list")
+    literal(f"{airflow} connections list")
+    literal(f"{airflow} variables list")
 
     cs.examples.menuChapter('*Verify Installation*')
-    literal("pip show apache-airflow")
-    literal("airflow version")
-    literal("python3 -c \"import airflow; print(airflow.__version__)\"")
+    literal(f"{pip} show apache-airflow")
+    literal(f"{airflow} version")
+    literal(f"{python3} -c \"import airflow; print(airflow.__version__)\"")
 
     cs.examples.menuChapter('*End-Of Airflow Command Examples*')
     return cmndOutcome

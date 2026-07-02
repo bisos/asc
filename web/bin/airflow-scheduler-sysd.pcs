@@ -3,7 +3,7 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/core/bsip/bin/airflow-triggerer-sysd.cs
+** This File: /bisos/core/bsip/bin/airflow-scheduler-sysd.cs
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -14,6 +14,8 @@
 #+end_org """
 
 from bisos.debian import systemd_seedInfo
+from bisos.debian import systemd_seed as systemd_seed  # noqa
+
 from bisos.basics import pathPlus
 
 def sysdUnitFileFunc() -> str | None:
@@ -24,11 +26,11 @@ def sysdUnitFileFunc() -> str | None:
 
     templateStr = f"""
 [Unit]
-Description=Airflow Triggerer
+Description=Airflow Scheduler
 After=network.target
 
 [Service]
-ExecStart={execPath} triggerer
+ExecStart={execPath} scheduler
 Restart=on-failure
 RestartSec=10
 
@@ -39,6 +41,6 @@ WantedBy=multi-user.target
 
 systemd_seedInfo.setup(
     seedType="sysdSysUnit",
-    sysdUnitName="airflow-triggerer",
+    sysdUnitName="airflow-scheduler",
     sysdUnitFileFunc=sysdUnitFileFunc,
 )
