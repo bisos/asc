@@ -1,64 +1,63 @@
-#+title: RepoNameComesHere --- Work Plan
+#+title: Work Plan
 #+DATE: <2026-06-10 Wed 13:54>
 #+AUTHOR: Mohsen BANAN
 #+OPTIONS: toc:4
-#+TAGS: me(m) ai(a)
+#+TAGS: me ai aiAndMe
+
+# Provenance (installed once by startAiActivity.cs --- not regenerated):
+#   Date:      2026-07-18T19:10:02-07:00
+#   User:      bystar
+#   Templates: /bisos/apps/defaults/ai-templates
+#   Command:   /bisos/venv/py3/devbin/startAiActivity.cs -i initiate --root=repo --activity=aiActivity
+
+####+BEGIN: b:ai:file/particulars
+* AI Working Context
+  Working Directory: /bisos/git/auth/bxRepos/bisos/asc
+  File: /bisos/git/auth/bxRepos/bisos/asc/AI-WorkPlan.org
+  Activity: aiActivity
+  Companion Docs: AI-WORKFLOW.org, AI-Activity.org, AI-DevStatus.org
+###+END:
 
 This Work Plan file drives the AI collaborative development.
 Interactions are broken down into "Stages". Each Stage has a set
 of TODOs that I work with Claude to accomplish.
 
-Companion docs: [[file:AI-AGENTS.org][AI-AGENTS.org]] (agent guidance / layering), [[file:README.org][README.org]] (overview).
+Note to a fresh Claude: read this file together with AI-WORKFLOW.org,
+AI-Activity.org and AI-DevStatus.org to orient yourself. The =<<Context Confirmation>>=
+TODO below is the standard first step, or use =/bx-confirm0= as the automated equivalent.
+TODOs tagged =:ai:= are assigned to Claude. After completing a TODO, summarize results
+under =----- AI Results: ------= and mark it DONE.
+
+* Stage 1: Confirm AI's Understanding of This Repo's Context
+
+Goal: Confirm AI's understanding of the context and capture that in [[Context Confirmation]] TODO.
+
 
 * Stage 1 TODOs
 ** +
-** DONE [#A] <<venvBinPath>> Add explicit path to airflow entries that match the bin of specified virtenv
-CLOSED: [2026-06-26 Fri 11:50] SCHEDULED: <2026-06-26 Fri>
-Modify /bisos/asc/web/bin/airflow-sbom.pcs accordingly.
------ AI Results: ------
-*** py3/bisos/sbom/pkgsSeed.py -- PkgsSeedInfo (in the sbom package)
-- Added a =binPath(execName)= helper: returns =f"{self.virtenv}/bin/{execName}"=
-  when =virtenv= is set, else the bare =execName= (taken from PATH).
-- Refactored =pipCmnd()= to delegate to =binPath("pip")=.
-*** /bisos/asc/web/bin/airflow-sbom.pcs -- examples_csu()
-- Resolved the venv-resident executables once via =binPath()=:
-  =airflow=, =pip=, =python3=.
-- Rewrote all menu literals invoking those executables to use the resolved
-  paths, e.g. =airflow version= -> =/bisos/venv/py3/asc/bin/airflow version=,
-  =pip show apache-airflow= -> =/bisos/venv/py3/asc/bin/pip show apache-airflow=,
-  =python3 -c "import airflow; ..."= -> =/bisos/venv/py3/asc/bin/python3 -c "..."=.
-- Left =which airflow= and the =export AIRFLOW_HOME= / =echo= lines bare (not
-  venv executables).
-*** Behavior
-- With =virtenv= set (currently ="/bisos/venv/py3/asc"=), all examples point at
-  that venv's bin. If =virtenv= is ever =None=, every entry falls back to the
-  bare command from PATH automatically.
-*** Verification
-- Ran =airflow-sbom.pcs= example menu (exit 0); confirmed every airflow/pip/python3
-  entry renders with the =/bisos/venv/py3/asc/bin/= prefix.
-
-* Basic Airflow Setup
-** +
-** DONE [#A] <<aiflow-sbom>> Complete the starting point that is in ./bin/airflow-sbom.pcs to setup a very basic airflow on the debian 12 system :ai:
+** TODO [#A] <<Context Confirmation>> for AI (typically triggered by /bx-confirm0) :ai:
 SCHEDULED: <2026-06-09 Tue>
-CLOSED: <2026-06-23 Mon>
-./bin/airflow-sbom.pcs is a planted command service. Look at the existing ./bin/*-sbom.pcs
-See how relevant apt and pip packages are specified. Do that for a basic airflow installation
+Based on the series of files starting from CLAUDE.md in this repo,
+describe succinctly what you have understood.
+Enumerate explicitly which files you have imported and which you have considered.
 ----- AI Results: ------
-- Converted =airflow-sbom.pcs= from playwright template to Airflow:
-  - =aptPkgsList=: python3, python3-pip, python3-venv, build-essential, libpq-dev, libssl-dev, libffi-dev, pkg-config
-  - =pipPkgsList=: apache-airflow (>=2.9.0)
-  - Updated =readme= and =examples_csu= with Airflow-specific content and correct credentials note
-    (credentials auto-generated at =~/airflow/simple_auth_manager_passwords.json.generated=)
-  - Verified installation: apache-airflow 3.2.2 installed successfully
-- Created three systemd unit files:
-  - =airflow-webserver-sysd.cs= -- airflow webserver --port 8080
-  - =airflow-scheduler-sysd.cs= -- airflow scheduler
-  - =airflow-triggerer-sysd.cs= -- airflow triggerer
-- Created CBS (Capability Bundle Spec):
-  - =airflow-cbs-is-np-sysd.cs= -- bundles sbom + all three sysd units; assemble=None for now
-    (assemble is where =airflow db migrate= and initial user creation will go)
+** -
+
+* Stage 2: Description of This Stage Comes Here
+
+Goal: Describe what the goal of this stage is.
+
+
+* Stage 2 TODOs
+** +
+** TODO [#A] Example of a work-item for AI :ai:
+SCHEDULED: <2026-06-09 Tue>
+Description of a work-item
+----- AI Results: ------
+** -
+
 
 # Local Variables:
 # eval: (setq-local toc-org-max-depth 4)
+# eval: (setq-local org-log-done 'time)
 # End:

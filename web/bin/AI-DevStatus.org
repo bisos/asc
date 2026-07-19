@@ -1,0 +1,75 @@
+#+title: Development Status & Continuation Handoff
+#+TAGS: me ai aiAndMe
+
+# Provenance (installed once by startAiActivity.cs --- not regenerated):
+#   Date:      2026-07-18T19:11:45-07:00
+#   User:      bystar
+#   Templates: /bisos/apps/defaults/ai-templates
+#   Command:   /bisos/venv/py3/devbin/startAiActivity.cs -i initiateSub --activity=sbom+cap
+
+####+BEGIN: b:ai:file/particulars
+* AI Working Context
+  Working Directory: /bisos/git/auth/bxRepos/bisos/asc/web/bin
+  File: /bisos/git/auth/bxRepos/bisos/asc/web/bin/AI-DevStatus.org
+  Activity: sbom+cap
+  Companion Docs: AI-Activity.org, AI-DevStatus.org
+###+END:
+
+This file is a working-state handoff so development can continue on another
+machine (which has this repo but NOT the developer's =~=). It captures the
+architecture, what works, what is untested and the design decisions made so far.
+
+This file is maintained by Claude. Updates are typically triggered by the
+=/bx-update-status= slash command, after major interactions, or before a release.
+
+Note to a fresh Claude: this file is intentionally sparse at project start.
+Fill in the sections below when asked to update, following the structure provided.
+
+* Current State: Basic Airflow Setup
+
+** What Was Done
+A basic Apache Airflow capability bundle was created under =/bisos/core/bsip/bin/=,
+following the existing BISOS patterns for sbom, sysd, and cbs seeds.
+
+** Files Created / Modified
+
+| File                            | Status   | Notes                                              |
+|---------------------------------+----------+----------------------------------------------------|
+| =airflow-sbom.pcs=              | modified | Converted from playwright template                 |
+| =airflow-webserver-sysd.cs=     | new      | systemd unit seed for airflow webserver            |
+| =airflow-scheduler-sysd.cs=     | new      | systemd unit seed for airflow scheduler            |
+| =airflow-triggerer-sysd.cs=     | new      | systemd unit seed for airflow triggerer            |
+| =airflow-cbs-is-np-sysd.cs=     | new      | CBS bundling all three units + sbom                |
+| =AI-GENERAL.org=                | modified | Replaced @-import of readme.org with a plain ref   |
+
+** airflow-sbom.pcs Details
+- apt packages: =python3=, =python3-pip=, =python3-venv=, =build-essential=,
+  =libpq-dev=, =libssl-dev=, =libffi-dev=, =pkg-config=
+- pip packages: =apache-airflow >= 2.9.0=
+- Verified: =apache-airflow 3.2.2= installed successfully on this system
+- Default credentials for =airflow standalone= are auto-generated at:
+  =~/airflow/simple_auth_manager_passwords.json.generated= (username: =admin=)
+
+** Design Decisions
+- SQLite + SequentialExecutor (Airflow defaults) are used — appropriate for
+  testing a small number of DAGs; no external DB required.
+- =assemble=None= in the CBS for now — the assemble step is where
+  =airflow db migrate= and initial admin user creation will eventually go.
+- The three sysd unit seeds use =pathPlus.whichBinPath("airflow")= to locate
+  the executable dynamically from the active venv.
+
+** What Is Untested
+- The three =*-sysd.cs= files and the CBS (=airflow-cbs-is-np-sysd.cs=) have
+  not been exercised via =cba-sysd.cs= yet — systemd registration is untested.
+- No DAGs have been written or tested yet.
+- PostgreSQL/MySQL backend path is not set up.
+
+** Next Steps (when resuming)
+- Implement the assemble step: =airflow db migrate= + admin user creation.
+- Write and test a minimal DAG under =$AIRFLOW_HOME/dags/=.
+- Exercise the CBS: run =airflow-cbs-is-np-sysd.cs= to register and start
+  the three systemd services.
+
+# Local Variables:
+# eval: (setq-local toc-org-max-depth 4)
+# End:
