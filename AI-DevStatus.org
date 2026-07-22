@@ -26,19 +26,48 @@ Note to a fresh Claude: this file is intentionally sparse at project start.
 Fill in the sections below when asked to update, following the structure provided.
 
 * Current State
-  [To be filled in by Claude after first substantive interaction]
+
+  This repo (=bisos/asc=) serves as the walk-up CLAUDE.md root for the bisos-pip
+  development session. No direct code work has been done here. The substantive work
+  happened in two subprojects:
+
+  - =bisos-pip/capDns= — new package for managing DNS capability entries. Commands
+    =capDns_update=, =capDns_verify=, =capDns_resolve=, =capDns_fqdnPing= implemented;
+    first two are NOTYET stubs pending =bannaForEtcHosts= wiring.
+  - =bisos-pip/banna= — =bannaForEtcHosts= and =updateEtcHosts= implemented; see
+    =banna/AI-DevStatus.org= for full details.
+  - =bisos-pip/pyDblock= — =bx:dblock:global:run-result-stdout= handler added. The
+    developer is setting up pyDblock's WorkPlan to formally track this work.
+
+  The asc WorkPlan has not been advanced; Stage 1 Context Confirmation TODO is still open.
 
 * Architecture
-  [Key components, file structure, entry points]
+
+  This repo holds the shared AI collaboration invariants for the bisos ecosystem:
+  - =CLAUDE.md= — base entry point, imports the four org files below.
+  - =AI-WORKFLOW.org= — symlink to =mother/=; generic workflow overview.
+  - =AI-Activity.org= — symlink to =aiActivity/=; describes the AI Activity model itself.
+  - =AI-DevStatus.org= — this file; per-project state.
+  - =AI-WorkPlan.org= — stages and TODOs for work against this repo specifically.
+  - =.claude/= — shared settings, commands, and skills inherited by subprojects via walk-up.
 
 * What Works
-  [Verified functionality]
+
+  - Claude Code walk-up from any bisos-pip subproject correctly inherits =.claude/=
+    and the invariant org files from this repo.
+  - All =bx-= slash commands (=/bx-confirm0=, =/bx-status=, =/bx-done=,
+    =/bx-update-status=) are available to subprojects via the shared =.claude/commands/=.
 
 * What Is Untested
-  [Known gaps]
+
+  - The asc WorkPlan itself has no completed TODOs — Stage 1 Context Confirmation
+    has not been formally closed.
 
 * Key Design Decisions
-  [Non-obvious choices and their rationale]
+
+  - =asc= is an =initiate= (not =initiateSub=) install, making it the walk-up root
+    that supplies =AI-WORKFLOW.org= and =.claude/= to all nested subprojects.
+  - No code lives here; the repo's sole role is as the shared AI collaboration anchor.
 
 # Local Variables:
 # eval: (setq-local toc-org-max-depth 4)

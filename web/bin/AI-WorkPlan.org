@@ -28,6 +28,10 @@ TODO below is the standard first step, or use =/bx-confirm0= as the automated eq
 TODOs tagged =:ai:= are assigned to Claude. After completing a TODO, summarize results
 under =----- AI Results: ------= and mark it DONE.
 
+* Work Plan Overview
+
+We want to use airflow as an example to fully implement BISOS Capability and related pip packages. We will implement the missing -dns.pcs and -wvd.pcs features first then make sure that everything is complete.
+
 * Stage 0: Confirm AI's Understanding of This Repo's Context
 
 Goal: Confirm AI's understanding of the context and capture that in [[Context Confirmation]] TODO.
@@ -91,6 +95,30 @@ See how relevant apt and pip packages are specified. Do that for a basic airflow
 - Created CBS (Capability Bundle Spec):
   - =airflow-cbs-is-np-sysd.cs= -- bundles sbom + all three sysd units; assemble=None for now
     (assemble is where =airflow db migrate= and initial user creation will go)
+** -
+
+* Stage 2: Use airflow as an example of systemd port based web site -- Make airflow-nd-cbs.pcs complete
+
+Goal: Make sure that -sbom.pcs + -sysd.pcs + -dns.pcs +  -wvd.pcs  = -cbs.pcs
+
+
+* Stage 2 TODOs
+** +
+** TODO [#A] For airflow functional parts are -sbom.pcs + -sysd.pcs + -dns.pcs :aiAndMe:
+SCHEDULED: <2026-07-21 Tue 11:22>
+All of these are in place for airflow.
+----- AI Results: ------
+** TODO [#A] Implement airflow-wvd.pcs in bisos.webCap :aiAndMe:
+SCHEDULED: <2026-07-21 Tue 11:22>
+Work will continue in bisos.webCap. End goal is to have available and enabled entries for airflow.here in NGINX.
+When implemented we will resume here.
+----- AI Results: ------
+** TODO [#A] Make sure that airflow-cbs.pcs is complete and idempotent. Running it should result in airflow.here being functional :aiAndMe:
+SCHEDULED: <2026-07-21 Tue 11:22>
+For airflow put together  -sbom.pcs + -sysd.pcs + -dns.pcs + -wvd.pcs in -cbs.pcs
+Make sure that it works end-to-end.
+Make sure that it is easily reusable for other similar capabilities.
+----- AI Results: ------
 
 ** -
 
