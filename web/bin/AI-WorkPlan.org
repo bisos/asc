@@ -120,6 +120,40 @@ Make sure that it works end-to-end.
 Make sure that it is easily reusable for other similar capabilities.
 ----- AI Results: ------
 
+** TODO [#A] Missing DataBase Configuration -- Add airflow db migrate
+SCHEDULED: <2026-07-21 Tue 11:22>
+Jul 21 20:05:26 HSS-1013 airflow[828144]: 2026-07-22T03:05:26.342011Z [error    ] Database migration required. Please run `airflow db migrate`. Make sure the command is run using Airflow version 3.2.2. [airflow.utils.db] loc=db.py:987
+Jul 21 20:05:26 HSS-1013 systemd[1]: airflow-scheduler.service: Main process exited, code=exited, status=1/FAILURE
+Jul 21 20:05:26 HSS-1013 systemd[1]: airflow-scheduler.service: Failed with result 'exit-code'.
+Jul 21 20:05:36 HSS-1013 systemd[1]: airflow-scheduler.service: Scheduled restart job, restart counter is at 27.
+And also
+Jul 21 20:48:59 HSS-1013 airflow[831115]: 2026-07-22T03:48:59.460427Z [error    ] Database migration required. Please run `airflow db migrate`. Make sure the command is run using Airflow version 3.2.2. [airflow.utils.db] loc=db.py:987
+Jul 21 20:48:59 HSS-1013 systemd[1]: airflow-triggerer.service: Main process exited, code=exited, status=1/FAILURE
+Jul 21 20:48:59 HSS-1013 systemd[1]: airflow-triggerer.service: Failed with result 'exit-code'.
+Jul 21 20:49:09 HSS-1013 systemd[1]: airflow-triggerer.service: Scheduled restart job, restart counter is at 1.
+----- AI Results: ------
+
+** TODO [#A] Airflow webserver is obsoloted. Use: airflow  api-server
+SCHEDULED: <2026-07-21 Tue 11:22>
+airflow command error: argument GROUP_OR_COMMAND: Command `airflow webserver` has been removed. Please use `airflow api-server`, see help above.
+----
+Portnumber should come from banna.
+----
+[Service]
+ExecStart=/bisos/venv/py3/asc/bin/airflow webserver --port 8080
+Restart=on-failure
+RestartSec=10
+----
+Jul 21 20:51:24 HSS-1013 systemd[1]: airflow-webserver.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+Jul 21 20:51:24 HSS-1013 systemd[1]: airflow-webserver.service: Failed with result 'exit-code'.
+
+----- AI Results: ------
+
+** TODO [#A] Revisit the -cbs.pcs --- What is the order of starting the airflow systemd-s
+SCHEDULED: <2026-07-21 Tue 11:22>
+----- AI Results: ------
+
+
 ** -
 
 
