@@ -32,6 +32,7 @@ cba_seed.setup(
 )
 
 sysdUnitsListAirflow = [
+    cba_sysd_seed.sysdUnit("airflow-db",         "airflow-db-sysd.pcs"),
     cba_sysd_seed.sysdUnit("airflow-webserver",  "airflow-webserver-sysd.pcs"),
     cba_sysd_seed.sysdUnit("airflow-scheduler",  "airflow-scheduler-sysd.pcs"),
     cba_sysd_seed.sysdUnit("airflow-triggerer",  "airflow-triggerer-sysd.pcs"),

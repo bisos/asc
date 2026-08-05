@@ -27,7 +27,8 @@ def sysdUnitFileFunc() -> str | None:
     templateStr = f"""
 [Unit]
 Description=Airflow Triggerer
-After=network.target
+After=network.target airflow-db.service
+Requires=airflow-db.service
 
 [Service]
 ExecStart={execPath} triggerer
