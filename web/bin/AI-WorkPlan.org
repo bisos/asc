@@ -117,6 +117,27 @@ Work will continue in bisos.webCap. End goal is to have available and enabled en
 When implemented we will resume here.
 ----- AI Results: ------
 =airflow-wvd.pcs= implemented using =configFile.ConfigFile= pattern; IP from =/etc/hosts=, port from =bisos.banna= (24006).
+** DONE [#A] <<browserBringUp>> airflow.here serves the Airflow UI via NGINX :aiAndMe:
+CLOSED: [2026-08-05 Wed]
+SCHEDULED: <2026-08-05 Wed>
+Bring airflow.here up in a browser: verify the full path browser -> NGINX -> airflow api-server.
+----- AI Results: ------
+- End-to-end verified: =airflow-wvd.pcs -i webVd_resolve= -> =http://airflow.here -> HTTP 200=
+  (browser -> NGINX :80 -> proxy_pass http://127.0.22.100:24006 -> airflow api-server).
+- Root cause of the earlier 502: NGINX was serving a *stale* vhost from memory
+  (upstream still =127.0.0.1:8080=) after the on-disk vhost had been rewritten to
+  =127.0.22.100:24006=; a reload fixed it.
+- Hardened =webVd_enable= in =bisos.webCap= (=capWebVd_csu.py=): the (already
+  unconditional) reload now uses =sudo systemctl reload nginx= instead of
+  =nginx -s reload=, so a just-written config is reliably picked up.
+- The =configFile_nginxVd= (ConfigFile pattern) verbs now resolve after the updated
+  webCap code was brought over: =configFileStdout= / =configFileUpdate --runAs=root=.
+- Added =adminPasswd= cmnd to =airflow-sbom.pcs=: prints the Simple Auth Manager
+  admin password by reading =/root/airflow/simple_auth_manager_passwords.json.generated=
+  as root (=airflow-sbom.pcs -i adminPasswd=).
+- Known residual: =configFileUpdate= does not itself reload NGINX; run =webVd_enable=
+  after any config change. A single =webVd_ensure= verb (update->enable->verify) would
+  close this ordering gap. Tracked under the CBS TODO below.
 ** TODO [#A] Make sure that airflow-cbs.pcs is complete and idempotent. Running it should result in airflow.here being functional :aiAndMe:
 SCHEDULED: <2026-07-21 Tue 11:22>
 For airflow put together  -sbom.pcs + -sysd.pcs + -dns.pcs + -wvd.pcs in -cbs.pcs
@@ -158,6 +179,13 @@ Jul 21 20:51:24 HSS-1013 systemd[1]: airflow-webserver.service: Failed with resu
 
 ----- AI Results: ------
 =airflow-webserver-sysd.pcs=: replaced =webserver --port 8080= with =api-server --port {_portNu}=; port from =bisos.banna= (24006). Description updated to "Airflow API Server".
+
+** TODO [#A] Let's bring up airflow systemd step by step -- one at a time
+SCHEDULED: <2026-07-21 Tue 11:22>
+And inspect their logs.
+1) ./airflow-db-sysd.pcs
+----- AI Results: ------
+
 
 ** TODO [#A] Revisit the -cbs.pcs --- What is the order of starting the airflow systemd-s
 SCHEDULED: <2026-07-21 Tue 11:22>

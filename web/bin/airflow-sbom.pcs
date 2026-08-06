@@ -10,6 +10,10 @@ from bisos import b
 from bisos.b import cs
 from bisos.b import b_io
 
+import json
+import pathlib
+from bisos.basics import pyRunAs
+
 # import collections
 
 from bisos.sbom import pkgsSeed  # pkgsSeed.plantWithWhich("seedSbom.cs")
@@ -87,6 +91,55 @@ class readme(cs.Cmnd):
             opResults=None,
         )
 
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "adminPasswd" :extent "verify" :comment "Get admin passwd" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<adminPasswd>>  *Get admin passwd*  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class adminPasswd(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+        """Print the auto-generated Simple Auth Manager admin password.
+
+        The systemd airflow services run as root, so their AIRFLOW_HOME is
+        /root/airflow and the generated password file is owned by root (and
+        /root is not world-traversable) --- hence the read is done as root.
+        """
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+
+        pwFile = pathlib.Path("/root/airflow/simple_auth_manager_passwords.json.generated")
+
+        contentStr = pyRunAs.as_root_readFromFile(pwFile)
+        if not contentStr:
+            b_io.ann.note(f"ERROR: could not read {pwFile} (has airflow been started at least once?)")
+            return failed(cmndOutcome)
+
+        try:
+            passwd = json.loads(contentStr).get("admin")
+        except json.JSONDecodeError:
+            b_io.ann.note(f"ERROR: {pwFile} is not valid JSON")
+            return failed(cmndOutcome)
+
+        if not passwd:
+            b_io.ann.note(f"ERROR: no 'admin' entry in {pwFile}")
+            return failed(cmndOutcome)
+
+        print(passwd)
+        return cmndOutcome.set(
+            opError=b.op.OpError.Success,
+            opResults=passwd,
+        )
+####+END:
+
 def examples_csu() -> b.op.Outcome:
     """Common Usage Examples for this Command-Service Unit"""
 
@@ -126,6 +179,7 @@ def examples_csu() -> b.op.Outcome:
     cs.examples.menuChapter('*User Management*')
     literal("# standalone generates credentials at: ~/airflow/simple_auth_manager_passwords.json.generated")
     literal("cat ~/airflow/simple_auth_manager_passwords.json.generated  # username: admin, password: <generated>")
+    cmnd('adminPasswd', comment=" # print the auto-generated admin password (reads /root/airflow as root)")
     literal(f"{airflow} users list")
 
     cs.examples.menuChapter('*Running Airflow (standalone / local testing)*')

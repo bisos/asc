@@ -9,22 +9,22 @@ import collections
 
 from bisos.csSeed import seedsLib
 
-from bisos.capDns import capDns_seed #  noqa: F401  # type: ignore[unused-import] _atExit_
+from bisos.dnsCap import dnsCap_seed #  noqa: F401  # type: ignore[unused-import] _atExit_
 
-from bisos.capDns import capDns_seedInfo
-cntrlInfo = capDns_seedInfo.cmndsControlInfo
+from bisos.dnsCap import dnsCap_seedInfo
+cntrlInfo = dnsCap_seedInfo.cmndsControlInfo
 
-cntrlInfo.dnsSpecMethod = capDns_seedInfo.DnsSpecMethod.etcHosts   # Other choice is tinydns
+cntrlInfo.dnsSpecMethod = dnsCap_seedInfo.DnsSpecMethod.etcHosts   # Other choice is tinydns
 cntrlInfo.fqdn = "airflow.here"
 
 from bisos.csSeed import csCmndsList_seedInfo
 csCmnd = csCmndsList_seedInfo.csCmnd
 
 csCmndsList = [
-    csCmnd("capDns_update",),
-    csCmnd("capDns_verify",),
-    csCmnd("capDns_resolve", args=f"{cntrlInfo.fqdn}"),
-    csCmnd("capDns_fqdnPing",
+    csCmnd("dnsCap_update",),
+    csCmnd("dnsCap_verify",),
+    csCmnd("dnsCap_resolve", args=f"{cntrlInfo.fqdn}"),
+    csCmnd("dnsCap_fqdnPing",
            args=f"{cntrlInfo.fqdn}"),
 ]
 
