@@ -42,4 +42,4 @@ cba_sysd_seed.setup(
     sysdUnitsList=sysdUnitsListAirflow,
 )
 
-# cba_sysd_seed.plantWithWhich("cba-sysd.cs")
+cba_sysd_seed.plantWithWhich("cba-sysd.cs")
