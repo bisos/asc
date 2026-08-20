@@ -27,7 +27,7 @@ cba_seed.setup(
     seedType="systemd",  # Extend using cba_sysd_seed.setup
     loader=None,
     sbom="airflow-sbom.pcs",
-    assemble=None,
+    assemble="airflow-assemble.cs",
     materialize=None,
 )
 

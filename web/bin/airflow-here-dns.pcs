@@ -22,6 +22,7 @@ csCmnd = csCmndsList_seedInfo.csCmnd
 
 csCmndsList = [
     csCmnd("dnsCap_update",),
+    csCmnd("dnsCap_ensureHostsDblock"),
     csCmnd("dnsCap_verify",),
     csCmnd("dnsCap_resolve", args=f"{cntrlInfo.fqdn}"),
     csCmnd("dnsCap_fqdnPing",
