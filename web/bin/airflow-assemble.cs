@@ -295,6 +295,10 @@ Cmnd -- No Results
         #+end_org """)
 
         if b.subProc.WOpW(invedBy=self, log=1).bash(
+                f"""airflow-wvd.pcs -i configFileUpdate --cls="configFile_nginxVd" --runAs=root""",
+        ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
+
+        if b.subProc.WOpW(invedBy=self, log=1).bash(
                 f"""airflow-wvd.pcs -i webVd_enable""",
         ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
 
