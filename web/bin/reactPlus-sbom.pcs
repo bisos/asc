@@ -1,0 +1,165 @@
+#!/usr/bin/env python
+
+""" #+begin_org
+* Panel::  [[file:/bisos/panels/bisos-apps/NameOfThePanelComeHere/_nodeBase_/fullUsagePanel-en.org]]
+* Overview and Relevant Pointers
+#+end_org """
+
+from bisos import b
+# from bisos.b import cmndsSeed
+from bisos.b import cs
+from bisos.b import b_io
+
+# import collections
+import typing
+
+from bisos.sbom import pkgsSeed  # pkgsSeed.plantWithWhich("seedSbom.cs")
+npm  = pkgsSeed.npmPkg
+sbom = pkgsSeed.sbomSpec
+
+
+# nvm-sbom.pcs is the primary prerequisite: installs nvm so Node version management
+# is available. npm-sbom.pcs provides the system-wide apt fallback (Node 18) for
+# non-interactive/root contexts where nvm is not activated.
+# Note: global npm packages install under ~/.nvm/versions/node/<active-version>/
+# and are therefore per-nvm-version. Re-run sbom_fullUpdate after switching Node versions.
+sbomsList = [
+    sbom("/bisos/core/bsip/bin/nvm-sbom.pcs"),   # primary: nvm per-user Node version manager
+    sbom("/bisos/core/bsip/bin/npm-sbom.pcs"),    # fallback: system-wide Node 18 + npm via apt
+]
+
+npmPkgsList = [
+    npm("gatsby-cli"),          # Gatsby CLI -- scaffold and run Gatsby sites
+    npm("create-react-app"),    # CRA -- classic React project scaffolding
+    npm("typescript"),          # TypeScript compiler (tsc)
+    npm("eslint"),              # JavaScript/TypeScript linter
+    npm("prettier"),            # Opinionated code formatter
+]
+
+pkgsSeed.setup(
+    npmPkgsList=npmPkgsList,
+    sbomsList=sbomsList,
+)
+
+
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "readme" :extent "verify" :comment "Describe" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<readme>>  *Describe*  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+#+end_org """
+class readme(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 0, 'Max': 0,}
+
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+    ) -> b.op.Outcome:
+        """Describe"""
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+            return failed(cmndOutcome)
+####+END:
+        descriptionStr = """** Scope: React / Gatsby front-end toolchain on Debian 12.
+
+** Prerequisites (processed automatically by sbom_fullUpdate):
+  1) nvm-sbom.pcs  -- installs nvm (Node Version Manager) per-user into ~/.nvm.
+                      This is the primary Node provider on this system.
+  2) npm-sbom.pcs  -- installs system-wide Node 18 + npm via apt as a fallback
+                      for non-interactive/root contexts where nvm is not activated.
+
+** Where global packages are installed:
+  When nvm is active (the normal case), npm installs globals under:
+      ~/.nvm/versions/node/<active-version>/lib/node_modules/
+  with binaries at:
+      ~/.nvm/versions/node/<active-version>/bin/
+  This means global packages are PER NVM VERSION. After switching Node versions:
+      nvm install <new-version> && nvm use <new-version>
+  re-run:
+      reactPlus-sbom.pcs -i sbom_fullUpdate
+  to reinstall globals under the new version.
+
+  When nvm is NOT active (e.g. root/cron/systemd), npm falls back to the
+  system apt npm and globals land in /usr/lib/node_modules/.
+
+** What this installs (all global npm packages):
+
+  gatsby-cli       -- Gatsby CLI: scaffold, develop, and build Gatsby sites.
+                      Usage: gatsby new my-site && cd my-site && gatsby develop
+
+  create-react-app -- Classic React project scaffolding (CRA).
+                      Usage: create-react-app my-app --template typescript
+                      Note: for new projects Vite or Gatsby are now preferred over CRA.
+
+  typescript       -- TypeScript compiler (tsc). Used by Gatsby, Next.js, and React projects.
+                      Usage: tsc --init   tsc --watch
+
+  eslint           -- JavaScript/TypeScript linter. Integrates with editors and CI.
+                      Usage: eslint src/
+
+  prettier         -- Opinionated code formatter for JS/TS/CSS/HTML/JSON.
+                      Usage: prettier --write src/
+
+** Installation / update:
+       reactPlus-sbom.pcs -i sbom_fullUpdate
+       # Re-run after: nvm install <new-version> && nvm use <new-version>
+"""
+        print(descriptionStr)
+
+        return cmndOutcome.set(
+            opError=b.op.OpError.Success,
+            opResults=None,
+        )
+
+def examples_csu() -> b.op.Outcome:
+    """Common Usage Examples for this Command-Service Unit"""
+
+    cmnd = cs.examples.cmndEnter
+    literal = cs.examples.execInsert
+
+    cmndOutcome = b.op.Outcome()
+
+    cs.examples.menuChapter('*React/Gatsby Toolchain Examples*')
+
+    cmnd('readme', comment=" # An overview short description")
+
+    cs.examples.menuChapter('*Installation*')
+    literal("reactPlus-sbom.pcs -i sbom_fullUpdate")
+
+    cs.examples.menuChapter('*Verify Installations*')
+    literal("gatsby --version")
+    literal("tsc --version")
+    literal("eslint --version")
+    literal("prettier --version")
+    literal("npm list -g --depth=0   # show all globally installed npm packages")
+
+    cs.examples.menuChapter('*Gatsby -- New Site*')
+    literal("gatsby new my-gatsby-site")
+    literal("cd my-gatsby-site && gatsby develop   # starts dev server at http://localhost:8000")
+    literal("gatsby build                           # production build into public/")
+    literal("gatsby serve                           # serve the production build locally")
+    literal("gatsby info                            # system/environment diagnostic")
+
+    cs.examples.menuChapter('*Create React App*')
+    literal("create-react-app my-react-app --template typescript")
+    literal("cd my-react-app && npm start           # dev server at http://localhost:3000")
+    literal("npm run build                          # production build")
+
+    cs.examples.menuChapter('*TypeScript*')
+    literal("tsc --init                             # create tsconfig.json in current dir")
+    literal("tsc --watch                            # compile on file changes")
+    literal("tsc --noEmit                           # type-check only, no output files")
+
+    cs.examples.menuChapter('*ESLint*')
+    literal("eslint --init                          # interactive config wizard")
+    literal("eslint src/")
+    literal("eslint --fix src/")
+
+    cs.examples.menuChapter('*Prettier*')
+    literal("prettier --write src/")
+    literal("prettier --check src/                 # CI mode: fail if any file would change")
+
+    cs.examples.menuChapter('*End-Of  React/Gatsby Toolchain Examples*')
+    return cmndOutcome
