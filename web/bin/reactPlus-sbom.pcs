@@ -24,8 +24,7 @@ sbom = pkgsSeed.sbomSpec
 # Note: global npm packages install under ~/.nvm/versions/node/<active-version>/
 # and are therefore per-nvm-version. Re-run sbom_fullUpdate after switching Node versions.
 sbomsList = [
-    sbom("/bisos/core/bsip/bin/nvm-sbom.pcs"),   # primary: nvm per-user Node version manager
-    sbom("/bisos/core/bsip/bin/npm-sbom.pcs"),    # fallback: system-wide Node 18 + npm via apt
+    sbom("/bisos/core/bsip/bin/nvm-sbom.pcs"),   # primary: nvm per-user Node version manager#
 ]
 
 npmPkgsList = [
