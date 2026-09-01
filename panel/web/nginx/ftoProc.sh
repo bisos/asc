@@ -5,7 +5,7 @@ SEED="
 *  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedFtoCommon.sh]] |
 "
 FILE="
-*  /This File/ :: /bisos/panels/bisos-core/asc/web/django-drf/ftoProc.sh
+*  /This File/ :: /bisos/panels/bisos-core/asc/web/nginx/ftoProc.sh
 "
 if [ "${loadFiles}" == "" ] ; then
     /bisos/core/bsip/bin/seedFtoCommon.sh -l $0 "$@"
@@ -30,6 +30,7 @@ leavesList="
 
 ####+BEGIN: bx:dblock:pypi:bash:nodesList :types ""
 nodesList="
+_nodeBase_
 "
 ####+END:
 

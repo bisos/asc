@@ -30,6 +30,7 @@ leavesList="
 
 ####+BEGIN: bx:dblock:pypi:bash:nodesList :types ""
 nodesList="
+_nodeBase_
 "
 ####+END:
 

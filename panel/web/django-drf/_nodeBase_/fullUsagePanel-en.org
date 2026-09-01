@@ -27,7 +27,7 @@
 * [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:blee:bxPanel:terseTreeNavigator)][dbf]]
 * +
 *                                        *━━━━━━━━━━━━━━━━━━━━━━━━*
-*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/asc/web/django-drf/_nodeBase_")][ =django-drf= ]] *|* [[elisp:(dired "/bisos/panels/bisos-core/asc/web/images")][ ~images~ ]] *|*
+*   *Siblings*   :: [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/asc/web/django-drf/_nodeBase_")][ =django-drf= ]] *|* [[elisp:(dired "/bisos/panels/bisos-core/asc/web/images")][ ~images~ ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/asc/web/nginx/_nodeBase_")][ =nginx= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/asc/web/rawBisosSites/_nodeBase_")][ =rawBisosSites= ]] *|* [[elisp:(blee:bnsm:panel-goto "/bisos/panels/bisos-core/asc/web/react/_nodeBase_")][ =react= ]] *|*
 *   /Ancestors/  :: [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/asc/web/_nodeBase_")][ =web= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/asc/_nodeBase_")][ = /<asc>/ = ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/bisos-core/_nodeBase_")][ =bisos-core= ]] *|* [[elisp:(blee:bnsm:panel-goto "//bisos/panels/_nodeBase_")][ = /<panels>/ = ]] *|* [[elisp:(dired "//bisos")][ ~bisos~ ]] *|*
 *                                   _━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━_                          [[elisp:(org-shifttab)][<)]] E|
 ####+END

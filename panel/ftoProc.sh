@@ -5,7 +5,7 @@ SEED="
 *  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedFtoCommon.sh]] |
 "
 FILE="
-*  /This File/ :: /bisos/asc/panel/ftoProc.sh
+*  /This File/ :: /bisos/panels/bisos-core/asc/ftoProc.sh
 "
 if [ "${loadFiles}" == "" ] ; then
     /bisos/core/bsip/bin/seedFtoCommon.sh -l $0 "$@"
@@ -31,8 +31,9 @@ leavesList="
 ####+BEGIN: bx:dblock:pypi:bash:nodesList :types ""
 nodesList="
 web
-mail
 _nodeBase_
+mail
+bedrock
 db
 "
 ####+END:
