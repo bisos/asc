@@ -36,8 +36,8 @@ npmPkgsList = [
 ]
 
 pkgsSeed.setup(
-    npmPkgsList=npmPkgsList,
     sbomsList=sbomsList,
+    npmPkgsList=npmPkgsList,
 )
 
 
