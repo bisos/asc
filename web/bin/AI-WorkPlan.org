@@ -10,6 +10,9 @@
 #   Templates: /bisos/apps/defaults/ai-templates
 #   Command:   /bisos/venv/py3/devbin/startAiActivity.cs -i initiateSub --activity=sbom+cap
 
+####+BEGIN: b:ai:workflow/driver
+####+END:
+
 ####+BEGIN: b:ai:file/particulars
 * AI Working Context
   Working Directory: /bisos/git/auth/bxRepos/bisos/asc/web/bin
