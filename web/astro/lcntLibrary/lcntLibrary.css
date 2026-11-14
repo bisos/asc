@@ -1,0 +1,23 @@
+/* The look of the LCNT access pages (/lcnt/<class>/<number>/<release>/accessPage/): breadcrumb, subtitle, vitals,
+   available formats, and the document itself embedded below them. astroSite.cs -i libraryGenerate copies this file into
+   each generated page's <style>, so a site needs no stylesheet of its own for them. The colours are variables with
+   plain fallbacks: a site (or an organization's style) can set them. --libLabel is the label colour of the Plone
+   access pages these replace (rgb(153, 51, 0)). */
+:root { --libLabel: #993300; }
+
+.content .crumbs { font-size: 0.9rem; color: var(--libMuted, #6a6a6a); margin-block-end: 1rem; }
+.content .crumbs a { margin-inline: 0.15rem; }
+.content .crumbs span { margin-inline: 0.15rem; }
+.content .accessSubtitle { font-size: 1.15rem; font-weight: 500; margin-block: 0.2rem; }
+.content .accessFormats { list-style: none; padding-inline-start: 0; }
+.content .accessFormats li { margin-block: 0.4rem; }
+.content .accessDescription { max-width: 60rem; margin-block: 1.2rem; }
+.content table.accessFacts { width: auto; }
+.content table.accessFacts th { text-align: start; white-space: nowrap; background: var(--libRowAlt, #f4f4f4); }
+
+/* The document (HeVeA html, an integral part of the site) below an access page's facts. */
+.content .libdocHeading { margin-block-start: 2rem; }
+.content .libdoc img { max-width: 100%; height: auto; }
+.content hr.libdocRule { border: 0; border-block-start: 2px solid var(--libLabel); margin-block: 0.4rem 1.2rem; }
+.content .accessLabel, .content table.accessFacts th { color: var(--libLabel); }
+.content table.accessFacts a.thisRelease { font-weight: 700; }

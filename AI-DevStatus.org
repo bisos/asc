@@ -41,6 +41,10 @@ Fill in the sections below when asked to update, following the structure provide
 
   The asc WorkPlan has not been advanced; Stage 1 Context Confirmation TODO is still open.
 
+  *2026-11-14: =web/astro/=* (new): the contract of the optional LCNT Library of an astro site
+  (=lcntLibrary/README.org=, =lcntLibrary.css=) and an index README. The code is in =bisos.lcnt= (the
+  =localWeb= export) and =bisos.webCap= (=astroSite.cs -i libraryGenerate=).
+
 * Architecture
 
   This repo holds the shared AI collaboration invariants for the bisos ecosystem:

@@ -1,0 +1,22 @@
+#+title: astro --- shared facilities of the astro sites on this system
+
+Assets used by every Astro static site built from the BISOS starter (=astro-starter-bystar=; see
+=bisos.webCap=, =astroProc.spcs= and =astroSite.cs=). Each directory here is one facility, with its own
+README. A site opts in; none of them is required.
+
+| Directory      | What                                                                      |
+|----------------+---------------------------------------------------------------------------|
+| =lcntLibrary/= | LCNT documents (pdf, html) on a site: a Library tab, an access page each  |
+
+* lcntLibrary
+
+A document exported by =lcntProc.sh -i lcntExport= with the =localWeb= method (bisos.lcnt) is landed in
+the site's =var/lcnt/=, and =bisos.webCap='s =astroSite.cs -i libraryGenerate= makes the pages that show
+it. The landing layout, the =meta.pyl= contract, what a site needs to opt in, and how to try it are in
+[[file:lcntLibrary/README.org][lcntLibrary/README.org]].
+
+Related, in other repositories:
+- =bisos.lcnt=: the =localWeb= export (=exportLocalWeb_csu.py=, =lcntExportLocalWeb.cs=); its README and
+  the =lcntProc= Blee-Panel describe the export spec.
+- =bisos.webCap=: the generator and the nginx locations. =astro-starter-bystar=: the =library= node and
+  the =layoutBare= hook.

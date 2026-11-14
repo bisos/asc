@@ -1,0 +1,106 @@
+#+title: lcntLibrary --- LCNT documents on an astro site
+
+* Overview
+
+Shared by every astro site on this system. An LCNT document, released and exported with the lcnt
+=localWeb= method (bisos.lcnt, =lcntExportLocalWeb.cs=), is *landed* in the site's own
+=<siteBase>/var/lcnt/=. A page generator (bisos.webCap, =astroSite.cs -i libraryGenerate=) then turns
+what is landed into pages of the site's content tree: a Library tab listing the documents, and an access
+page for each release. Nothing in this directory is specific to one site or one organization.
+
+#+begin_example
+document --lcntBuild--> Release/<rel>/ --lcntExport (localWeb)--> <siteBase>/var/lcnt/<class>/<nu>/<rel>/
+                                                                              |
+      astroSite.cs -i libraryGenerate <fqdn>  (run by the export)  <----------+
+                 |
+                 v
+ <siteBase>/content/tree/{lcnt/.../accessPage/, library/index_html/} --astro build--> the site
+#+end_example
+
+The two halves are loosely coupled: the exporter knows only the landing layout below, and the generator
+reads only that layout. This file is the one place that layout is defined.
+
+* The Landing Contract
+
+One directory per release, written by =bisos.lcnt= (=exportLocalWeb_csu.py=), replaced as a whole on each
+export:
+
+: <siteBase>/var/lcnt/<class>/<lcntNu>/<relTag>/
+
+| =<class>=  | the LCNT class the document is in, from its path (=lgcc=, =lgpc=, ...)                |
+| =*.pdf=    | the released pdf of each build spec named by the export spec                          |
+| =html/=    | the HeVeA html, regular files only, with an =index.html= (an article only, see below) |
+| =*.bib=    | the release's citation file, when there is one                                        |
+| =meta.pyl= | what an access page shows (below)                                                     |
+
+=meta.pyl= is one Python literal, formatted by =black=, read with =ast.literal_eval= (never =eval=; there
+is no JSON anywhere). Placeholder values (="NA"=) are left out. The generator takes the class, number and
+release from the directory names, and tolerates every other key being absent (the number stands in for a
+missing title). A =meta.pyl= that is not a literal dictionary is skipped, and code in it is not run.
+
+| Key                                | Meaning                                                        |
+|------------------------------------+----------------------------------------------------------------|
+| =lcntClass=, =lcntNu=, =relTag=    | the identity of the release                                    |
+| =docNumber=, =pubCategory=         | e.g. =PLPC-580003=, =PLPC=                                     |
+| =title=, =subTitle=, =subSubTitle= | the titles                                                     |
+| =authors=                          | a list of names                                                |
+| =date=, =version=, =group=         | shown in the access page's table                               |
+| =url=, =organization=, =seeAlso=   | optional, shown when present                                   |
+| =description=                      | the short description                                          |
+| =formats=                          | list of ={kind, path, bytes[, build]}=: =pdf=, =html=, =bib=   |
+| =files=, =pdfs=, =html=            | the landed files; =html= is the entry file, or =None=          |
+| =landedAt=, =landedFor=            | when, and for which site name                                  |
+
+A =pdf= format carries =build=, the build spec's =buildName=. When a release has several pdfs the access
+page labels each with its build (="PDF (art-8.5x11)"=, ="PDF (pres)"=).
+
+* What the Generator Writes
+
+=astroSite.cs -i libraryGenerate <fqdn-or-base>= (run by the export on each landing, or by hand) writes,
+into the site's content tree:
+
+| =content/tree/lcnt/<class>/<nu>/<rel>/accessPage/= | a release's access page (the one to cite)      |
+| =content/tree/lcnt/<class>/<nu>/accessPage/=       | the access page of the latest release          |
+| =content/tree/library/index_html/=                 | the Library tab's page: one row per document   |
+
+They are ordinary content-tree nodes (parameter files and a =contentBody.html=), generated whole on each
+run (built aside, renamed in) and kept out of git. The access page shows the document's vitals, the
+available formats with sizes, the short description and, *for an article with html, the document itself*
+embedded under "The document".
+
+*Presentations.* For now a presentation is exported as pdf only, and its access page shows the formats
+and no embedded document. Reveal.js presentations, and the rest of LCNT's multimedia facilities, are not
+yet part of this export; they are to be added later.
+
+* What a Site Needs
+
+A site (the =astro-starter-bystar= starter has all of this) needs:
+
+1. A =library= folder node in its content tree (=content/tree/library/=, objectType =folder=, a
+   =folderTitle=): the tab. Its =index_html= is generated.
+2. The page parameter =layoutBare= (=true=: the body is rendered as given, no footer, no tree heading),
+   read by =contentTree.mjs= and used by =TreeLayout.astro=. The generated access pages set it.
+3. A =.gitignore= listing =var/=, =content/tree/lcnt/= and =content/tree/library/index_html/=.
+4. Serving of the landed files. =webVd_nginxSites.lcntVarLocations()= adds three =location= blocks to the
+   site's nginx vhost, generated by =bisos.pals= (=pals-wvd.spcs=) or the site's =-wvd.pcs=: =/lcnt/= is
+   served from =<siteBase>/var/lcnt/= (after the built pages), and =meta.pyl= is never served (404).
+5. Optionally a stylesheet that sets =--libLabel=, =--libMuted= and =--libRowAlt=, to match the site's
+   colors: =lcntLibrary.css= has fallbacks for all three.
+
+* Files Here
+
+- =lcntLibrary.css= --- the look of the access pages, copied by the generator into each page's =<style>=.
+- The generator is Python, standard library only: =bisos.webCap.astroLcntLibrary_csu=.
+
+* Trying It
+
+With a document that has an =Exports/localWeb= spec (=exportMethod= =localWeb=, =buildSpecs=,
+=destinations=: site names on this system):
+
+#+begin_src bash
+lcntProc.sh -p extent="build+release" -i lcntBuild all
+lcntProc.sh -i lcntExport ./LCNT-INFO/Exports/localWeb    # lands, then runs the generator
+#+end_src
+
+then rebuild the site. The export prints one line per destination ("landed <nu> <fqdn> <path>"), or says
+why the landing or the page generation failed.
